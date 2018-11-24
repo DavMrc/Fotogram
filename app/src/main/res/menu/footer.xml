@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/bacheca"
+        android:title="@string/bacheca"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_home_black_24dp"
+    />
+
+    <item
+        android:id="@+id/cerca"
+        android:title="@string/cerca"
+        app:showAsAction="always"
+        android:icon="@drawable/search_black_24dp"
+        />
+
+    <item
+        android:id="@+id/nuovo"
+        android:title="@string/nuovo"
+        android:icon="@drawable/add_circle_outline_black_400_24dp"
+        app:showAsAction="always"
+    />
+
+    <item
+        android:id="@+id/profilo"
+        android:title="@string/profilo"
+        android:icon="@drawable/account_circle_black_24dp"
+        app:showAsAction="always"
+    />
+
+</menu>
