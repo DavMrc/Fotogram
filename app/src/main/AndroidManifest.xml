@@ -21,7 +21,8 @@
         <activity
             android:name=".Bacheca"
             android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop">
+        </activity>
     </application>
 
 </manifest>

@@ -21,18 +21,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <SearchView
+        android:id="@+id/search_view"
         android:layout_width="395dp"
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="8dp"
-        android:alwaysDrawnWithCache="true"
-        android:animationCache="true"
         android:backgroundTint="@color/black"
-        android:contextClickable="true"
-        android:focusable="auto"
         android:inputType="text"
-        android:queryHint="Cerca"
+        android:queryHint="@string/search_hint"
         android:searchHintIcon="@drawable/search_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
