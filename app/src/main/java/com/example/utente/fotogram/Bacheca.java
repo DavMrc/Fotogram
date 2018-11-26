@@ -3,6 +3,7 @@ package com.example.utente.fotogram;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -32,6 +33,11 @@ public class Bacheca extends AppCompatActivity {
 
         hideBottomNavBar();
         setupFooter();
+
+        // permette la versione landscape solo per i tablet
+        if(getResources().getBoolean(R.bool.portait_only) == true){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     @Override
