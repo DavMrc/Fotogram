@@ -2,6 +2,7 @@ package com.example.utente.fotogram;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.annotation.ColorInt;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
@@ -37,6 +38,11 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         hideBottomNavBar();
+
+        // permette la versione landscape solo per i tablet
+        if(getResources().getBoolean(R.bool.portait_only) == true){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         Button login = findViewById(R.id.btn_accedi);
         login.setOnClickListener(new View.OnClickListener() {
