@@ -17,7 +17,6 @@ import android.widget.SearchView;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class RicercaFragment extends Fragment {
-    MaterialSearchView searchView;
 
     public RicercaFragment() {
         // Required empty public constructor
