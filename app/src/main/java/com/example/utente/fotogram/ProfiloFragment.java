@@ -37,40 +37,35 @@ public class ProfiloFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        // la risorsa dev'essere raggiunta tramite drawable, altrimenti l'id punta al "container" della risorsa
-        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.zeus);
-
-        Button btn= getView().findViewById(R.id.babb);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                new AsyncTask<Void, Void, String>(){
-                    @Override
-                    protected String doInBackground(Void... voids) {
-                        ByteArrayOutputStream baos= new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                        byte [] byteArr= baos.toByteArray();
-
-                        String encoded= Base64.encodeToString(byteArr, Base64.DEFAULT);
-                        return encoded;
-                    }
-
-                    @Override
-                    protected void onPostExecute(String s) {
-                        //                super.onPostExecute(s);
-                        Toast.makeText(getContext(), "Finished", Toast.LENGTH_SHORT).show();
-                        Log.d("DDD", "Encoded string: "+s);
-                    }
-                }.execute();
-            }
-        });
-
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    public void encodeImage(int resource){
+        // la risorsa dev'essere raggiunta tramite drawable, altrimenti l'id punta al "container" della risorsa
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resource);
+
+        new AsyncTask<Void, Void, String>(){
+            @Override
+            protected String doInBackground(Void... voids) {
+                ByteArrayOutputStream baos= new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte [] byteArr= baos.toByteArray();
+
+                String encoded= Base64.encodeToString(byteArr, Base64.DEFAULT);
+                return encoded;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                //                super.onPostExecute(s);
+                Toast.makeText(getContext(), "Finished", Toast.LENGTH_SHORT).show();
+                Log.d("DDD", "Encoded string: "+s);
+            }
+        }.execute();
+
     }
 }
