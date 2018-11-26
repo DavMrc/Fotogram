@@ -38,11 +38,13 @@ public class ProfiloFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        // la risorsa dev'essere raggiunta tramite drawable, altrimenti l'id punta al "container" della risorsa
+        final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.zeus);
+
         Button btn= getView().findViewById(R.id.babb);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.id.zeus);
 
                 new AsyncTask<Void, Void, String>(){
                     @Override
