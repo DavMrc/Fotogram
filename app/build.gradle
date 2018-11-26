@@ -35,5 +35,4 @@ dependencies {
     api 'com.miguelcatalan:materialsearchview:1.4.0'
 //  volley
     api 'com.android.volley:volley:1.1.1'
-
 }

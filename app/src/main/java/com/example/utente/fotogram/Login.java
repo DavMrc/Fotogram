@@ -75,8 +75,6 @@ public class Login extends AppCompatActivity {
 
     private void login(){
 
-        //  https://www.itsalif.info/content/android-volley-tutorial-http-get-post-put
-
         TextView tv_username= findViewById(R.id.txt_nickname);
         TextView tv_password= findViewById(R.id.txt_password);
 
