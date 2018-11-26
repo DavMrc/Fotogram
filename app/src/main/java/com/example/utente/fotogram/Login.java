@@ -29,6 +29,8 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
+    private static Model m= Model.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,9 @@ public class Login extends AppCompatActivity {
             // risposta valida
             @Override
             public void onResponse(String response) {
-                Toast.makeText(Login.this, "Session ID: "+response, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(Login.this, "Session ID: "+response, Toast.LENGTH_SHORT).show();
+                m.setActiveUser(response);
+                startActivity(new Intent(Login.this, Bacheca.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -99,8 +103,8 @@ public class Login extends AppCompatActivity {
         }){
             // parametri richiesta POST
             @Override
-            protected Map<String, String> getParams(){
-                Map<String, String>  params = new HashMap<String, String>();
+            protected Map <String, String> getParams(){
+                Map <String, String> params = new HashMap <>();
                 params.put("username", username);
                 params.put("password", password);
 

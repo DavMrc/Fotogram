@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 class Model {
     private static Model instance = null;
+    private String sessionID;
 
     private Model() {}
 
@@ -12,5 +13,9 @@ class Model {
             instance = new Model();
         }
         return instance;
+    }
+
+    public void setActiveUser(String sessionID){
+        this.sessionID= sessionID;
     }
 }
