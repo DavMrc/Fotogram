@@ -1,4 +1,4 @@
-package com.example.utente.fotogram;
+package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.utente.fotogram.Model;
+import com.example.utente.fotogram.R;
 
 import java.io.ByteArrayOutputStream;
 

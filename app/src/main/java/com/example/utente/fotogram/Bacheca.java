@@ -1,8 +1,5 @@
 package com.example.utente.fotogram;
 
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,12 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SearchView;
-import android.widget.Toast;
+
+import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
+import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
+import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
+import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
 public class Bacheca extends AppCompatActivity {
 

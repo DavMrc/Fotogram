@@ -1,24 +1,19 @@
-package com.example.utente.fotogram;
+package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.example.utente.fotogram.R;
 
-public class RicercaFragment extends Fragment {
+public class Nuovo_Post_Fragment extends Fragment {
 
-    public RicercaFragment() {
+    public Nuovo_Post_Fragment() {
         // Required empty public constructor
     }
 
@@ -31,14 +26,7 @@ public class RicercaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_ricerca, container, false);
-
-        return v;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+        return inflater.inflate(R.layout.fragment_nuovo__post_, container, false);
     }
 
 }

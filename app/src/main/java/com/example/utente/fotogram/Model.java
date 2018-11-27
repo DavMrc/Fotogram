@@ -2,7 +2,7 @@ package com.example.utente.fotogram;
 
 import java.util.ArrayList;
 
-class Model {
+public class Model {
     private static Model instance = null;
     private String sessionID;
     private User activeUser;
