@@ -2,9 +2,9 @@ package com.example.utente.fotogram;
 
 public class User {
     private String nickname;
-    private String session_id;
-    //    private propic
+    private String profilePic= null;
 
+//    costruttore
     public User(String nickname) {
         this.nickname = nickname;
     }
@@ -17,16 +17,12 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getSession_id() {
-        return session_id;
+    public String getProfilePic() {
+        return profilePic;
     }
 
-    public void setSession_id(String session_id) {
-        this.session_id = session_id;
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
-    @Override
-    public String toString() {
-        return "Nickname: "+this.nickname+", Session ID: "+this.session_id;
-    }
 }

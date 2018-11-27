@@ -1,8 +1,10 @@
 package com.example.utente.fotogram;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.support.annotation.ColorInt;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TextInputLayout;
@@ -38,11 +40,8 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         hideBottomNavBar();
-
-        // permette la versione landscape solo per i tablet
-        if(getResources().getBoolean(R.bool.portait_only) == true){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+        setConstraintLayoutListener();
+        allowLandscape();
 
         Button login = findViewById(R.id.btn_accedi);
         login.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +65,10 @@ public class Login extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_IMMERSIVE         // immersive
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
         );
+    }
 
-        // aggiunge un listener a tutto il layout vuoto in modo da chiudere
+    private void setConstraintLayoutListener(){
+        // aggiunge un listener a tutto il CL in modo da chiudere
         // la tastiera quando si fa click ovunque
         final ConstraintLayout constraintLayout = findViewById(R.id.constraint_layout);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +80,14 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    private void allowLandscape(){
+        // permette la versione landscape solo per i tablet
+        if( getResources().getBoolean(R.bool.portait_only) ){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+    }
+
+    @SuppressLint("StaticFieldLeak")
     private void login(){
 
         TextView tv_username= findViewById(R.id.txt_nickname);
@@ -86,38 +95,53 @@ public class Login extends AppCompatActivity {
 
         final String username= tv_username.getText().toString();
         final String password= tv_password.getText().toString();
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
 
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
+        final RequestQueue queue = Volley.newRequestQueue(this);
 
-        StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>(){
-            // risposta valida
+//      in un thread secondario, faccio il controllo delle credenziali
+//      override di doinbackground contiene il ResponseListener delle due casistiche
+//      di risposta: HTTP 200 o 400, gestite rispettivamente da onResponse e onErrorResponse
+
+        new AsyncTask<Void, Void, StringRequest>() {
+
             @Override
-            public void onResponse(String response) {
-                // Toast.makeText(Login.this, "Session ID: "+response, Toast.LENGTH_SHORT).show();
-                m.setActiveUser(response);
-                startActivity(new Intent(Login.this, Bacheca.class));
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
+            protected StringRequest doInBackground(Void... voids) {
+
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    // risposta valida
+                    @Override
+                    public void onResponse(String sessionID) {
+                        m.setActiveUser(username, sessionID);
+                        startActivity(new Intent(Login.this, Bacheca.class));
+                    }
+                }, new Response.ErrorListener() {
+                    // risposta ad un errore
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    // parametri richiesta POST
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("username", username);
+                        params.put("password", password);
+
+                        return params;
+                    }
+                };// finisce la StringRequest
+
+                return request;
+            }// chiude doInBackground
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
+            protected void onPostExecute(StringRequest stringRequest) {
+                queue.add(stringRequest);
             }
-        }){
-            // parametri richiesta POST
-            @Override
-            protected Map <String, String> getParams(){
-                Map <String, String> params = new HashMap <>();
-                params.put("username", username);
-                params.put("password", password);
 
-                return params;
-            }
-        };
-
-        queue.add(request);
-
-    }
+        }.execute();
+    }//chiude login
 
 }

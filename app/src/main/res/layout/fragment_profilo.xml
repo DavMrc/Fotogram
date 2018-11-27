@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/img.profile_pic"
-        android:layout_width="119dp"
-        android:layout_height="117dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginStart="36dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_account_circle_indigo_a400_24dp" />
@@ -19,12 +19,14 @@
     <TextView
         android:id="@+id/txt.username"
         android:layout_width="153dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="152dp"
         android:text="@string/nome_utente"
         android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +35,7 @@
         android:layout_width="158dp"
         android:layout_height="32dp"
         android:layout_marginStart="192dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="512dp"
         android:background="@drawable/button_gray_outline"
         android:fontFamily="sans-serif"
         android:text="@string/cambia_propic"
@@ -64,8 +66,8 @@
         android:id="@+id/label.seguiti"
         android:layout_width="50dp"
         android:layout_height="18dp"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="72dp"
         android:text="@string/seguiti"
         app:layout_constraintStart_toEndOf="@+id/img.profile_pic"
         app:layout_constraintTop_toTopOf="parent" />
@@ -74,8 +76,8 @@
         android:id="@+id/label.seguaci"
         android:layout_width="50dp"
         android:layout_height="19dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="86dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="84dp"
         android:text="@string/seguaci"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -89,9 +91,10 @@
         android:text="SeguitiInput"
         app:layout_constraintBottom_toTopOf="@+id/label.seguiti"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.56"
+        app:layout_constraintHorizontal_bias="0.558"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.714" />
 
     <TextView
         android:id="@+id/txt.seguaci"
@@ -101,35 +104,9 @@
         android:text="SeguaciInput"
         app:layout_constraintBottom_toTopOf="@+id/label.seguaci"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.242"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toEndOf="@+id/txt.seguiti"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.538" />
-
-    <ImageView
-        android:id="@+id/zeus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="164dp"
-        android:src="@drawable/zeus"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/babb"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="88dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintVertical_bias="0.736" />
 
 </android.support.constraint.ConstraintLayout>
