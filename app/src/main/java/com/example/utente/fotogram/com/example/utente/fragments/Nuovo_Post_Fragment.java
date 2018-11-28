@@ -1,14 +1,17 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 
 import com.example.utente.fotogram.R;
@@ -43,6 +46,8 @@ public class Nuovo_Post_Fragment extends Fragment {
             }
         });
 
+        setConstraintLayoutListener(v);
+
         return v;
     }
 
@@ -54,6 +59,19 @@ public class Nuovo_Post_Fragment extends Fragment {
                 chooseImage.setImageURI(selectedImage);
             }
         }
+    }
+
+    private void setConstraintLayoutListener(View v){
+        // aggiunge un listener a tutto il CL in modo da chiudere
+        // la tastiera quando si fa click ovunque
+        final ConstraintLayout constraintLayout = v.findViewById(R.id.constraint_layout);
+        constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(constraintLayout.getWindowToken(), 0);
+            }
+        });
     }
 
 }
