@@ -65,8 +65,8 @@ public class Navigation extends AppCompatActivity {
     }
 
     private void saveSessionId(){
-//        String sessionID= m.getSessionID();
-//
+        String sessionID= m.getSessionID();
+
 //        String fileContent= sessionID;
         String fileContent= m.getActiveUserNickname();
         String fileName= "sessionIDfile";

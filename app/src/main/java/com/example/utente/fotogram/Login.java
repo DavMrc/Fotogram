@@ -62,7 +62,7 @@ public class Login extends AppCompatActivity {
         try {
             FileInputStream inputStream= openFileInput("sessionIDfile");
             String s= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-            Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, s, Toast.LENGTH_LONG).show();
         }catch (Exception e){
             e.printStackTrace();
         }
