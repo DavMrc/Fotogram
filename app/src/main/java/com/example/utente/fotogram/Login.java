@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -62,8 +63,9 @@ public class Login extends AppCompatActivity {
         try {
             FileInputStream inputStream= openFileInput("sessionIDfile");
             String s= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-            Toast.makeText(Login.this, s, Toast.LENGTH_LONG).show();
+            Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
         }catch (Exception e){
+//            Toast.makeText(Login.this, "Error", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
