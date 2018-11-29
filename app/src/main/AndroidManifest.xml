@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!--Bacheca-->
+        <!--Navigation-->
         <activity
-            android:name=".Bacheca"
+            android:name=".Navigation"
             android:theme="@style/Theme.Design.Light.NoActionBar"
             android:launchMode="singleTop">
         </activity>

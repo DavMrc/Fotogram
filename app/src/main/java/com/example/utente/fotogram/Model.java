@@ -1,5 +1,6 @@
 package com.example.utente.fotogram;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class Model {
@@ -32,4 +33,5 @@ public class Model {
     public String getActiveUserImage(){
         return activeUser.getProfilePic();
     }
+
 }

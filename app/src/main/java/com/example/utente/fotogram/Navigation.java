@@ -1,5 +1,6 @@
 package com.example.utente.fotogram;
 
+import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,7 +16,10 @@ import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragm
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
-public class Bacheca extends AppCompatActivity {
+import java.io.File;
+import java.io.FileOutputStream;
+
+public class Navigation extends AppCompatActivity {
 
     final Fragment bacheca= new BachecaFragment();
     final Fragment cerca= new RicercaFragment();
@@ -23,6 +27,8 @@ public class Bacheca extends AppCompatActivity {
     final Fragment profilo= new ProfiloFragment();
     final FragmentManager fManager= getSupportFragmentManager();
     Fragment active= bacheca;
+
+    private Model m= Model.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,12 @@ public class Bacheca extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        saveSessionId();
+        super.onDestroy();
+    }
+
+    @Override
     protected void onResume() {
         hideBottomNavBar();
         super.onResume();
@@ -50,6 +62,23 @@ public class Bacheca extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
+    }
+
+    private void saveSessionId(){
+//        String sessionID= m.getSessionID();
+//
+//        String fileContent= sessionID;
+        String fileContent= m.getActiveUserNickname();
+        String fileName= "sessionIDfile";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream= openFileOutput(fileName, Context.MODE_PRIVATE);
+            outputStream.write(fileContent.getBytes());
+            outputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setupFooter(){

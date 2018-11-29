@@ -63,6 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.36"
-        app:srcCompat="@drawable/ic_insert_photo_blue_grey_300_48dp" />
+        app:srcCompat="@drawable/ic_insert_photo_blue_grey_500_48dp" />
 
 </android.support.constraint.ConstraintLayout>

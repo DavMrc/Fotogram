@@ -5,13 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
-import android.support.annotation.ColorInt;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -25,8 +21,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.w3c.dom.Text;
+import org.apache.commons.io.IOUtils;
 
+import java.io.FileInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +36,8 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        checkFile();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -56,6 +56,17 @@ public class Login extends AppCompatActivity {
     protected void onResume() {
         hideBottomNavBar();
         super.onResume();
+    }
+
+    private void checkFile(){
+        try {
+            FileInputStream inputStream= openFileInput("sessionIDfile");
+            String s= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     private void hideBottomNavBar(){
@@ -113,7 +124,7 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onResponse(String sessionID) {
                         m.setActiveUser(username, sessionID);
-                        startActivity(new Intent(Login.this, Bacheca.class));
+                        startActivity(new Intent(Login.this, Navigation.class));
                     }
                 }, new Response.ErrorListener() {
                     // risposta ad un errore
