@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -60,15 +59,15 @@ public class Login extends AppCompatActivity {
     }
 
     private void checkFile(){
+//        TODO: fixare prima il Navigation, poi questo
         try {
             FileInputStream inputStream= openFileInput("sessionIDfile");
-            String s= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-            Toast.makeText(Login.this, s, Toast.LENGTH_SHORT).show();
+            String sessionIdRecovered= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            Toast.makeText(Login.this, sessionIdRecovered, Toast.LENGTH_LONG).show();
         }catch (Exception e){
 //            Toast.makeText(Login.this, "Error", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
     }
 
     private void hideBottomNavBar(){
@@ -101,14 +100,14 @@ public class Login extends AppCompatActivity {
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void login(){
+    private void login() {
 
-        TextView tv_username= findViewById(R.id.txt_nickname);
-        TextView tv_password= findViewById(R.id.txt_password);
+        TextView tv_username = findViewById(R.id.txt_nickname);
+        TextView tv_password = findViewById(R.id.txt_password);
 
-        final String username= tv_username.getText().toString();
-        final String password= tv_password.getText().toString();
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
+        final String username = tv_username.getText().toString();
+        final String password = tv_password.getText().toString();
+        final String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
 
         final RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -125,7 +124,8 @@ public class Login extends AppCompatActivity {
                     // risposta valida
                     @Override
                     public void onResponse(String sessionID) {
-                        m.setActiveUser(username, sessionID);
+                        m.setActiveUserNickname(username);
+                        m.setSessionID(sessionID);
                         startActivity(new Intent(Login.this, Navigation.class));
                     }
                 }, new Response.ErrorListener() {
