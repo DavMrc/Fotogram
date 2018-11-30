@@ -1,10 +1,13 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,9 @@ import java.io.ByteArrayOutputStream;
 public class ProfiloFragment extends Fragment {
 
     private static Model m= Model.getInstance();
+
+    private static int PICK_PHOTO = 100;
+    private static ImageView proPic;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -41,12 +48,33 @@ public class ProfiloFragment extends Fragment {
         TextView tv_username= v.findViewById(R.id.txt_username);
         tv_username.setText( m.getActiveUserNickname() );
 
+        proPic= v.findViewById(R.id.img_img_profilo);
+
+        Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
+        changeProPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeProfilePic();
+            }
+        });
+
         return v;
     }
 
+    private void changeProfilePic(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, PICK_PHOTO);
+    }
+
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == PICK_PHOTO & resultCode == Activity.RESULT_OK) {
+            Uri selectedImage = data.getData();
+            if(selectedImage !=null){
+                proPic.setImageURI(selectedImage);
+            }
+        }
     }
 
 //    public void encodeImage(int resource){
