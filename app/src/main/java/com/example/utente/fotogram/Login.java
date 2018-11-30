@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 //      TODO: per ora rimane commentato per aiutare il flow di navigazione
-//        readPreferences();
+        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
