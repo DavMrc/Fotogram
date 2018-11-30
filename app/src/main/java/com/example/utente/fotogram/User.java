@@ -2,7 +2,7 @@ package com.example.utente.fotogram;
 
 public class User {
     private String nickname;
-    private String profilePic= null;
+    private String profilePic;
 
 //    costruttore
     public User(String nickname) {

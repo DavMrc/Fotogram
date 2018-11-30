@@ -4,24 +4,19 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +67,7 @@ public class ProfiloFragment extends Fragment {
         changeProPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grantStoragePermission();
+                checkStoragePermissions();
                 changeProfilePic();
             }
         });
@@ -93,8 +88,8 @@ public class ProfiloFragment extends Fragment {
             if(imageURI !=null){
                 proPic.setImageURI(imageURI);
 
+//              miei metodi
                 String encoded= encodeImage(imageURI);
-
                 updatePictureOnServer(encoded, m.getSessionID());
             }
         }
@@ -116,8 +111,8 @@ public class ProfiloFragment extends Fragment {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
-        return encoded;
 
+        return encoded;
     }
 
     private void updatePictureOnServer(final String encoded, final String sessionID){
@@ -161,7 +156,7 @@ public class ProfiloFragment extends Fragment {
         }.execute();
     }
 
-    private void grantStoragePermission(){
+    private void checkStoragePermissions(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }//    |

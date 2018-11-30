@@ -17,24 +17,28 @@ public class Model {
         return instance;
     }
 
-    public void setSessionID(String sessionID){
-        this.sessionID= sessionID;
-    }
-
     public String getSessionID(){
         return sessionID;
     }
 
-    public void setActiveUserNickname(String username){
-        activeUser= new User(username);
+    public void setSessionID(String sessionID){
+        this.sessionID= sessionID;
     }
 
     public String getActiveUserNickname(){
         return activeUser.getNickname();
     }
 
+    public void setActiveUserNickname(String username){
+        activeUser= new User(username);
+    }
+
     public String getActiveUserImage(){
         return activeUser.getProfilePic();
+    }
+
+    public void setActiveUserImage(String s){
+        activeUser.setProfilePic(s);
     }
 
 }
