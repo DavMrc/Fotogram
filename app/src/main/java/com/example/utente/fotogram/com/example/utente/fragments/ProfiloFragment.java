@@ -61,6 +61,7 @@ public class ProfiloFragment extends Fragment {
         return v;
     }
 
+//    TODO: Attempt to invoke virtual method 'ImageView.setImageURI' on a null object reference
     private void changeProfilePic(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
