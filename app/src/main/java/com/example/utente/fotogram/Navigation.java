@@ -1,6 +1,7 @@
 package com.example.utente.fotogram;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,7 +17,6 @@ import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragm
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
-import java.io.File;
 import java.io.FileOutputStream;
 
 public class Navigation extends AppCompatActivity {
@@ -45,9 +45,9 @@ public class Navigation extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        saveSessionId();
-        super.onDestroy();
+    protected void onStop() {
+        saveSession();
+        super.onStop();
     }
 
     @Override
@@ -64,19 +64,21 @@ public class Navigation extends AppCompatActivity {
         );
     }
 
-    private void saveSessionId(){
-//        TODO: inserire anche il sessionID (file JSON?)
-        String fileContent= m.getActiveUserNickname();
-        String fileName= "sessionIDfile";
-        FileOutputStream outputStream;
+    private void saveSession(){
+        String nickname= m.getActiveUserNickname();
+        String sessionID= m.getSessionID();
 
-        try {
-            outputStream= openFileOutput(fileName, Context.MODE_PRIVATE);
-            outputStream.write(fileContent.getBytes());
-            outputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        Context context= this;
+
+        // crea le preferenze di nome "preferences" e ci salva username e password
+        // potranno essere usate da Login
+        SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= sharedPref.edit();
+
+        editor.putString("username", nickname);
+        editor.putString("sessionID", sessionID);
+
+        editor.commit();
     }
 
     private void setupFooter(){

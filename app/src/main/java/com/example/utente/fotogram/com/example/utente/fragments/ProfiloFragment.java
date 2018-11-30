@@ -1,6 +1,7 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -41,6 +42,11 @@ public class ProfiloFragment extends Fragment {
         tv_username.setText( m.getActiveUserNickname() );
 
         return v;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
     }
 
 //    public void encodeImage(int resource){

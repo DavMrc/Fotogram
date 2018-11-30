@@ -3,6 +3,7 @@ package com.example.utente.fotogram;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
@@ -21,10 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.io.IOUtils;
-
-import java.io.FileInputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +34,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        checkFile();
+//      TODO: per ora rimane commentato per aiutare il flow di navigazione
+//        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -58,15 +56,17 @@ public class Login extends AppCompatActivity {
         super.onResume();
     }
 
-    private void checkFile(){
-//        TODO: fixare prima il Navigation, poi questo
-        try {
-            FileInputStream inputStream= openFileInput("sessionIDfile");
-            String sessionIdRecovered= IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
-            Toast.makeText(Login.this, sessionIdRecovered, Toast.LENGTH_LONG).show();
-        }catch (Exception e){
-//            Toast.makeText(Login.this, "Error", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+    private void readPreferences(){
+        SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
+
+        String nickname= sharedPref.getString("username", null);
+        String sessionID= sharedPref.getString("sessionID", null);
+
+        if(sessionID != null && nickname != null){
+            m.setActiveUserNickname(nickname);
+            m.setSessionID(sessionID);
+
+            startActivity(new Intent(Login.this, Navigation.class));
         }
     }
 
