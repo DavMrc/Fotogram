@@ -112,6 +112,7 @@ public class ProfiloFragment extends Fragment {
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
 
+        m.setActiveUserImage(encoded);
         return encoded;
     }
 

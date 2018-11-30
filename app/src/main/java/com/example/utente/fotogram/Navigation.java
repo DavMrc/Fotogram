@@ -46,14 +46,14 @@ public class Navigation extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        saveSession();
         super.onStop();
+                saveSession();
     }
 
     @Override
     protected void onResume() {
-        hideBottomNavBar();
         super.onResume();
+                hideBottomNavBar();
     }
 
     private void hideBottomNavBar(){
