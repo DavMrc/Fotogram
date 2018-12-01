@@ -5,6 +5,8 @@ public class Model {
     private String sessionID;
     private User activeUser;
 
+    private String json;
+
     private Model() {}
 
     public static Model getInstance() {
@@ -36,6 +38,14 @@ public class Model {
 
     public void setActiveUserImage(String s){
         activeUser.setPicture(s);
+    }
+
+    public String getJsonDebug(){
+        return json;
+    }
+
+    public void setJsonDebug(String json){
+        this.json= json;
     }
 
 }

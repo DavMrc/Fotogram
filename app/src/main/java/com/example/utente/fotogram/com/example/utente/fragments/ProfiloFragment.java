@@ -52,9 +52,9 @@ public class ProfiloFragment extends Fragment {
         serverService= new ServerService(context);
         imageHandler= new ImageHandler(context);
 
-        String s= serverService.getUser();
+        serverService.getUser();
         Toast.makeText(context, "Dudu", Toast.LENGTH_SHORT).show();
-        Log.d("DDD", "JSON: "+s);
+        Log.d("DDD", "JSON: "+m.getJsonDebug());
 
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
         changeProPic.setOnClickListener(new View.OnClickListener() {

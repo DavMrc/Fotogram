@@ -31,7 +31,6 @@ public class ServerService {
     private static RequestQueue queue;
 
     private static User user;
-    private static String output;
 
     //costruttore
     public ServerService(Context context) {
@@ -136,7 +135,7 @@ public class ServerService {
 
     }
 
-    public String getUser(){
+    public void getUser(){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
         final String sessionID= m.getSessionID();
         final String username= m.getActiveUserNickname();
@@ -147,7 +146,7 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(JSONObject jsonObject) {
-
+                m.setJsonDebug(jsonObject.toString());
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -168,8 +167,6 @@ public class ServerService {
         };// finisce la Request
 
         queue.add(jsonRequest);
-
-        return output;
     }
 
     private void parseJsonUser(String jsonObject){
