@@ -29,12 +29,14 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    private static Model m= Model.getInstance();
+    private static Model m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        m= Model.getInstance();
 
 //      TODO: per ora rimane commentato per aiutare il flow di navigazione
 //        readPreferences();

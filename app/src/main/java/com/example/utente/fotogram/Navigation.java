@@ -27,12 +27,14 @@ public class Navigation extends AppCompatActivity {
     final FragmentManager fManager= getSupportFragmentManager();
     Fragment active= bacheca;
 
-    private Model m= Model.getInstance();
+    private Model m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bacheca);
+
+        m= Model.getInstance();
 
         hideBottomNavBar();
         setupFooter();

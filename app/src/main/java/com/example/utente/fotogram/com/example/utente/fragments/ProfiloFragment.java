@@ -32,6 +32,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
 import java.io.ByteArrayOutputStream;
@@ -40,7 +41,7 @@ import java.util.Map;
 
 public class ProfiloFragment extends Fragment {
 
-    private static Model m= Model.getInstance();
+    private static Model m;
 
     private static int PICK_PHOTO = 100;
     public static ImageView proPic;
@@ -57,6 +58,7 @@ public class ProfiloFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_profilo, container, false);
 
         context= getContext();
+        m= Model.getInstance();
 
         TextView tv_username= v.findViewById(R.id.txt_username);
         tv_username.setText( m.getActiveUserNickname() );
@@ -79,18 +81,21 @@ public class ProfiloFragment extends Fragment {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, PICK_PHOTO);
-    }
-
+        //                     |
+    }//                        |
+//                             V
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == PICK_PHOTO & resultCode == Activity.RESULT_OK) {
             Uri imageURI = data.getData();
+
             if(imageURI !=null){
                 proPic.setImageURI(imageURI);
+                ServerService serverService= new ServerService(context);
 
 //              miei metodi
                 String encoded= encodeImage(imageURI);
-                updatePictureOnServer(encoded, m.getSessionID());
+                serverService.updatePicture(encoded, m.getSessionID());
             }
         }
     }
@@ -114,47 +119,6 @@ public class ProfiloFragment extends Fragment {
 
         m.setActiveUserImage(encoded);
         return encoded;
-    }
-
-    private void updatePictureOnServer(final String encoded, final String sessionID){
-        final RequestQueue queue= Volley.newRequestQueue(context);
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
-
-        new AsyncTask<Void, Void, StringRequest>(){
-
-            @Override
-            protected StringRequest doInBackground(Void... voids) {
-
-                StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(context, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
-                    }
-                }, new Response.ErrorListener(){
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
-                    }
-                }){
-                    // parametri richiesta POST
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("session_id", sessionID);
-                        params.put("picture", encoded);
-
-                        return params;
-                    }
-                };
-
-                return request;
-            }
-
-            @Override
-            protected void onPostExecute(StringRequest stringRequest) {
-                queue.add(stringRequest);
-            }
-        }.execute();
     }
 
     private void checkStoragePermissions(){

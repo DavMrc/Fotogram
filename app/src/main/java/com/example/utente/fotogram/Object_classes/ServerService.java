@@ -19,13 +19,14 @@ import com.example.utente.fotogram.Navigation;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ServerService extends Activity {
+public class ServerService {
 
-    private static final Model m= Model.getInstance();
+    private static Model m;
     private Context context;
 
     public ServerService(Context context) {
         this.context= context;
+        m= Model.getInstance();
     }
 
     public void login(final String username, final String password){
@@ -77,5 +78,48 @@ public class ServerService extends Activity {
             }
 
         }.execute();
+    }//chiude login
+
+    public void updatePicture(final String picture, final String sessionID){
+        final RequestQueue queue= Volley.newRequestQueue(context);
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
+
+        new AsyncTask<Void, Void, StringRequest>(){
+
+            @Override
+            protected StringRequest doInBackground(Void... voids) {
+
+                StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(context, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+                    // parametri richiesta POST
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("session_id", sessionID);
+                        params.put("picture", picture);
+
+                        return params;
+                    }
+                };
+
+                return request;
+            }
+
+            @Override
+            protected void onPostExecute(StringRequest stringRequest) {
+                queue.add(stringRequest);
+            }
+        }.execute();
     }
+
+
 }
