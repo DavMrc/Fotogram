@@ -1,4 +1,4 @@
-package com.example.utente.fotogram;
+package com.example.utente.fotogram.Object_classes;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

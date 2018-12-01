@@ -12,12 +12,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
-
-import java.io.FileOutputStream;
 
 public class Navigation extends AppCompatActivity {
 

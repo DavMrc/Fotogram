@@ -1,10 +1,4 @@
-package com.example.utente.fotogram;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-
-import java.io.File;
-import java.util.ArrayList;
+package com.example.utente.fotogram.Object_classes;
 
 public class Model {
     private static Model instance = null;
