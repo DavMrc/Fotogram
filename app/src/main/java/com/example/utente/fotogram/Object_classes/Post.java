@@ -37,26 +37,5 @@ public class Post {
         this.didascalia = didascalia;
     }
 
-//    public void createBitmap(int resource){
-//        this.bitmap = BitmapFactory.decodeResource(Resources.getSystem(), resource);
-//
-//        new AsyncTask<Void, Void, String>(){
-//
-//            @Override
-//            protected String doInBackground(Void... voids) {
-//                ByteArrayOutputStream baos= new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//                byte [] byteArr= baos.toByteArray();
-//
-//                String encoded= Base64.encodeToString(byteArr, Base64.DEFAULT);
-//                return encoded;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(String s) {
-////                super.onPostExecute(s);
-//                Log.d("DDD", "Encoded string: "+s);
-//            }
-//        }.execute();
-//    }
+
 }

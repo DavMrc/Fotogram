@@ -45,12 +45,13 @@ public class Login extends AppCompatActivity {
         setConstraintLayoutListener();
         allowLandscape();
 
+        final TextView tv_username = findViewById(R.id.txt_nickname);
+        final TextView tv_password = findViewById(R.id.txt_password);
+
         Button login = findViewById(R.id.btn_accedi);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TextView tv_username = findViewById(R.id.txt_nickname);
-                TextView tv_password = findViewById(R.id.txt_password);
                 String username = tv_username.getText().toString();
                 String password = tv_password.getText().toString();
 

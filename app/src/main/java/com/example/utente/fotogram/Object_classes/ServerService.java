@@ -80,6 +80,51 @@ public class ServerService {
         }.execute();
     }//chiude login
 
+    public void logout(final String sessionID){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
+        final RequestQueue queue = Volley.newRequestQueue(context);
+
+        new AsyncTask<Void, Void, StringRequest>() {
+
+            @Override
+            protected StringRequest doInBackground(Void... voids) {
+
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    // risposta valida
+                    @Override
+                    public void onResponse(String sessionID) {
+//                      TODO: salvare eventuali dati salvabili (?)
+                        m.setSessionID(null);
+                        context.startActivity(new Intent(context, Login.class));
+                    }
+                }, new Response.ErrorListener() {
+                    // risposta ad un errore
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(context, "Impossibile fare logout", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    // parametri richiesta POST
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("session_id", sessionID);
+
+                        return params;
+                    }
+                };// finisce la StringRequest
+
+                return request;
+            }// chiude doInBackground
+
+            @Override
+            protected void onPostExecute(StringRequest stringRequest) {
+                queue.add(stringRequest);
+            }
+
+        }.execute();
+    }
+
     public void updatePicture(final String picture, final String sessionID){
         final RequestQueue queue= Volley.newRequestQueue(context);
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
@@ -120,6 +165,4 @@ public class ServerService {
             }
         }.execute();
     }
-
-
 }
