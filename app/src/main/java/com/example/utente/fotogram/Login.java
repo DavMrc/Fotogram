@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
         setConstraintLayoutListener();
         allowLandscape();
 
-        final TextView tv_username = findViewById(R.id.txt_nickname);
+        final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
 
         Button login = findViewById(R.id.btn_accedi);

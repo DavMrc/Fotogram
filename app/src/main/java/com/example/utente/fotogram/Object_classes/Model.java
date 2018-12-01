@@ -23,7 +23,7 @@ public class Model {
     }
 
     public String getActiveUserNickname(){
-        return activeUser.getNickname();
+        return activeUser.getUsername();
     }
 
     public void setActiveUserNickname(String username){
@@ -31,11 +31,11 @@ public class Model {
     }
 
     public String getActiveUserImage(){
-        return activeUser.getProfilePic();
+        return activeUser.getPicture();
     }
 
     public void setActiveUserImage(String s){
-        activeUser.setProfilePic(s);
+        activeUser.setPicture(s);
     }
 
 }

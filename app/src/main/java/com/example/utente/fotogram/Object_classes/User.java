@@ -1,28 +1,37 @@
 package com.example.utente.fotogram.Object_classes;
 
 public class User {
-    private String nickname;
-    private String profilePic;
+    private String username;
+    private String picture;
+    private Post [] posts= new Post[10];
 
 //    costruttore
-    public User(String nickname) {
-        this.nickname = nickname;
+
+    public User(String username) {
+        this.username = username;
+    }
+    public String getUsername() {
+        return username;
     }
 
-    public String getNickname() {
-        return nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public String getPicture() {
+        return picture;
     }
 
-    public String getProfilePic() {
-        return profilePic;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
-    public void setProfilePic(String profilePic) {
-        this.profilePic = profilePic;
+    public Post[] getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Post[] posts) {
+        this.posts = posts;
     }
 
 }

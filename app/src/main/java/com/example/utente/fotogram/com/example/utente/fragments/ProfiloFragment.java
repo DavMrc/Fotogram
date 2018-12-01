@@ -5,18 +5,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,20 +21,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.ServerService;
+import com.example.utente.fotogram.Object_classes.User;
 import com.example.utente.fotogram.R;
-
-import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProfiloFragment extends Fragment {
 
@@ -67,10 +52,9 @@ public class ProfiloFragment extends Fragment {
         serverService= new ServerService(context);
         imageHandler= new ImageHandler(context);
 
-        TextView tv_username= v.findViewById(R.id.txt_username);
-        tv_username.setText( m.getActiveUserNickname() );
-
-        proPic= v.findViewById(R.id.img_profile_pic);
+        String s= serverService.getUser();
+        Toast.makeText(context, "Dudu", Toast.LENGTH_SHORT).show();
+        Log.d("DDD", "JSON: "+s);
 
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
         changeProPic.setOnClickListener(new View.OnClickListener() {
