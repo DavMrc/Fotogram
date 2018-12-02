@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -39,11 +40,13 @@ public class Login extends AppCompatActivity {
         m= Model.getInstance();
 
 //      TODO: per ora rimane commentato per aiutare il flow di navigazione
-//        readPreferences();
+        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
         allowLandscape();
+
+                    Log.d("Login", "DDD/ Prima di inziare login, sessID: "+m.getSessionID());
 
         final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
@@ -69,12 +72,13 @@ public class Login extends AppCompatActivity {
 
     private void readPreferences(){
         // legge il file con session ID, username ecc
+//         il file viene scritto in Navigation
         SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         String nickname= sharedPref.getString("username", null);
         String sessionID= sharedPref.getString("sessionID", null);
 
-        if(sessionID != null && nickname != null){
+        if( sessionID != null && nickname != null){
             m.setActiveUserNickname(nickname);
             m.setSessionID(sessionID);
 

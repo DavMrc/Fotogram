@@ -37,8 +37,6 @@ public class Navigation extends AppCompatActivity {
 
         m= Model.getInstance();
 
-        debug();
-
         hideBottomNavBar();
         setupFooter();
 
@@ -46,10 +44,6 @@ public class Navigation extends AppCompatActivity {
         if(getResources().getBoolean(R.bool.portait_only) == true){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-    }
-
-    private void debug(){
-        Log.d("DDD-Nav", "ID: "+m.getSessionID() + " Nick: "+m.getActiveUserNickname());
     }
 
     @Override

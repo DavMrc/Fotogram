@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
@@ -50,9 +51,15 @@ public class ProfiloFragment extends Fragment {
         serverService= new ServerService(context);
         imageHandler= new ImageHandler(context);
 
-        debug();
+        proPic= v.findViewById(R.id.img_profile_pic);
+        String image= m.getActiveUserImage();
 
-        serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
+        if(image != null){
+            proPic.setImageBitmap(imageHandler.decodeString(image));
+        }
+
+        TextView username= v.findViewById(R.id.txt_username);
+        username.setText(m.getActiveUserNickname());
 
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
         changeProPic.setOnClickListener(new View.OnClickListener() {
@@ -72,10 +79,6 @@ public class ProfiloFragment extends Fragment {
         });
 
         return v;
-    }
-
-    private void debug(){
-        Log.d("DDD-Frag", "ID: "+m.getSessionID() + " Nick: "+m.getActiveUserNickname());
     }
 
     private void checkStoragePermissions(){

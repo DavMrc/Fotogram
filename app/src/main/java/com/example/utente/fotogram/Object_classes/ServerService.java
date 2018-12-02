@@ -3,6 +3,7 @@ package com.example.utente.fotogram.Object_classes;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -82,7 +83,12 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-//             TODO: salvare eventuali dati salvabili (?)
+//                CANCELLA le sharedPreferences
+                SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor= sharedPref.edit();
+                editor.clear();
+                editor.commit();
+
                 m.setSessionID(null);
                 context.startActivity(new Intent(context, Login.class));
             }
@@ -90,6 +96,7 @@ public class ServerService {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 Toast.makeText(context, "Impossibile fare logout", Toast.LENGTH_LONG).show();
             }
         }) {

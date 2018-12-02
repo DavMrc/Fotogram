@@ -51,12 +51,10 @@ public class ImageHandler {
         return encoded;
     }
 
-    public ImageView decodeString(String encoded){
+    public Bitmap decodeString(String encoded){
         byte [] byteArr= Base64.decode(encoded, Base64.DEFAULT);
-        Bitmap decoded= BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
 
-        image.setImageBitmap(decoded);
-        return image;
+        return BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
     }
 
 }
