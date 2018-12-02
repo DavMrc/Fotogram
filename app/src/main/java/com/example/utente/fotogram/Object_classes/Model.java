@@ -40,12 +40,4 @@ public class Model {
         activeUser.setPicture(s);
     }
 
-    public String getJsonDebug(){
-        return json;
-    }
-
-    public void setJsonDebug(String json){
-        this.json= json;
-    }
-
 }

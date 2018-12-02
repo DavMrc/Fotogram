@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -36,6 +37,8 @@ public class Navigation extends AppCompatActivity {
 
         m= Model.getInstance();
 
+        debug();
+
         hideBottomNavBar();
         setupFooter();
 
@@ -43,6 +46,10 @@ public class Navigation extends AppCompatActivity {
         if(getResources().getBoolean(R.bool.portait_only) == true){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    private void debug(){
+        Log.d("DDD-Nav", "ID: "+m.getSessionID() + " Nick: "+m.getActiveUserNickname());
     }
 
     @Override

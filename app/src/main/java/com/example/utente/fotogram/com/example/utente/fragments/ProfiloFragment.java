@@ -18,13 +18,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.ServerService;
-import com.example.utente.fotogram.Object_classes.User;
 import com.example.utente.fotogram.R;
 
 public class ProfiloFragment extends Fragment {
@@ -52,9 +50,9 @@ public class ProfiloFragment extends Fragment {
         serverService= new ServerService(context);
         imageHandler= new ImageHandler(context);
 
-        serverService.getUser();
-        Toast.makeText(context, "Dudu", Toast.LENGTH_SHORT).show();
-        Log.d("DDD", "JSON: "+m.getJsonDebug());
+        debug();
+
+        serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
 
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
         changeProPic.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +72,10 @@ public class ProfiloFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void debug(){
+        Log.d("DDD-Frag", "ID: "+m.getSessionID() + " Nick: "+m.getActiveUserNickname());
     }
 
     private void checkStoragePermissions(){

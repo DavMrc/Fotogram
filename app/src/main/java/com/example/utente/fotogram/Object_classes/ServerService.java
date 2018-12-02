@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -55,6 +56,7 @@ public class ServerService {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 Toast.makeText(context, "Credenziali non valide", Toast.LENGTH_LONG).show();
             }
         }) {
@@ -135,10 +137,8 @@ public class ServerService {
 
     }
 
-    public void getUser(){
+    public void getUserInfo(final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
-        final String sessionID= m.getSessionID();
-        final String username= m.getActiveUserNickname();
 
         queue= Volley.newRequestQueue(context);
 
@@ -146,18 +146,20 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(JSONObject jsonObject) {
-                m.setJsonDebug(jsonObject.toString());
+                Log.d("DDD-ServResp", "Works, JSON is: "+jsonObject.toString());
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("DDD-ServErr", "Doesn't really wanna work");
                 error.printStackTrace();
             }
         }) {
             // parametri richiesta POST
             @Override
-            protected Map<String, String> getParams() {
+            protected Map<String, String> getParams() throws AuthFailureError {
+
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", sessionID);
                 params.put("username", username);
