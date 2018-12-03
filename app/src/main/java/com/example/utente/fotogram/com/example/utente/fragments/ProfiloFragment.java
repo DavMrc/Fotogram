@@ -54,6 +54,9 @@ public class ProfiloFragment extends Fragment {
         proPic= v.findViewById(R.id.img_profile_pic);
         String image= m.getActiveUserImage();
 
+//      TODO: fix this damn bug
+            serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
+
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));
         }

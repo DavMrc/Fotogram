@@ -46,8 +46,6 @@ public class Login extends AppCompatActivity {
         setConstraintLayoutListener();
         allowLandscape();
 
-                    Log.d("Login", "DDD/ Prima di inziare login, sessID: "+m.getSessionID());
-
         final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
 

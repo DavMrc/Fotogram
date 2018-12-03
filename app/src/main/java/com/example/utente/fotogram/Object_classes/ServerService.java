@@ -153,13 +153,14 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(JSONObject jsonObject) {
-                Log.d("DDD-ServResp", "Works, JSON is: "+jsonObject.toString());
+                Log.d("ServResp", "DDD Works, JSON is: "+jsonObject.toString());
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DDD-ServErr", "Doesn't really wanna work");
+                Log.d("ServErr", "DDD SessID: "+sessionID+", Nick: "+username);
+                Log.d("ServErr", "DDD Doesn't really wanna work");
                 error.printStackTrace();
             }
         }) {
