@@ -31,12 +31,11 @@ public class ServerService {
     public ServerService(Context context) {
         this.context= context;
         m= Model.getInstance();
+        queue = Volley.newRequestQueue(context);
     }
 
     public void login(final String username, final String password){
-
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
-        queue = Volley.newRequestQueue(context);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
@@ -44,6 +43,7 @@ public class ServerService {
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
                 m.setActiveUserNickname(username);
+                
                 context.startActivity(new Intent(context, Navigation.class));
             }
         }, new Response.ErrorListener() {
@@ -70,7 +70,6 @@ public class ServerService {
 
     public void logout(final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
-        queue = Volley.newRequestQueue(context);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
@@ -108,7 +107,6 @@ public class ServerService {
     }
 
     public void updatePicture(final String picture, final String sessionID){
-        queue= Volley.newRequestQueue(context);
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
 
         StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -139,8 +137,6 @@ public class ServerService {
 
     public void getUserInfo(final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
-
-        queue= Volley.newRequestQueue(context);
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
