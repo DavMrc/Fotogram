@@ -176,7 +176,10 @@ public class ServerService {
 
         String img= user.getImg();
         m.setActiveUserImg(img);
-
+//        TODO: bug
+//        la richiesta da parte del profiloFragment arriva prima del termine
+//        della richiesta di rete, pertanto l'immagine viene prima caricata come null
+//        e poco dopo aggiornata... servono suggerimenti
         Log.d("Sas", "DDD ServerService immagine: "+img);
     }
 }
