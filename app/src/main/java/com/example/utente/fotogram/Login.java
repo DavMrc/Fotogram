@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.utente.fotogram.Object_classes.Model;
@@ -18,6 +20,7 @@ import com.example.utente.fotogram.Object_classes.ServerService;
 public class Login extends AppCompatActivity {
 
     private static Model m;
+    private static ServerService serverService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +28,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         m= Model.getInstance();
+        serverService = new ServerService(Login.this);
 
-//      TODO: per ora rimane commentato per aiutare il flow di navigazione
-//        readPreferences();
+//      commentare per invalidare le SharedPreferences
+        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -43,8 +47,6 @@ public class Login extends AppCompatActivity {
                 // call login
                 String username = tv_username.getText().toString();
                 String password = tv_password.getText().toString();
-
-                ServerService serverService= new ServerService(Login.this);
                 serverService.login(username, password);
             }
         });
@@ -61,14 +63,14 @@ public class Login extends AppCompatActivity {
 //         il file viene scritto in Navigation
         SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
-        String nickname= sharedPref.getString("username", null);
+        String username= sharedPref.getString("username", null);
         String sessionID= sharedPref.getString("sessionID", null);
 
-        if( sessionID != null && nickname != null){
-            m.setActiveUserNickname(nickname);
+        if( sessionID != null && username != null){
+            m.setActiveUserNickname(username);
             m.setSessionID(sessionID);
-
-            startActivity(new Intent(Login.this, Navigation.class));
+//      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
+            serverService.getUserInfo(sessionID, username);
         }
     }
 

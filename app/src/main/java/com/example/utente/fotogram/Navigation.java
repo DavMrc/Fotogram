@@ -50,7 +50,7 @@ public class Navigation extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-//                saveSession();
+                saveSession();
     }
 
     @Override

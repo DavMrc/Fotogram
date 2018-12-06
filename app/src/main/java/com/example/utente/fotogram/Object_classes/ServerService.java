@@ -35,6 +35,11 @@ public class ServerService {
     }
 
     public void login(final String username, final String password){
+        /* chiamato in Login.class, ovvero la prima activity. dopo aver effettuato
+        la chiamata di rete /login, setta nel model sessionID e username, per poi
+        chiamare il metodo getUserInfo, che ottiene l'immagine e la lista dei post.
+        Questo è stato fatto per motivi di sincronizzazione.
+        */
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -43,8 +48,8 @@ public class ServerService {
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
                 m.setActiveUserNickname(username);
-                
-                context.startActivity(new Intent(context, Navigation.class));
+
+                getUserInfo(sessionID, username);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -143,6 +148,8 @@ public class ServerService {
             @Override
             public void onResponse(String response) {
                 parseJsonUser(response);
+
+                context.startActivity(new Intent(context, Navigation.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -172,10 +179,5 @@ public class ServerService {
 
         String img= user.getImg();
         m.setActiveUserImg(img);
-//        TODO: bug
-//        la richiesta da parte del profiloFragment arriva prima del termine
-//        della richiesta di rete, pertanto l'immagine viene prima caricata come null
-//        e poco dopo aggiornata... servono suggerimenti
-        Log.d("Sas", "DDD ServerService immagine: "+img);
     }
 }
