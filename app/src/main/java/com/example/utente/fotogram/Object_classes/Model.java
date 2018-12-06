@@ -2,10 +2,10 @@ package com.example.utente.fotogram.Object_classes;
 
 public class Model {
     private static Model instance = null;
-    private String sessionID;
-    private User activeUser;
 
-    private String json;
+    private String sessionID;
+    private String activeUsername;
+    private String activePicture;
 
     private Model() {}
 
@@ -25,19 +25,19 @@ public class Model {
     }
 
     public String getActiveUserNickname(){
-        return activeUser.getUsername();
+        return activeUsername;
     }
 
     public void setActiveUserNickname(String username){
-        activeUser= new User(username);
+        this.activeUsername= username;
     }
 
-    public String getActiveUserImage(){
-        return activeUser.getPicture();
+    public String getActiveUserImg(){
+        return activePicture;
     }
 
-    public void setActiveUserImage(String s){
-        activeUser.setPicture(s);
+    public void setActiveUserImg(String encodedImg){
+        this.activePicture= encodedImg;
     }
 
 }

@@ -1,27 +1,20 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
 import com.google.gson.Gson;
-
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +42,8 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                m.setActiveUserNickname(username);
                 m.setSessionID(sessionID);
+                m.setActiveUserNickname(username);
                 context.startActivity(new Intent(context, Navigation.class));
             }
         }, new Response.ErrorListener() {
@@ -149,38 +142,41 @@ public class ServerService {
 
         queue= Volley.newRequestQueue(context);
 
-        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
-            public void onResponse(JSONObject jsonObject) {
-                Log.d("ServResp", "DDD Works, JSON is: "+jsonObject.toString());
+            public void onResponse(String response) {
+                parseJsonUser(response);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("ServErr", "DDD SessID: "+sessionID+", Nick: "+username);
-                Log.d("ServErr", "DDD Doesn't really wanna work");
                 error.printStackTrace();
+                Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", sessionID);
                 params.put("username", username);
 
                 return params;
             }
-        };// finisce la Request
+        };// finisce la StringRequest
 
-        queue.add(jsonRequest);
+        queue.add(request);
     }
 
     private void parseJsonUser(String jsonObject){
         Gson gson= new Gson();
         user= gson.fromJson(jsonObject, User.class);
+
+        String img= user.getImg();
+        m.setActiveUserImg(img);
+
+        Log.d("Sas", "DDD ServerService immagine: "+img);
     }
 }

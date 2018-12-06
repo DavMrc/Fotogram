@@ -61,7 +61,7 @@
             android:id="@+id/txt.username"
             android:layout_width="match_parent"
             android:layout_height="44dp"
-            android:hint="Nickname" />
+            android:text="Era" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -80,7 +80,7 @@
             android:id="@+id/txt.password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password" />
+            android:text="Era"/>
     </android.support.design.widget.TextInputLayout>
 
     <Button

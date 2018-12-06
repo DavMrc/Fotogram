@@ -1,22 +1,13 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Base64;
-import android.view.Display;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 
@@ -47,7 +38,7 @@ public class ImageHandler {
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
 
-        m.setActiveUserImage(encoded);
+        m.setActiveUserImg(encoded);
         return encoded;
     }
 

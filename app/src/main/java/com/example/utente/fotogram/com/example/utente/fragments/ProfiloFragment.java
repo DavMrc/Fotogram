@@ -51,11 +51,11 @@ public class ProfiloFragment extends Fragment {
         serverService= new ServerService(context);
         imageHandler= new ImageHandler(context);
 
+        serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
         proPic= v.findViewById(R.id.img_profile_pic);
-        String image= m.getActiveUserImage();
 
-//      TODO: fix this damn bug
-            serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
+        String image= m.getActiveUserImg();
+        Log.d("Sas", "DDD ProfiloFragment immagine: "+image);
 
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));

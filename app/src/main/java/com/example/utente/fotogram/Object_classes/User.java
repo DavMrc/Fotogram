@@ -2,14 +2,14 @@ package com.example.utente.fotogram.Object_classes;
 
 public class User {
     private String username;
-    private String picture;
+    private String img;
     private Post [] posts= new Post[10];
 
 //    costruttore
-
     public User(String username) {
         this.username = username;
     }
+
     public String getUsername() {
         return username;
     }
@@ -18,12 +18,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getImg() {
+        return img;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public Post[] getPosts() {
