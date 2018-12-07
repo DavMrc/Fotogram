@@ -28,13 +28,13 @@ import com.example.utente.fotogram.R;
 
 public class ProfiloFragment extends Fragment {
 
-    private static Model m;
+    private Model m;
 
-    private static int PICK_PHOTO = 100;
-    public static ImageView proPic;
-    private static Context context;
-    private static ServerService serverService;
-    private static ImageHandler imageHandler;
+    private int PICK_PHOTO = 100;
+    public ImageView proPic;
+    private Context context;
+    private ServerService serverService;
+    private ImageHandler imageHandler;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -55,7 +55,6 @@ public class ProfiloFragment extends Fragment {
         proPic= v.findViewById(R.id.img_profile_pic);
 
         String image= m.getActiveUserImg();
-        Log.d("Sas", "DDD ProfiloFragment immagine: "+image);
 
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));

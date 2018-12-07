@@ -173,6 +173,38 @@ public class ServerService {
         queue.add(request);
     }
 
+    public void createPost(final Post post){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("img", post.getPicture());
+                params.put("message", post.getMsg());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
     private void parseJsonUser(String jsonObject){
         Gson gson= new Gson();
         user= gson.fromJson(jsonObject, User.class);

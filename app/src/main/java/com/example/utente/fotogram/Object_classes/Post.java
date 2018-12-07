@@ -1,41 +1,51 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Base64;
-import android.util.Log;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 
 public class Post {
-    private String creatore;
-    private String didascalia;
-    private String encoded;
-    private Bitmap bitmap;
+    private String username;
+    private String msg;
+    private String picture;
+    private String timestamp;
 
-    public Post(String creatore, String didascalia) {
-        this.creatore = creatore;
-        this.didascalia = didascalia;
+    // costruttore
+    public Post(String username, String msg, String picture, String timestamp) {
+        this.username = username;
+        this.msg = msg;
+        this.picture= picture;
+        this.timestamp= timestamp;
     }
 
-    public String getCreatore() {
-        return creatore;
+    public String getUsername() {
+        return username;
     }
 
-    public void setCreatore(String creatore) {
-        this.creatore = creatore;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getDidascalia() {
-        return didascalia;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setDidascalia(String didascalia) {
-        this.didascalia = didascalia;
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 
 }

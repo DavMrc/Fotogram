@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:text="Nuovo Post"
         android:textSize="36sp"
@@ -34,7 +34,7 @@
         app:layout_constraintVertical_bias="0.85">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/txt.username"
+            android:id="@+id/txt.didascalia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoSizeTextType="uniform"
@@ -43,7 +43,7 @@
     </android.support.design.widget.TextInputLayout>
 
     <ImageButton
-        android:id="@+id/btn.create"
+        android:id="@+id/btn.create_post"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:background="@drawable/ic_send_light_blue_24dp"
@@ -56,13 +56,42 @@
 
     <ImageView
         android:id="@+id/gallery_image"
-        android:layout_width="377dp"
-        android:layout_height="362dp"
+        android:layout_width="330dp"
+        android:layout_height="310dp"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.36"
         app:srcCompat="@drawable/ic_insert_photo_blue_grey_500_48dp" />
+
+    <ImageButton
+        android:id="@+id/btn.cancel_post"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        android:background="@drawable/ic_cancel_red_700_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.893"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageButton
+        android:id="@+id/btn.change_post"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:visibility="gone"
+        android:background="@drawable/ic_sync_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.795"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
