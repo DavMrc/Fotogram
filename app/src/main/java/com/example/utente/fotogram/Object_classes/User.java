@@ -5,9 +5,13 @@ public class User {
     private String img;
     private Post [] posts= new Post[10];
 
-//    costruttore
+//    costruttori
     public User(String username) {
         this.username = username;
+    }
+    public User(String username, String img){
+        this.username= username;
+        this.img= img;
     }
 
     public String getUsername() {

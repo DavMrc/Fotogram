@@ -14,6 +14,6 @@
     <string name="seguaci">Seguaci</string>
     <!--Ricerca-->
     <string name="search_label">Cerca</string>
-    <string name="search_hint">Cerca persone</string>
+    <string name="search_hint">Cerca utenti...</string>
 
 </resources>

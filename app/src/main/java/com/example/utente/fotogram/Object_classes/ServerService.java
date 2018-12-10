@@ -3,7 +3,6 @@ package com.example.utente.fotogram.Object_classes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -16,6 +15,11 @@ import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,7 @@ public class ServerService {
     private static RequestQueue queue;
 
     private static User user;
+    private ArrayList<User> users;  //per la chiamata searchUser
 
     //costruttore
     public ServerService(Context context) {
@@ -147,7 +152,7 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String response) {
-                parseJsonUser(response);
+                parseActiveUser(response);
 
                 context.startActivity(new Intent(context, Navigation.class));
             }
@@ -205,11 +210,69 @@ public class ServerService {
         queue.add(request);
     }
 
-    private void parseJsonUser(String jsonObject){
+    public ArrayList<User> searchUser(final String usernamestart){
+
+        users= new ArrayList<>();
+
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
+        final String session_id= m.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                users= parseUsers(serverResponse);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", session_id);
+                params.put("usernamestart", usernamestart);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+
+        return users;
+    }
+
+    private void parseActiveUser(String jsonObject){
         Gson gson= new Gson();
         user= gson.fromJson(jsonObject, User.class);
 
         String img= user.getImg();
         m.setActiveUserImg(img);
+    }
+
+    private ArrayList<User> parseUsers(String jsonResponse){
+        ArrayList<User> A= new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray array= jsonObject.getJSONArray("users");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                A.add(new User(username, picture));
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return A;
     }
 }
