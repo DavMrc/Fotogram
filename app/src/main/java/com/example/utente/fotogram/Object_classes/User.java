@@ -5,10 +5,7 @@ public class User {
     private String img;
     private Post [] posts= new Post[10];
 
-//    costruttori
-    public User(String username) {
-        this.username = username;
-    }
+//    costruttore
     public User(String username, String img){
         this.username= username;
         this.img= img;

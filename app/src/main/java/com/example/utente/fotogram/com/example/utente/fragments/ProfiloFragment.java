@@ -48,7 +48,7 @@ public class ProfiloFragment extends Fragment {
 
         context= getContext();
         m= Model.getInstance();
-        serverService= new ServerService(context);
+        serverService= ServerService.getInstance(context);
         imageHandler= new ImageHandler(context);
 
         serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());

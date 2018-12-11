@@ -9,7 +9,7 @@ public class Model {
 
     private Model() {}
 
-    public static Model getInstance() {
+    public static synchronized Model getInstance() {
         if(instance == null){
             instance = new Model();
         }

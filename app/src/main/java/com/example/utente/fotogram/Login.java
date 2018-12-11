@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         m= Model.getInstance();
-        serverService = new ServerService(Login.this);
+        serverService = ServerService.getInstance(Login.this);
 
 //      commentare per invalidare le SharedPreferences
         readPreferences();

@@ -13,6 +13,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +30,6 @@ import java.util.ArrayList;
 
 public class RicercaFragment extends Fragment {
 
-    public SearchView searchView;
-
     private Context context;
     private ServerService serverService;
 
@@ -44,26 +44,26 @@ public class RicercaFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_ricerca, container, false);
 
         context= getContext();
-        serverService= new ServerService(context);
+        serverService= ServerService.getInstance(context);
 
-        searchView= v.findViewById(R.id.search_users);
-        searchView.setIconifiedByDefault(false);
+        final TextView output= v.findViewById(R.id.output);
+        final TextView input= v.findViewById(R.id.txt_search_users);
+        ImageButton search= v.findViewById(R.id.btn_search);
 
-        TextView textView= v.findViewById(R.id.output);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query= input.getText().toString();
+                String out= "Users: ";
 
-        Intent intent = getActivity().getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            ArrayList<User> users= serverService.searchUser(query);
+                ArrayList<User> users= serverService.searchUser(query);
+                for(User u: users){
+                    out= out.concat(u.getUsername()+", ");
+                }
 
-            String t= "Users: ";
-            for(User u: users){
-                t= t+ u.getUsername()+", ";
+                output.setText(out);
             }
-
-            textView.setText(t);
-        }
-
+        });
 
         return v;
     }

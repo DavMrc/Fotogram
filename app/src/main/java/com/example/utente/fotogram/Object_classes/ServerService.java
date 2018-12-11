@@ -25,18 +25,27 @@ import java.util.Map;
 
 public class ServerService {
 
+    private static ServerService serverService;
     private static Model m;
-    private Context context;
+    private static Context privateContext;
     private static RequestQueue queue;
 
     private static User user;
     private ArrayList<User> users;  //per la chiamata searchUser
 
-    //costruttore
-    public ServerService(Context context) {
-        this.context= context;
+    //costruttore singleton
+    private ServerService() {}
+
+    public static synchronized ServerService getInstance(Context context){
+        if(serverService == null){
+            serverService= new ServerService();
+            queue = Volley.newRequestQueue(context);
+        }
+
+        privateContext = context;
         m= Model.getInstance();
-        queue = Volley.newRequestQueue(context);
+
+        return serverService;
     }
 
     public void login(final String username, final String password){
@@ -61,7 +70,7 @@ public class ServerService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(context, "Credenziali non valide", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Credenziali non valide", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
@@ -76,7 +85,7 @@ public class ServerService {
         };// finisce la StringRequest
 
         queue.add(request);
-    }//chiude login
+    }
 
     public void logout(final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
@@ -86,20 +95,20 @@ public class ServerService {
             @Override
             public void onResponse(String sessionID) {
 //                CANCELLA le sharedPreferences
-                SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+                SharedPreferences sharedPref= privateContext.getSharedPreferences("preferences", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor= sharedPref.edit();
                 editor.clear();
                 editor.commit();
 
                 m.setSessionID(null);
-                context.startActivity(new Intent(context, Login.class));
+                privateContext.startActivity(new Intent(privateContext, Login.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(context, "Impossibile fare logout", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Impossibile fare logout", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
@@ -122,12 +131,12 @@ public class ServerService {
         StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(context, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
+                Toast.makeText(privateContext, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
             }
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
+                Toast.makeText(privateContext, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
             }
         }){
             // parametri richiesta POST
@@ -154,14 +163,14 @@ public class ServerService {
             public void onResponse(String response) {
                 parseActiveUser(response);
 
-                context.startActivity(new Intent(context, Navigation.class));
+                privateContext.startActivity(new Intent(privateContext, Navigation.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
@@ -185,14 +194,14 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
@@ -221,14 +230,14 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                users= parseUsers(serverResponse);
+                parseUsers(serverResponse);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                Toast.makeText(context, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
+                Toast.makeText(privateContext, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
             }
         }) {
             // parametri richiesta POST
@@ -247,6 +256,7 @@ public class ServerService {
         return users;
     }
 
+    //JSON handlers
     private void parseActiveUser(String jsonObject){
         Gson gson= new Gson();
         user= gson.fromJson(jsonObject, User.class);
@@ -255,8 +265,7 @@ public class ServerService {
         m.setActiveUserImg(img);
     }
 
-    private ArrayList<User> parseUsers(String jsonResponse){
-        ArrayList<User> A= new ArrayList<>();
+    private void parseUsers(String jsonResponse){
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -267,12 +276,10 @@ public class ServerService {
                 String username= pointedUser.getString("name");
                 String picture= pointedUser.getString("picture");
 
-                A.add(new User(username, picture));
+                users.add(new User(username, picture));
             }
         }catch (JSONException e){
             e.printStackTrace();
         }
-
-        return A;
     }
 }

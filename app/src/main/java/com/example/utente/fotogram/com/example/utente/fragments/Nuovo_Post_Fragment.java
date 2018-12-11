@@ -55,7 +55,7 @@ public class Nuovo_Post_Fragment extends Fragment {
         m= Model.getInstance();
         context= getContext();
         imageHandler= new ImageHandler(context);
-        serverService= new ServerService(context);
+        serverService= ServerService.getInstance(context);
 
         setListeners(v);
 
@@ -120,6 +120,8 @@ public class Nuovo_Post_Fragment extends Fragment {
                     post= new Post(m.getActiveUserNickname(), didascalia, encoded, timeStamp);
 
                     serverService.createPost(post);
+                    // risetta la didascalia a nulla dopo la creazione del post
+                    tv_didascalia.setText("");
                 }else{
                     Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
                 }
