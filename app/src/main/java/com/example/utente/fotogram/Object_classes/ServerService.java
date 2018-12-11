@@ -40,6 +40,7 @@ public class ServerService {
         if(serverService == null){
             serverService= new ServerService();
             queue = Volley.newRequestQueue(context);
+            queue.start();
         }
 
         privateContext = context;

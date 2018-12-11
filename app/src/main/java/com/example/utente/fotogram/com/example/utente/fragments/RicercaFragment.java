@@ -19,6 +19,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.Object_classes.User;
 import com.example.utente.fotogram.R;
@@ -26,11 +27,13 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RicercaFragment extends Fragment {
 
     private Context context;
+    private Model m;
     private ServerService serverService;
 
     public RicercaFragment() {
@@ -44,6 +47,7 @@ public class RicercaFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_ricerca, container, false);
 
         context= getContext();
+        m= Model.getInstance();
         serverService= ServerService.getInstance(context);
 
         final TextView output= v.findViewById(R.id.output);
@@ -56,6 +60,7 @@ public class RicercaFragment extends Fragment {
                 String query= input.getText().toString();
                 String out= "Users: ";
 
+                //TODO: fix this sync bug
                 ArrayList<User> users= serverService.searchUser(query);
                 for(User u: users){
                     out= out.concat(u.getUsername()+", ");
