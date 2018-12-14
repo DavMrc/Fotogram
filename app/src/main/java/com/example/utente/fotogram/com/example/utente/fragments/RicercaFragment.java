@@ -60,8 +60,9 @@ public class RicercaFragment extends Fragment {
                 String query= input.getText().toString();
                 String out= "Users: ";
 
-                //TODO: fix this sync bug
-                ArrayList<User> users= serverService.searchUser(query);
+                serverService.searchUser(query);
+                ArrayList<User> users= m.getSearchResultUsers();
+
                 for(User u: users){
                     out= out.concat(u.getUsername()+", ");
                 }

@@ -1,11 +1,15 @@
 package com.example.utente.fotogram.Object_classes;
 
+import java.util.ArrayList;
+
 public class Model {
     private static Model instance = null;
 
     private String sessionID;
     private String activeUsername;
     private String activePicture;
+
+    private ArrayList<User> searchResultUsers;
 
     private Model() {}
 
@@ -38,6 +42,14 @@ public class Model {
 
     public void setActiveUserImg(String encodedImg){
         this.activePicture= encodedImg;
+    }
+
+    public ArrayList<User> getSearchResultUsers() {
+        return searchResultUsers;
+    }
+
+    public void setSearchResultUsers(ArrayList<User> searchResultUsers) {
+        this.searchResultUsers = searchResultUsers;
     }
 
 }

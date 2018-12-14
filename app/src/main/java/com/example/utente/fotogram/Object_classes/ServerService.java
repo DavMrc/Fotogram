@@ -37,7 +37,6 @@ public class ServerService {
     private static RequestQueue queue;
 
     private static User user;
-    private ArrayList<User> users;  //per la chiamata searchUser
 
     //costruttore singleton
     private ServerService() {}
@@ -226,41 +225,54 @@ public class ServerService {
         queue.add(request);
     }
 
-    public ArrayList<User> searchUser(final String usernamestart){
+    public void searchUser(final String usernamestart){
 
-        users= new ArrayList<>();
+        final ArrayList<User> users= new ArrayList<>();
 
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
         final String session_id= m.getSessionID();
 
-//        ASINCRONA
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                try {
+                    JSONObject jsonObject = new JSONObject(serverResponse);
+                    JSONArray array= jsonObject.getJSONArray("users");
 
-//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-//            // risposta valida
-//            @Override
-//            public void onResponse(String serverResponse) {
-//                parseUsers(serverResponse);
-//            }
-//        }, new Response.ErrorListener() {
-//            // risposta ad un errore
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                error.printStackTrace();
-//                Toast.makeText(privateContext, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
-//            }
-//        }) {
-//            // parametri richiesta POST
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("session_id", session_id);
-//                params.put("usernamestart", usernamestart);
-//
-//                return params;
-//            }
-//        };// finisce la StringRequest
-//
-//        queue.add(request);
+                    for(int i=0; i < array.length(); i++){
+                        JSONObject pointedUser= array.getJSONObject(i);
+                        String username= pointedUser.getString("name");
+                        String picture= pointedUser.getString("picture");
+
+                        users.add(new User(username, picture));
+                    }
+                    Log.d("DDD", "DDD");
+                    m.setSearchResultUsers(users);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(privateContext, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", session_id);
+                params.put("usernamestart", usernamestart);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
 
 //        SINCRONA
 
@@ -285,8 +297,6 @@ public class ServerService {
 //            Toast.makeText(privateContext, "Porco dio", Toast.LENGTH_SHORT).show();
 //            e.printStackTrace();
 //        }
-
-        return users;
     }
 
     //JSON handlers
@@ -298,21 +308,4 @@ public class ServerService {
         m.setActiveUserImg(img);
     }
 
-    private void parseUsers(String jsonResponse){
-
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray array= jsonObject.getJSONArray("users");
-
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedUser= array.getJSONObject(i);
-                String username= pointedUser.getString("name");
-                String picture= pointedUser.getString("picture");
-
-                users.add(new User(username, picture));
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-    }
 }

@@ -6,15 +6,100 @@
     android:layout_height="match_parent"
     tools:context=".com.example.utente.fragments.ProfiloFragment">
 
+    <RelativeLayout
+        android:layout_width="220dp"
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.94"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05">
+
+        <TextView
+            android:id="@+id/label.seguaci"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="45dp"
+            android:text="@string/seguaci" />
+
+        <TextView
+            android:id="@+id/label.seguiti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="45dp"
+            android:layout_marginEnd="120dp"
+            android:text="@string/seguiti" />
+
+        <TextView
+            android:id="@+id/txt.seguaci"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="58dp"
+            android:text="16"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/txt.seguiti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="@id/txt.seguiti"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="128dp"
+            android:layout_marginTop="15dp"
+            android:text="18"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn.change_profile_pic"
+            android:layout_width="158dp"
+            android:layout_height="32dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="81dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/button_gray_outline"
+            android:fontFamily="sans-serif"
+            android:text="@string/cambia_propic"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/img.profile_pic"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_account_circle_indigo_a400_24dp" />
+
+    <ImageButton
+        android:id="@+id/btn.logout"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="190dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/exit_app"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.969"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/txt.username"
@@ -30,36 +115,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btn.change_profile_pic"
-        android:layout_width="158dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="184dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="420dp"
-        android:background="@drawable/button_gray_outline"
-        android:fontFamily="sans-serif"
-        android:text="@string/cambia_propic"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522" />
-
-    <ImageButton
-        android:id="@+id/btn.logout"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/exit_app"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.971"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <!--<ListView-->
     <!--android:id="@+id/listview.bacheca"-->
     <!--android:layout_width="411dp"-->
@@ -67,52 +122,5 @@
     <!--android:layout_marginBottom="57dp"-->
     <!--app:layout_constraintBottom_toBottomOf="parent"-->
     <!--app:layout_constraintStart_toStartOf="parent"></ListView>-->
-
-    <TextView
-        android:id="@+id/label.seguiti"
-        android:layout_width="50dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="72dp"
-        android:text="@string/seguiti"
-        app:layout_constraintStart_toEndOf="@+id/img.profile_pic"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/label.seguaci"
-        android:layout_width="50dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="84dp"
-        android:text="@string/seguaci"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txt.seguiti"
-        android:layout_width="59dp"
-        android:layout_height="19dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="SeguitiInput"
-        app:layout_constraintBottom_toTopOf="@+id/label.seguiti"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.558"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.714" />
-
-    <TextView
-        android:id="@+id/txt.seguaci"
-        android:layout_width="64dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="32dp"
-        android:text="SeguaciInput"
-        app:layout_constraintBottom_toTopOf="@+id/label.seguaci"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toEndOf="@+id/txt.seguiti"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.736" />
 
 </android.support.constraint.ConstraintLayout>
