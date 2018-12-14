@@ -1,14 +1,17 @@
 package com.example.utente.fotogram.Object_classes;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
@@ -22,6 +25,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ServerService {
 
@@ -227,32 +233,58 @@ public class ServerService {
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
         final String session_id= m.getSessionID();
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                parseUsers(serverResponse);
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(privateContext, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", session_id);
-                params.put("usernamestart", usernamestart);
+//        ASINCRONA
 
-                return params;
-            }
-        };// finisce la StringRequest
+//        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//            // risposta valida
+//            @Override
+//            public void onResponse(String serverResponse) {
+//                parseUsers(serverResponse);
+//            }
+//        }, new Response.ErrorListener() {
+//            // risposta ad un errore
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                error.printStackTrace();
+//                Toast.makeText(privateContext, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            // parametri richiesta POST
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("session_id", session_id);
+//                params.put("usernamestart", usernamestart);
+//
+//                return params;
+//            }
+//        };// finisce la StringRequest
+//
+//        queue.add(request);
 
-        queue.add(request);
+//        SINCRONA
+
+//        RequestFuture<String> future= RequestFuture.newFuture();
+//        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, future, future) {
+//            @Override
+//            protected Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("session_id", session_id);
+//                params.put("usernamestart", usernamestart);
+//
+//                return params;
+//            }
+//        };
+//
+//        queue.add(stringRequest);
+//
+//        try{
+//            String response= future.get(4, TimeUnit.SECONDS);
+//            parseUsers(response);
+//        }catch (Exception e){
+//            Toast.makeText(privateContext, "Porco dio", Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        }
 
         return users;
     }
