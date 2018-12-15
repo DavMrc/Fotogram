@@ -227,8 +227,6 @@ public class ServerService {
 
     public void searchUser(final String usernamestart){
 
-        final ArrayList<User> users= new ArrayList<>();
-
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
         final String session_id= m.getSessionID();
 
@@ -236,22 +234,7 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                try {
-                    JSONObject jsonObject = new JSONObject(serverResponse);
-                    JSONArray array= jsonObject.getJSONArray("users");
-
-                    for(int i=0; i < array.length(); i++){
-                        JSONObject pointedUser= array.getJSONObject(i);
-                        String username= pointedUser.getString("name");
-                        String picture= pointedUser.getString("picture");
-
-                        users.add(new User(username, picture));
-                    }
-                    Log.d("DDD", "DDD");
-                    m.setSearchResultUsers(users);
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
+                m.setSearchResultUsers(serverResponse);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore

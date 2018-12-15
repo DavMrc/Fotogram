@@ -1,5 +1,11 @@
 package com.example.utente.fotogram.Object_classes;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Model {
@@ -9,7 +15,7 @@ public class Model {
     private String activeUsername;
     private String activePicture;
 
-    private ArrayList<User> searchResultUsers;
+    private String searchResultUsers;
 
     private Model() {}
 
@@ -45,10 +51,32 @@ public class Model {
     }
 
     public ArrayList<User> getSearchResultUsers() {
-        return searchResultUsers;
+        ArrayList<User> result= new ArrayList<>();
+
+        Log.d("DDD", "DDD Model search result: "+searchResultUsers);
+
+        try {
+            JSONObject jsonObject = new JSONObject(searchResultUsers);
+            JSONArray array= jsonObject.getJSONArray("users");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                result.add(new User(username, picture));
+            }
+            Log.d("DDD ","DDD/ Model arraylist: "+result);
+            return result;
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
-    public void setSearchResultUsers(ArrayList<User> searchResultUsers) {
+    public void setSearchResultUsers(String searchResultUsers) {
+        Log.d("DDD", "DDD search result: "+searchResultUsers);
         this.searchResultUsers = searchResultUsers;
     }
 
