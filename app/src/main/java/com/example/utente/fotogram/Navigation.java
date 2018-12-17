@@ -9,12 +9,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
@@ -34,7 +32,7 @@ public class Navigation extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bacheca);
+        setContentView(R.layout.activity_navigation);
 
         m= Model.getInstance();
 
