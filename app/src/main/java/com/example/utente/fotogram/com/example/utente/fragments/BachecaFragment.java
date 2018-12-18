@@ -29,7 +29,7 @@ public class BachecaFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // TODO: this doesn't work. check ProfiloFragment if already solved
         switch (item.getItemId()){
             case R.id.btn_refresh:
                 //refresh bacheca

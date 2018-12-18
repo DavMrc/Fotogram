@@ -79,7 +79,7 @@ public class ProfiloFragment extends Fragment {
     // gestisce il bottone di logout nella toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        // TODO: this doesn't work. check BachecaFragment if already solved
         switch (item.getItemId()){
             case R.id.btn_logout:
                 serverService.logout(m.getSessionID());
