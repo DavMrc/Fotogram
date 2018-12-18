@@ -37,7 +37,7 @@
         <!--Others Profile-->
         <activity android:name=".OthersProfile"
             android:parentActivityName=".Navigation"
-            android:theme="@style/Theme.Design.Light">
+            android:theme="@style/Theme.Design.Light.NoActionBar">
 
         </activity>
     </application>

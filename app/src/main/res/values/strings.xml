@@ -12,8 +12,11 @@
     <string name="cambia_propic">Cambia immagine</string>
     <string name="seguiti">Seguiti</string>
     <string name="seguaci">Seguaci</string>
+    <string name="content">I tuoi contenuti</string>
     <!--Ricerca-->
     <string name="search_label">Cerca</string>
     <string name="search_hint">Cerca utenti...</string>
+    <!--Misc-->
+    <string name="unfollow">Non seguire più</string>
 
 </resources>

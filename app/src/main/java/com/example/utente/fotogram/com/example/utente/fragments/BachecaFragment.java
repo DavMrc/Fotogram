@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import com.example.utente.fotogram.R;
 
@@ -20,6 +22,20 @@ public class BachecaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bacheca, container, false);
+        View v= inflater.inflate(R.layout.fragment_bacheca, container, false);
+
+        return v;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.btn_refresh:
+                //refresh bacheca
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

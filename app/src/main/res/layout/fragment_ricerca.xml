@@ -9,16 +9,16 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/password_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
-        android:layout_width="324dp"
+        android:layout_width="330dp"
         android:layout_height="50dp"
         android:layout_marginBottom="8dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.264"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.050000012">
+        app:layout_constraintVertical_bias="0.026">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/txt.search_users"
@@ -29,18 +29,19 @@
 
     <ListView
         android:id="@+id/query_suggestions"
-        android:layout_width="395dp"
+        android:layout_width="330dp"
         android:layout_height="316dp"
-        android:layout_marginBottom="260dp"
+        android:layout_marginBottom="276dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.259"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/output"
         android:layout_width="388dp"
         android:layout_height="113dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="152dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,9 +55,9 @@
         android:background="@drawable/search_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintHorizontal_bias="0.958"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.049" />
+        app:layout_constraintVertical_bias="0.026" />
 
 </android.support.constraint.ConstraintLayout>

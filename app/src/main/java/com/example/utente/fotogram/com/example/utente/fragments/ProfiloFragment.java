@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -72,15 +73,20 @@ public class ProfiloFragment extends Fragment {
             }
         });
 
-        ImageButton logout= v.findViewById(R.id.btn_logout);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                serverService.logout(m.getSessionID());
-            }
-        });
-
         return v;
+    }
+
+    // gestisce il bottone di logout nella toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.btn_logout:
+                serverService.logout(m.getSessionID());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void checkStoragePermissions(){

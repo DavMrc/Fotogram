@@ -6,6 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Navigation">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/light_gray_xl"
+        android:elevation="4dp" />
+
     <!--container dei fragments-->
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -16,7 +23,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="57dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="MainActivity">
@@ -24,7 +31,7 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/footer"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp"

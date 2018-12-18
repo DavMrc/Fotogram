@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.support.v7.widget.Toolbar;
 
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
@@ -27,6 +28,8 @@ public class Navigation extends AppCompatActivity {
     final FragmentManager fManager= getSupportFragmentManager();
     Fragment active= bacheca;
 
+    Toolbar toolbar;
+
     private Model m;
 
     @Override
@@ -37,6 +40,12 @@ public class Navigation extends AppCompatActivity {
         m= Model.getInstance();
 
         hideBottomNavBar();
+
+        toolbar= findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.refresh_button);
+        getSupportActionBar().setTitle("Bacheca");
+
         setupFooter();
 
         // permette la versione landscape solo per i tablet
@@ -98,18 +107,32 @@ public class Navigation extends AppCompatActivity {
                     case R.id.bacheca:
                         fManager.beginTransaction().hide(active).show(bacheca).commit();
                         active= bacheca;
+
+                        getSupportActionBar().setTitle("Bacheca");
+                        toolbar.getMenu().clear();
+                        toolbar.inflateMenu(R.menu.refresh_button);
                         break;
                     case R.id.cerca:
                         fManager.beginTransaction().hide(active).show(cerca).commit();
                         active= cerca;
+
+                        toolbar.getMenu().clear();
+                        getSupportActionBar().setTitle("Cerca");
                         break;
                     case R.id.nuovo:
                         fManager.beginTransaction().hide(active).show(nuovo_post).commit();
                         active= nuovo_post;
+
+                        toolbar.getMenu().clear();
+                        getSupportActionBar().setTitle("Nuovo Post");
                         break;
                     case R.id.profilo:
                         fManager.beginTransaction().hide(active).show(profilo).commit();
                         active= profilo;
+
+                        toolbar.getMenu().clear();
+                        toolbar.inflateMenu(R.menu.logout_button);
+                        getSupportActionBar().setTitle("Profilo");
                         break;
                 }
 

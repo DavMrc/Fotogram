@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/btn.refresh"
+        android:icon="@drawable/refresh_bacheca_black"
+        app:showAsAction="always"
+        android:title="Refresh"
+    />
+
+</menu>
