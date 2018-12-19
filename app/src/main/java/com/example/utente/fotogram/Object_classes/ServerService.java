@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerService {
+    //TODO: al boot dell'app, conviene scaricare la lista di amici da settare subito
 
     private static ServerService serverService;
     private static Model m;
@@ -44,7 +45,7 @@ public class ServerService {
     }
 
     public void login(final String username, final String password){
-        /* chiamato in Login.class, ovvero la prima activity. dopo aver effettuato
+        /* dopo aver effettuato
         la chiamata di rete /login, setta nel model sessionID e username, per poi
         chiamare il metodo getUserInfo, che ottiene l'immagine e la lista dei post.
         Questo è stato fatto per motivi di sincronizzazione.
@@ -269,6 +270,36 @@ public class ServerService {
 //            Toast.makeText(privateContext, "Porco dio", Toast.LENGTH_SHORT).show();
 //            e.printStackTrace();
 //        }
+    }
+
+    public void getFriends(){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
+        final String session_id= m.getSessionID();
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                // TODO: handle it
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", session_id);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 
     //JSON handlers

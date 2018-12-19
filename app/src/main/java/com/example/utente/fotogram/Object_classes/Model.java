@@ -9,6 +9,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Model {
+    //TODO: al boot dell'app, conviene scaricare la lista di amici da settare subito
+    //TODO: imparare hashmap per associare utente -> imm profilo
     private static Model instance = null;
 
     private String sessionID;
