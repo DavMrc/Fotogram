@@ -1,33 +1,22 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class ServerService {
 
@@ -215,7 +204,7 @@ public class ServerService {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", m.getSessionID());
-                params.put("img", post.getPicture());
+                params.put("img", post.getImg());
                 params.put("message", post.getMsg());
 
                 return params;

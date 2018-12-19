@@ -1,18 +1,16 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.graphics.Bitmap;
-
 public class Post {
     private String username;
     private String msg;
-    private String picture;
+    private String img;
     private String timestamp;
 
     // costruttore
-    public Post(String username, String msg, String picture, String timestamp) {
+    public Post(String username, String msg, String img, String timestamp) {
         this.username = username;
         this.msg = msg;
-        this.picture= picture;
+        this.img = img;
         this.timestamp= timestamp;
     }
 
@@ -32,12 +30,12 @@ public class Post {
         this.msg = msg;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getImg() {
+        return img;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getTimestamp() {

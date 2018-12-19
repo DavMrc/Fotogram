@@ -17,13 +17,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.PostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
@@ -59,7 +62,7 @@ public class ProfiloFragment extends Fragment {
 
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));
-        }
+        }// altrimenti c'è il placeholder
 
         TextView username= v.findViewById(R.id.txt_username);
         username.setText(m.getActiveUserNickname());
@@ -73,10 +76,12 @@ public class ProfiloFragment extends Fragment {
             }
         });
 
+        getPosts(v);
+
         return v;
     }
 
-    // gestisce il bottone di logout nella toolbar
+    // logout nella toolbar
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // TODO: this doesn't work. check BachecaFragment if already solved
@@ -127,5 +132,15 @@ public class ProfiloFragment extends Fragment {
                 serverService.updatePicture(encoded, m.getSessionID());
             }
         }
+    }
+
+    private void getPosts(View v){
+        // TODO: chiamata server che ottiene ArrayList di posts
+
+
+        ListView postsListView= v.findViewById(R.id.personal_posts);
+        //PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.bacheca_post_list_item, posts);
+
+        //postsListView.setAdapter();
     }
 }
