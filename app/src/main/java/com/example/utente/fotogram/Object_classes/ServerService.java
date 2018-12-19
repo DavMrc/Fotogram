@@ -83,8 +83,9 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void logout(final String sessionID){
+    public void logout(){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
+        final String sessionID= m.getSessionID();
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
@@ -121,8 +122,9 @@ public class ServerService {
 
     }
 
-    public void updatePicture(final String picture, final String sessionID){
+    public void updatePicture(final String picture){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
+        final String sessionID= m.getSessionID();
 
         StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override

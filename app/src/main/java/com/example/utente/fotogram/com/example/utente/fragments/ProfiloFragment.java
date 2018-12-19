@@ -81,19 +81,6 @@ public class ProfiloFragment extends Fragment {
         return v;
     }
 
-    // logout nella toolbar
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: this doesn't work. check BachecaFragment if already solved
-        switch (item.getItemId()){
-            case R.id.btn_logout:
-                serverService.logout(m.getSessionID());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     private void checkStoragePermissions(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -129,7 +116,7 @@ public class ProfiloFragment extends Fragment {
 
 //              miei metodi
                 String encoded= imageHandler.encodeFromUri(imageURI);
-                serverService.updatePicture(encoded, m.getSessionID());
+                serverService.updatePicture(encoded);
             }
         }
     }

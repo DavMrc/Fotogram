@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
@@ -21,14 +23,15 @@ import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
 public class Navigation extends AppCompatActivity {
 
-    final Fragment bacheca= new BachecaFragment();
-    final Fragment cerca= new RicercaFragment();
-    final Fragment nuovo_post= new Nuovo_Post_Fragment();
-    final Fragment profilo= new ProfiloFragment();
-    final FragmentManager fManager= getSupportFragmentManager();
-    Fragment active= bacheca;
+    private Fragment bacheca= new BachecaFragment();
+    private Fragment cerca= new RicercaFragment();
+    private Fragment nuovo_post= new Nuovo_Post_Fragment();
+    private Fragment profilo= new ProfiloFragment();
+    private Fragment active= bacheca;
+    private FragmentManager fManager= getSupportFragmentManager();
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private ServerService serverService;
 
     private Model m;
 
@@ -38,11 +41,13 @@ public class Navigation extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
 
         m= Model.getInstance();
+        serverService= ServerService.getInstance(this);
 
         hideBottomNavBar();
 
         toolbar= findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        // TODO: this doesn't get inflated right-away
         toolbar.inflateMenu(R.menu.refresh_button);
         getSupportActionBar().setTitle("Bacheca");
 
@@ -57,13 +62,15 @@ public class Navigation extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-                saveSession();
+
+        saveSession();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-                hideBottomNavBar();
+
+        hideBottomNavBar();
     }
 
     private void hideBottomNavBar(){
@@ -80,7 +87,7 @@ public class Navigation extends AppCompatActivity {
 
         Context context= this;
 
-        // crea le preferenze di nome "preferences" e ci salva username e password
+        // crea le SharedPref di nome "preferences" e ci salva username e password
         // potranno essere usate da Login
         SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPref.edit();
@@ -139,5 +146,20 @@ public class Navigation extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    // gestisce tutti gli eventi delle Toolbar per ogni Fragment
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.btn_logout:
+                serverService.logout();
+                return true;
+            case R.id.btn_refresh:
+                // TODO: refresh bacheca
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
