@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/gallery_image"
-        android:layout_width="330dp"
-        android:layout_height="310dp"
+        android:layout_width="316dp"
+        android:layout_height="292dp"
         android:layout_marginBottom="8dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.353"
+        app:layout_optimizationLevel="dimensions"
         app:srcCompat="@drawable/ic_insert_photo_blue_grey_500_48dp" />
 
     <ImageButton
@@ -54,19 +55,6 @@
         app:layout_constraintBottom_toTopOf="@+id/gallery_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.893"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ImageButton
-        android:id="@+id/btn.change_post"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:visibility="gone"
-        android:background="@drawable/reload_post"
-        app:layout_constraintBottom_toTopOf="@+id/gallery_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.795"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />

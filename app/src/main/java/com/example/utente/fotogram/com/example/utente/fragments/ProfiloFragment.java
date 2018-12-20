@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -30,11 +31,12 @@ import com.example.utente.fotogram.Object_classes.PostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
+import java.io.File;
+
 public class ProfiloFragment extends Fragment {
 
     private Model m;
 
-    private int PICK_PHOTO = 100;
     public ImageView proPic;
     private Context context;
     private ServerService serverService;
@@ -72,7 +74,6 @@ public class ProfiloFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 checkStoragePermissions();
-                changeProfilePic();
             }
         });
 
@@ -82,41 +83,53 @@ public class ProfiloFragment extends Fragment {
     }
 
     private void checkStoragePermissions(){
+//        permission isn't granted: prompt the user
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }//        |
-    }//            |
-    //             V
+        }else{
+//            permissions were already granted, proceed normally
+            changeProfilePic();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode){
-            case 1:
-                if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                    return;
-                }else{
+            case 1: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    changeProfilePic();
+                } else {
                     Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show();
                 }
+            }
         }
     }
 
     private void changeProfilePic(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, PICK_PHOTO);
-        //                     |
-    }//                        |
-//                             V
+
+        File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String picturePath= pictureDirectory.getPath();
+
+        Uri actualPictures= Uri.parse(picturePath);
+        photoPickerIntent.setDataAndType(actualPictures,"image/*");
+        startActivityForResult(photoPickerIntent, 20);
+    }
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(requestCode == PICK_PHOTO & resultCode == Activity.RESULT_OK) {
+    // relativo al photoPickerIntent, serve per aggiunge l'immagine
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 20 & resultCode == Activity.RESULT_OK) {
             Uri imageURI = data.getData();
 
             if(imageURI !=null){
                 proPic.setImageURI(imageURI);
 
-//              miei metodi
+//              aggiorna su server e Model
                 String encoded= imageHandler.encodeFromUri(imageURI);
                 serverService.updatePicture(m.getSessionID(), encoded);
+
+                m.setActiveUserImg(encoded);
             }
         }
     }

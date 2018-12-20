@@ -21,7 +21,6 @@ public class ImageHandler {
     }
 
     public String encodeFromUri(Uri uri){
-        // la risorsa dev'essere raggiunta tramite drawable, altrimenti l'id punta al "container" della risorsa
         String [] filePathColumn= {MediaStore.Images.Media.DATA};
 
         Cursor cursor= context.getContentResolver().query(uri, filePathColumn, null, null, null);
@@ -37,7 +36,6 @@ public class ImageHandler {
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
 
-        m.setActiveUserImg(encoded);
         return encoded;
     }
 
