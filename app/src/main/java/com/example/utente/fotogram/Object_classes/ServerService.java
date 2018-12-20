@@ -13,7 +13,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
-import com.example.utente.fotogram.OnPostRequestExecute;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 import com.google.gson.Gson;
 
@@ -250,30 +249,6 @@ public class ServerService {
         };// finisce la StringRequest
 
         queue.add(request);
-
-//        SINCRONA
-
-//        RequestFuture<String> future= RequestFuture.newFuture();
-//        StringRequest stringRequest= new StringRequest(Request.Method.POST, url, future, future) {
-//            @Override
-//            protected Map<String, String> getParams() {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("session_id", session_id);
-//                params.put("usernamestart", usernamestart);
-//
-//                return params;
-//            }
-//        };
-//
-//        queue.add(stringRequest);
-//
-//        try{
-//            String response= future.get(4, TimeUnit.SECONDS);
-//            parseUsers(response);
-//        }catch (Exception e){
-//            Toast.makeText(privateContext, "Porco dio", Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
     }
 
     public void getFriends(){
