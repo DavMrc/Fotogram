@@ -13,6 +13,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
+import com.example.utente.fotogram.OnPostRequestExecute;
+import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -217,7 +219,7 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void searchUser(final String usernamestart){
+    public void searchUser(final RicercaFragment fragment, final String usernamestart){
 
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
         final String session_id= m.getSessionID();
@@ -226,7 +228,7 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                m.setSearchResultUsers(serverResponse);
+                fragment.onPostRequest(serverResponse);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore

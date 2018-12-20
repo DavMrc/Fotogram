@@ -52,34 +52,4 @@ public class Model {
         this.activePicture= encodedImg;
     }
 
-    public ArrayList<User> getSearchResultUsers() {
-        ArrayList<User> result= new ArrayList<>();
-
-        Log.d("DDD", "DDD Model search result: "+searchResultUsers);
-
-        try {
-            JSONObject jsonObject = new JSONObject(searchResultUsers);
-            JSONArray array= jsonObject.getJSONArray("users");
-
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedUser= array.getJSONObject(i);
-                String username= pointedUser.getString("name");
-                String picture= pointedUser.getString("picture");
-
-                result.add(new User(username, picture));
-            }
-            Log.d("DDD ","DDD/ Model arraylist: "+result);
-            return result;
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        return result;
-    }
-
-    public void setSearchResultUsers(String searchResultUsers) {
-        Log.d("DDD", "DDD search result: "+searchResultUsers);
-        this.searchResultUsers = searchResultUsers;
-    }
-
 }

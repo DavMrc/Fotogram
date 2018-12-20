@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,19 +23,24 @@ import android.widget.Toast;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.Object_classes.User;
+import com.example.utente.fotogram.OnPostRequestExecute;
 import com.example.utente.fotogram.R;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class RicercaFragment extends Fragment {
+public class RicercaFragment extends Fragment{
 
     private Context context;
     private Model m;
     private ServerService serverService;
+    private TextView output;
 
     public RicercaFragment() {
         // Required empty public constructor
@@ -49,8 +55,9 @@ public class RicercaFragment extends Fragment {
         context= getContext();
         m= Model.getInstance();
         serverService= ServerService.getInstance(context);
+        output = v.findViewById(R.id.output);
 
-        final TextView output= v.findViewById(R.id.output);
+
         final TextView input= v.findViewById(R.id.txt_search_users);
         ImageButton search= v.findViewById(R.id.btn_search);
 
@@ -58,19 +65,37 @@ public class RicercaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String query= input.getText().toString();
-                String out= "Users: ";
 
-                serverService.searchUser(query);
-                ArrayList<User> users= m.getSearchResultUsers();
-
-                for(User u: users){
-                    out= out.concat(u.getUsername()+", ");
-                }
-
-                output.setText(out);
+                serverService.searchUser(RicercaFragment.this, query);
             }
         });
 
         return v;
+    }
+
+    public void onPostRequest(String serverResponse) {
+        String out= "Users: ";
+        ArrayList<User> users= new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("users");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                users.add(new User(username, picture));
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        for(User u: users){
+            out= out.concat(u.getUsername()+", ");
+        }
+
+        output.setText(out);
     }
 }
