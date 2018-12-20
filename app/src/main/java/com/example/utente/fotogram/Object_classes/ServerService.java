@@ -3,6 +3,7 @@ package com.example.utente.fotogram.Object_classes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -63,10 +64,11 @@ public class ServerService {
             @Override
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
+                        Log.d("DDD", "DDD Login session id: "+sessionID);
                 m.setActiveUserNickname(username);
 
                 getUserInfo(sessionID, username);
-                getFriends(sessionID);
+//                getFriends(sessionID);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -90,9 +92,8 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void logout(){
+    public void logout(final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
-        final String sessionID= m.getSessionID();
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
@@ -129,9 +130,8 @@ public class ServerService {
 
     }
 
-    public void updatePicture(final String picture){
+    public void updatePicture(final String sessionID, final String picture){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
-        final String sessionID= m.getSessionID();
 
         StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -192,13 +192,17 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void createPost(final Post post){
+    public void createPost(final String sessionID, final Post post){
+//        final String sessionID= m.getSessionID();
+        Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
+        Log.d("DDD", "DDD "+post.getImg());
+        Log.d("DDD", "DDD "+post.getMsg());
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
-            public void onResponse(String sessionID) {
+            public void onResponse(String response) {
                 Toast.makeText(privateContext, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
             }
         }, new Response.ErrorListener() {
@@ -207,13 +211,14 @@ public class ServerService {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Toast.makeText(privateContext, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
             }
         }) {
             // parametri richiesta POST
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
+                params.put("session_id", sessionID);
                 params.put("img", post.getImg());
                 params.put("message", post.getMsg());
 
@@ -293,8 +298,11 @@ public class ServerService {
         Gson gson= new Gson();
         user= gson.fromJson(jsonObject, User.class);
 
-        String img= user.getImg();
-        m.setActiveUserImg(img);
+        m.setActiveUserImg(user.getImg());
+//        m.setActivePosts(user.getPosts());
+        Post [] posts= user.getPosts();
+
+//        Log.d("DDD", "DDD");
     }
 
     private void parseFriends(String serverResponse){

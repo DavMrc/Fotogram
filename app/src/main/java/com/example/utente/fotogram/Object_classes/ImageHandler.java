@@ -14,7 +14,6 @@ import java.io.ByteArrayOutputStream;
 public class ImageHandler {
     private Context context;
     private Model m;
-    private ImageView image;
 
     public ImageHandler(Context context) {
         this.context= context;

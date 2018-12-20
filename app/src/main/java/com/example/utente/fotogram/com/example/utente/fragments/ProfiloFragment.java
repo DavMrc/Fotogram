@@ -116,7 +116,7 @@ public class ProfiloFragment extends Fragment {
 
 //              miei metodi
                 String encoded= imageHandler.encodeFromUri(imageURI);
-                serverService.updatePicture(encoded);
+                serverService.updatePicture(m.getSessionID(), encoded);
             }
         }
     }

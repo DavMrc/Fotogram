@@ -63,7 +63,7 @@ public class Navigation extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        saveSession();
+//        saveSession();
     }
 
     @Override
@@ -153,7 +153,7 @@ public class Navigation extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.btn_logout:
-                serverService.logout();
+                serverService.logout(m.getSessionID());
                 return true;
             case R.id.btn_refresh:
                 // TODO: refresh bacheca

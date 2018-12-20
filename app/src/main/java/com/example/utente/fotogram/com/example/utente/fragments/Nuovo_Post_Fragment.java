@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.Post;
@@ -27,6 +34,8 @@ import com.example.utente.fotogram.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Nuovo_Post_Fragment extends Fragment {
 
@@ -108,7 +117,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 
         final TextView tv_didascalia= v.findViewById(R.id.txt_didascalia);
         // bottone per inviare il post
-        ImageButton createPost= v.findViewById(R.id.btn_create_post);
+        final ImageButton createPost= v.findViewById(R.id.btn_create_post);
         createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +128,8 @@ public class Nuovo_Post_Fragment extends Fragment {
 
                     post= new Post(m.getActiveUserNickname(), didascalia, encoded, timeStamp);
 
-                    serverService.createPost(post);
+                    serverService.createPost(m.getSessionID(), post);
+//                    popopo(m.getSessionID(), post);
                     // risetta la didascalia a nulla dopo la creazione del post
                     tv_didascalia.setText("");
                 }else{
@@ -127,6 +137,40 @@ public class Nuovo_Post_Fragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void popopo(final String sessionID, final Post post){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
+
+        RequestQueue queue= Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
+                params.put("img", post.getImg());
+                params.put("message", post.getMsg());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 
     @Override

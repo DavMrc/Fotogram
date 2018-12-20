@@ -15,6 +15,7 @@ public class Model {
     private String sessionID;
     private String activeUsername;
     private String activePicture;
+    private Post [] activePosts= new Post[10];
     private ArrayList<User> friends;
 
     private String searchResultUsers;
@@ -52,11 +53,20 @@ public class Model {
         this.activePicture= encodedImg;
     }
 
-    public void setFriends(ArrayList<User> friends){
-        this.friends= friends;
+    public Post [] getActivePosts(){
+        return this.activePosts;
+    }
+
+    public void setActivePosts(Post [] posts){
+        this.activePosts= posts;
     }
 
     public ArrayList<User> getFriends(){
         return this.friends;
     }
+
+    public void setFriends(ArrayList<User> friends){
+        this.friends= friends;
+    }
+
 }
