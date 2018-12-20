@@ -16,6 +16,11 @@ import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +66,7 @@ public class ServerService {
                 m.setActiveUserNickname(username);
 
                 getUserInfo(sessionID, username);
+                getFriends(sessionID);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -227,7 +233,8 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                fragment.onPostRequest(serverResponse);
+                String output= parseSearchUsers(serverResponse);
+                fragment.onPostRequest(output);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -251,15 +258,15 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void getFriends(){
+    public void getFriends(final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
-        final String session_id= m.getSessionID();
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
                 // TODO: handle it
+                parseFriends(serverResponse);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -272,7 +279,7 @@ public class ServerService {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                params.put("session_id", session_id);
+                params.put("session_id", sessionID);
 
                 return params;
             }
@@ -288,6 +295,52 @@ public class ServerService {
 
         String img= user.getImg();
         m.setActiveUserImg(img);
+    }
+
+    private void parseFriends(String serverResponse){
+        ArrayList<User> friends= new ArrayList<>();
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("followed");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                friends.add(new User(username, picture));
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        m.setFriends(friends);
+    }
+
+    private String parseSearchUsers(String serverResponse){
+        String out= "Users: ";
+        ArrayList<User> users= new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("users");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                users.add(new User(username, picture));
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        for(User u: users){
+            out= out.concat(u.getUsername()+", ");
+        }
+
+        return out;
     }
 
 }

@@ -9,13 +9,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Model {
-    //TODO: al boot dell'app, conviene scaricare la lista di amici da settare subito
     //TODO: imparare hashmap per associare utente -> imm profilo
     private static Model instance = null;
 
     private String sessionID;
     private String activeUsername;
     private String activePicture;
+    private ArrayList<User> friends;
 
     private String searchResultUsers;
 
@@ -52,4 +52,11 @@ public class Model {
         this.activePicture= encodedImg;
     }
 
+    public void setFriends(ArrayList<User> friends){
+        this.friends= friends;
+    }
+
+    public ArrayList<User> getFriends(){
+        return this.friends;
+    }
 }

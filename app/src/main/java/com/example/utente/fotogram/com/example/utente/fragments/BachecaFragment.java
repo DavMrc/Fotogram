@@ -4,15 +4,26 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toolbar;
 
+import com.example.utente.fotogram.Object_classes.ImageHandler;
+import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.User;
 import com.example.utente.fotogram.R;
 
+import java.util.ArrayList;
+
 public class BachecaFragment extends Fragment {
+    private ArrayList<User> friends;
+
+    private Model m;
+    private Context context;
+    private ImageHandler imageHandler;
 
     public BachecaFragment() {
         // Required empty public constructor
@@ -24,18 +35,12 @@ public class BachecaFragment extends Fragment {
         // Inflate the layout for this fragment
         View v= inflater.inflate(R.layout.fragment_bacheca, container, false);
 
-        return v;
-    }
+        context= getContext();
+        imageHandler= new ImageHandler(context);
+        m= Model.getInstance();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // TODO: this doesn't work. check ProfiloFragment if already solved
-        switch (item.getItemId()){
-            case R.id.btn_refresh:
-                //refresh bacheca
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        friends= m.getFriends();
+
+        return v;
     }
 }

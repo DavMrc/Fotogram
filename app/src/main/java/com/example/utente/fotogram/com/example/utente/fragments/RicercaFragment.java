@@ -59,28 +59,6 @@ public class RicercaFragment extends Fragment{
     }
 
     public void onPostRequest(String serverResponse) {
-        String out= "Users: ";
-        ArrayList<User> users= new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = new JSONObject(serverResponse);
-            JSONArray array= jsonObject.getJSONArray("users");
-
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedUser= array.getJSONObject(i);
-                String username= pointedUser.getString("name");
-                String picture= pointedUser.getString("picture");
-
-                users.add(new User(username, picture));
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        for(User u: users){
-            out= out.concat(u.getUsername()+", ");
-        }
-
-        output.setText(out);
+        output.setText(serverResponse);
     }
 }
