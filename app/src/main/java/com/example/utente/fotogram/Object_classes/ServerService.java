@@ -64,7 +64,6 @@ public class ServerService {
             @Override
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
-                        Log.d("DDD", "DDD Login session id: "+sessionID);
                 m.setActiveUserNickname(username);
 
                 getUserInfo(sessionID, username);
@@ -193,10 +192,6 @@ public class ServerService {
     }
 
     public void createPost(final String sessionID, final Post post){
-//        final String sessionID= m.getSessionID();
-        Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
-        Log.d("DDD", "DDD "+post.getImg());
-        Log.d("DDD", "DDD "+post.getMsg());
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -211,7 +206,7 @@ public class ServerService {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Toast.makeText(privateContext, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
-                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
+//                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
             }
         }) {
             // parametri richiesta POST
@@ -301,8 +296,6 @@ public class ServerService {
         m.setActiveUserImg(user.getImg());
 //        m.setActivePosts(user.getPosts());
         Post [] posts= user.getPosts();
-
-//        Log.d("DDD", "DDD");
     }
 
     private void parseFriends(String serverResponse){

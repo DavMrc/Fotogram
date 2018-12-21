@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -35,6 +36,8 @@ public class ImageHandler {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
+
+//        Log.d("DDD", "DDD encoded: "+encoded);
 
         return encoded;
     }

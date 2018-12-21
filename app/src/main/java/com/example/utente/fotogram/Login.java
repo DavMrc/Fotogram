@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity {
         serverService = ServerService.getInstance(Login.this);
 
 //      commentare per invalidare le SharedPreferences
-//        readPreferences();
+        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
