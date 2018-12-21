@@ -1,15 +1,11 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toolbar;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
@@ -39,7 +35,7 @@ public class BachecaFragment extends Fragment {
         imageHandler= new ImageHandler(context);
         m= Model.getInstance();
 
-        friends= m.getFriends();
+        friends= m.getActiveUserFriends();
 
         return v;
     }

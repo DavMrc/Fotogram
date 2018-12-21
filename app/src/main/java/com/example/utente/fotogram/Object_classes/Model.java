@@ -1,24 +1,16 @@
 package com.example.utente.fotogram.Object_classes;
 
-import android.util.Log;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 public class Model {
-    //TODO: imparare hashmap per associare utente -> imm profilo
     private static Model instance = null;
 
     private String sessionID;
     private String activeUsername;
     private String activePicture;
     private Post [] activePosts= new Post[10];
-    private ArrayList<User> friends;
-
-    private String searchResultUsers;
+    private ArrayList<User> activeUserFriends;
+    private User otherUser; // utente su cui si è fatto click dopo ricerca
 
     private Model() {}
 
@@ -61,12 +53,20 @@ public class Model {
         this.activePosts= posts;
     }
 
-    public ArrayList<User> getFriends(){
-        return this.friends;
+    public ArrayList<User> getActiveUserFriends(){
+        return this.activeUserFriends;
     }
 
-    public void setFriends(ArrayList<User> friends){
-        this.friends= friends;
+    public void setActiveUserFriends(ArrayList<User> activeUserFriends){
+        this.activeUserFriends = activeUserFriends;
+    }
+
+    public User getOtherUser(){
+        return this.otherUser;
+    }
+
+    public void setOtherUser(User user){
+        this.otherUser= user;
     }
 
 }

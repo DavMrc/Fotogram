@@ -3,7 +3,6 @@ package com.example.utente.fotogram.Object_classes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,6 +13,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
+import com.example.utente.fotogram.OthersProfile;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 import com.google.gson.Gson;
 
@@ -27,13 +27,12 @@ import java.util.Map;
 
 public class ServerService {
     //TODO: al boot dell'app, conviene scaricare la lista di amici da settare subito
+    //TODO: imparare hashmap per associare utente -> imm profilo
 
     private static ServerService serverService;
     private static Model m;
     private static Context privateContext;
     private static RequestQueue queue;
-
-    private static User user;
 
     //costruttore singleton
     private ServerService() {}
@@ -54,7 +53,7 @@ public class ServerService {
     public void login(final String username, final String password){
         /* dopo aver effettuato
         la chiamata di rete /login, setta nel model sessionID e username, per poi
-        chiamare il metodo getUserInfo, che ottiene l'immagine e la lista dei post.
+        chiamare il metodo getActiveUserInfo, che ottiene l'immagine e la lista dei post.
         Questo è stato fatto per motivi di sincronizzazione.
         */
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
@@ -66,8 +65,7 @@ public class ServerService {
                 m.setSessionID(sessionID);
                 m.setActiveUserNickname(username);
 
-                getUserInfo(sessionID, username);
-//                getFriends(sessionID);
+                getActiveUserInfo(sessionID, username);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -158,16 +156,19 @@ public class ServerService {
 
     }
 
-    public void getUserInfo(final String sessionID, final String username){
+    public void getActiveUserInfo(final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
             public void onResponse(String response) {
-                parseActiveUser(response);
+                User activeUser= parseUser(response);
 
-                privateContext.startActivity(new Intent(privateContext, Navigation.class));
+                m.setActiveUserImg(activeUser.getImg());
+                m.setActivePosts(activeUser.getPosts());
+
+                getFriends(sessionID);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -233,8 +234,8 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                String output= parseSearchUsers(serverResponse);
-                fragment.onPostRequest(output);
+                ArrayList<User> users = parseSearchUsers(serverResponse);
+                fragment.onPostServerRequest(users);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -258,6 +259,40 @@ public class ServerService {
         queue.add(request);
     }
 
+    public void getOtherUserInfo(final String sessionID, final String username){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                User otherUser= parseUser(response);
+
+                m.setOtherUser(otherUser);
+                privateContext.startActivity(new Intent(privateContext, OthersProfile.class));
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(privateContext, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
     public void getFriends(final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
 
@@ -265,8 +300,10 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                // TODO: handle it
                 parseFriends(serverResponse);
+
+//                finally, move on to next Activity
+                privateContext.startActivity(new Intent(privateContext, Navigation.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -289,13 +326,10 @@ public class ServerService {
     }
 
     //JSON handlers
-    private void parseActiveUser(String jsonObject){
+    private User parseUser(String jsonObject){
         Gson gson= new Gson();
-        user= gson.fromJson(jsonObject, User.class);
 
-        m.setActiveUserImg(user.getImg());
-//        m.setActivePosts(user.getPosts());
-        Post [] posts= user.getPosts();
+        return gson.fromJson(jsonObject, User.class);
     }
 
     private void parseFriends(String serverResponse){
@@ -315,11 +349,10 @@ public class ServerService {
             e.printStackTrace();
         }
 
-        m.setFriends(friends);
+        m.setActiveUserFriends(friends);
     }
 
-    private String parseSearchUsers(String serverResponse){
-        String out= "Users: ";
+    private ArrayList<User> parseSearchUsers(String serverResponse){
         ArrayList<User> users= new ArrayList<>();
 
         try {
@@ -337,11 +370,7 @@ public class ServerService {
             e.printStackTrace();
         }
 
-        for(User u: users){
-            out= out.concat(u.getUsername()+", ");
-        }
-
-        return out;
+        return users;
     }
 
 }

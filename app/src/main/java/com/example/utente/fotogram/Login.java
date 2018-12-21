@@ -1,10 +1,8 @@
 package com.example.utente.fotogram;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,7 +29,7 @@ public class Login extends AppCompatActivity {
         serverService = ServerService.getInstance(Login.this);
 
 //      commentare per invalidare le SharedPreferences
-        readPreferences();
+//        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -39,12 +37,15 @@ public class Login extends AppCompatActivity {
 
         final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
+        final ProgressBar progressBar= findViewById(R.id.progressBar);
 
         Button login = findViewById(R.id.btn_accedi);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // call login
+                progressBar.setVisibility(View.VISIBLE);
+
                 String username = tv_username.getText().toString();
                 String password = tv_password.getText().toString();
                 serverService.login(username, password);
@@ -70,7 +71,7 @@ public class Login extends AppCompatActivity {
             m.setActiveUserNickname(username);
             m.setSessionID(sessionID);
 //      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
-            serverService.getUserInfo(sessionID, username);
+            serverService.getActiveUserInfo(sessionID, username);
         }
     }
 

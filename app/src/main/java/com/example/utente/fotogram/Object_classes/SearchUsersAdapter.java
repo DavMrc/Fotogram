@@ -12,46 +12,47 @@ import android.widget.TextView;
 import com.example.utente.fotogram.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PostsAdapter extends ArrayAdapter {
+public class SearchUsersAdapter extends ArrayAdapter {
 
     private Context context;
-    private ArrayList<Post> posts;
+    private ArrayList<User> users;
     private ImageHandler imageHandler;
 
-    public PostsAdapter(Context context, int resource) {
+    public SearchUsersAdapter(Context context, int resource) {
         super(context, resource);
     }
 
-    public PostsAdapter(Context context, int resource, ArrayList<Post> posts) {
-        super(context, resource, posts);
-        this.context = context;
+    public SearchUsersAdapter(Context context, int resource, ArrayList<User> users) {
+        super(context, resource, users);
+        this.context= context;
+        this.users= users;
+
         imageHandler= new ImageHandler(context);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO: check errors
         View v= convertView;
 
         if(v == null){
             //recycle if needed, else inflate
             LayoutInflater li;
             li= LayoutInflater.from(this.context);
-            v= li.inflate(R.layout.item_logged_user_posts_item, null);
+            v= li.inflate(R.layout.item_search_result_item, null);
         }
 
-        Post p= posts.get(position);
+        User u= users.get(position);
 
-        if(p != null){
-            ImageView image= v.findViewById(R.id.bacheca_post_item_picture);
-            TextView didascalia= v.findViewById(R.id.bacheca_post_item_didascalia);
+        if(u != null){
+            ImageView image= v.findViewById(R.id.item_profile_pic);
+            TextView username= v.findViewById(R.id.item_username);
 
-            Bitmap bitmap= imageHandler.decodeString(p.getImg());
+            Bitmap bitmap= imageHandler.decodeString(u.getImg());
 
             image.setImageBitmap(bitmap);
-            didascalia.setText(p.getMsg());
-
+            username.setText(u.getUsername());
         }
 
         return v;

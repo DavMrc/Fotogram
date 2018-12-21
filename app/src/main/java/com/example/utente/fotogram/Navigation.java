@@ -46,10 +46,10 @@ public class Navigation extends AppCompatActivity {
         hideBottomNavBar();
 
         toolbar= findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         // TODO: this doesn't get inflated right-away
+        toolbar.setTitle("Bacheca");
         toolbar.inflateMenu(R.menu.refresh_button);
-        getSupportActionBar().setTitle("Bacheca");
+        setSupportActionBar(toolbar);
 
         setupFooter();
 

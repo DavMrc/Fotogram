@@ -12,14 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.GridView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.PostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
@@ -57,7 +52,7 @@ public class ProfiloFragment extends Fragment {
         serverService= ServerService.getInstance(context);
         imageHandler= new ImageHandler(context);
 
-        serverService.getUserInfo(m.getSessionID(), m.getActiveUserNickname());
+        serverService.getActiveUserInfo(m.getSessionID(), m.getActiveUserNickname());
         proPic= v.findViewById(R.id.img_profile_pic);
 
         String image= m.getActiveUserImg();
@@ -139,7 +134,7 @@ public class ProfiloFragment extends Fragment {
 
 
         ListView postsListView= v.findViewById(R.id.personal_posts);
-        //PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.bacheca_post_list_item, posts);
+        //PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.item_bacheca_post_item, posts);
 
         //postsListView.setAdapter();
     }
