@@ -303,7 +303,10 @@ public class ServerService {
                 parseFriends(serverResponse);
 
 //                finally, move on to next Activity
+//                Intent intent= new Intent(privateContext, Navigation.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 privateContext.startActivity(new Intent(privateContext, Navigation.class));
+//                privateContext.startActivity(intent);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore

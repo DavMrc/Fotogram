@@ -42,6 +42,7 @@ public class Navigation extends AppCompatActivity {
 
         m= Model.getInstance();
         serverService= ServerService.getInstance(this);
+        Login.activity.finish();
 
         hideBottomNavBar();
 

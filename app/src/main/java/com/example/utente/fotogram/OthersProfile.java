@@ -1,5 +1,6 @@
 package com.example.utente.fotogram;
 
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -32,8 +33,13 @@ public class OthersProfile extends AppCompatActivity {
         serverService= ServerService.getInstance(this);
         user= m.getOtherUser();
 
+        getSupportActionBar().setTitle(user.getUsername());
+
         ImageView profilePic= findViewById(R.id.img_profile_pic);
-        profilePic.setImageBitmap(imageHandler.decodeString(user.getImg()));
+        Bitmap bitmap =imageHandler.decodeString(user.getImg());
+        if(bitmap != null) {
+            profilePic.setImageBitmap(bitmap);
+        }
 
         TextView username= findViewById(R.id.txt_username);
         username.setText(user.getUsername());

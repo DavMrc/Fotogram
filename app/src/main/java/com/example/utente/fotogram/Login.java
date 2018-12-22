@@ -1,5 +1,6 @@
 package com.example.utente.fotogram;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -19,6 +20,7 @@ public class Login extends AppCompatActivity {
 
     private static Model m;
     private static ServerService serverService;
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,9 @@ public class Login extends AppCompatActivity {
 
         m= Model.getInstance();
         serverService = ServerService.getInstance(Login.this);
+//        oggetto richiamato nell'OnCreate di Navigation per
+//        terminare Login e impedire di ritornarci (session_id consistency)
+        activity= this;
 
 //      commentare per invalidare le SharedPreferences
 //        readPreferences();

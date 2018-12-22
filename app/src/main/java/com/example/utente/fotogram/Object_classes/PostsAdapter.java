@@ -49,7 +49,9 @@ public class PostsAdapter extends ArrayAdapter {
 
             Bitmap bitmap= imageHandler.decodeString(p.getImg());
 
-            image.setImageBitmap(bitmap);
+            if(bitmap != null) {
+                image.setImageBitmap(bitmap);
+            }
             didascalia.setText(p.getMsg());
 
         }

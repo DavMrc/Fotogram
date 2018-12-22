@@ -37,15 +37,17 @@ public class ImageHandler {
         byte[] byteArr = baos.toByteArray();
         String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
 
-//        Log.d("DDD", "DDD encoded: "+encoded);
-
         return encoded;
     }
 
     public Bitmap decodeString(String encoded){
-        byte [] byteArr= Base64.decode(encoded, Base64.DEFAULT);
+        if(encoded != null) {
+            byte[] byteArr = Base64.decode(encoded, Base64.DEFAULT);
 
-        return BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+            return BitmapFactory.decodeByteArray(byteArr, 0, byteArr.length);
+        }else {
+            return null;
+        }
     }
 
 }

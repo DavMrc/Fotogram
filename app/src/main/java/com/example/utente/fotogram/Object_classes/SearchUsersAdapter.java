@@ -51,7 +51,9 @@ public class SearchUsersAdapter extends ArrayAdapter {
 
             Bitmap bitmap= imageHandler.decodeString(u.getImg());
 
-            image.setImageBitmap(bitmap);
+            if( bitmap != null) {
+                image.setImageBitmap(bitmap);
+            }
             username.setText(u.getUsername());
         }
 
