@@ -55,20 +55,36 @@ public class ProfiloFragment extends Fragment {
         serverService.getActiveUserInfo(m.getSessionID(), m.getActiveUserNickname());
         proPic= v.findViewById(R.id.img_profile_pic);
 
+//        immagine profilo
         String image= m.getActiveUserImg();
-
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));
         }// altrimenti c'è il placeholder
 
+//        username
         TextView username= v.findViewById(R.id.txt_username);
         username.setText(m.getActiveUserNickname());
 
+//        seguiti/amici che si sta seguendo
+        TextView friends= v.findViewById(R.id.txt_seguiti);
+        int skir= m.getActiveUserFriends().size() -1; // -1 perchè c'è anche l'activeUser
+        friends.setText(String.valueOf(skir));
+
+//        bottone cambia immagine
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
         changeProPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkStoragePermissions();
+            }
+        });
+
+//        only for debugging
+        Button clearFriends= v.findViewById(R.id.btn_clear_friends);
+        clearFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                m.emptyFriends();
             }
         });
 

@@ -61,6 +61,31 @@ public class Model {
         this.activeUserFriends = activeUserFriends;
     }
 
+    public void addFriend(User user){
+        boolean areEquals= contiene(user);
+
+//        if there are no matches, add it
+        if(! areEquals){
+            activeUserFriends.add(user);
+        }
+    }
+
+    public boolean contiene(User user){
+        boolean areEquals= false;
+
+        for(User u: activeUserFriends){
+            if( u.getUsername().equals(user.getUsername()) ){
+                areEquals= true;
+            }
+        }
+
+        return areEquals;
+    }
+
+    public void emptyFriends(){
+        activeUserFriends.clear();
+    }
+
     public User getOtherUser(){
         return this.otherUser;
     }

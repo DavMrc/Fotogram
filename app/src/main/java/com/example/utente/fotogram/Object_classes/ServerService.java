@@ -3,6 +3,7 @@ package com.example.utente.fotogram.Object_classes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -64,6 +65,8 @@ public class ServerService {
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
                 m.setActiveUserNickname(username);
+
+                Log.d("DDD", "DDD ServerService Session id: "+sessionID);
 
                 getActiveUserInfo(sessionID, username);
             }
@@ -317,6 +320,37 @@ public class ServerService {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", sessionID);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    public void follow(final String sessionID, final User user){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/follow";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.addFriend(user);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(privateContext, "Impossibile seguire", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
+                params.put("username", user.getUsername());
 
                 return params;
             }

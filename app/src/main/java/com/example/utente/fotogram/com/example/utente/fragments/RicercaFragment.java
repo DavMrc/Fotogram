@@ -76,9 +76,9 @@ public class RicercaFragment extends Fragment{
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String usernameClicked = users.get(position).getUsername();
+                String clickedUserUsername = users.get(position).getUsername();
 
-                serverService.getOtherUserInfo(m.getSessionID(), usernameClicked);
+                serverService.getOtherUserInfo(m.getSessionID(), clickedUserUsername);
             }
         });
     }

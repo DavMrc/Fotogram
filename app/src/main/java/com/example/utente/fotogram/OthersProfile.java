@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
@@ -16,12 +17,16 @@ import com.example.utente.fotogram.Object_classes.User;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class OthersProfile extends AppCompatActivity {
 
     private User user;
     private Model m;
     private ImageHandler imageHandler;
     private ServerService serverService;
+
+    private Button followButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +49,12 @@ public class OthersProfile extends AppCompatActivity {
         TextView username= findViewById(R.id.txt_username);
         username.setText(user.getUsername());
 
-        Button followButton= findViewById(R.id.btn_segui);
+        followButton= findViewById(R.id.btn_segui);
+
+        if(m.contiene(user)){
+            followButton.setText("Segui già");
+        }
+
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +63,13 @@ public class OthersProfile extends AppCompatActivity {
         });
     }
 
-    private void followUnfollow(){
-
+    private void followUnfollow() {
+        if(! m.contiene(user)){
+            followButton.setText("Segui già");
+            serverService.follow(m.getSessionID(), user);
+            Toast.makeText(this, "Ora siete amici", Toast.LENGTH_SHORT).show();
+        }else{
+           Toast.makeText(this, "Siete già amici", Toast.LENGTH_SHORT).show();
+        }
     }
 }
