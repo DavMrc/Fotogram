@@ -20,5 +20,7 @@
     <string name="following">Stai seguendo</string>
     <string name="not_following">Inizia a seguire</string>
     <string name="follow_yourself">Impossibile seguire te stesso</string>
+    <!--Misc-->
+    <string name="didascalia_empty">Questo post è senza didascalia.</string>
 
 </resources>

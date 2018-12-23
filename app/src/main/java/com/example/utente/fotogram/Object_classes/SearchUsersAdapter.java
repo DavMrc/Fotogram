@@ -20,10 +20,6 @@ public class SearchUsersAdapter extends ArrayAdapter {
     private ArrayList<User> users;
     private ImageHandler imageHandler;
 
-    public SearchUsersAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
     public SearchUsersAdapter(Context context, int resource, ArrayList<User> users) {
         super(context, resource, users);
         this.context= context;

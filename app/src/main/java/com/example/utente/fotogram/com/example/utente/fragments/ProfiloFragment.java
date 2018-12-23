@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.PostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
@@ -149,12 +151,9 @@ public class ProfiloFragment extends Fragment {
     }
 
     private void getPosts(View v){
-        // TODO: chiamata server che ottiene ArrayList di posts
-
-
         ListView postsListView= v.findViewById(R.id.personal_posts);
-        //PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.item_bacheca_post_item, posts);
+        PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.item_user_posts_item, m.getActivePosts());
 
-        //postsListView.setAdapter();
+        postsListView.setAdapter(postsAdapter);
     }
 }

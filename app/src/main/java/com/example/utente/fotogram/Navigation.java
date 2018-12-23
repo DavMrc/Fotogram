@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.Model;
@@ -139,6 +141,7 @@ public class Navigation extends AppCompatActivity {
                         active= profilo;
 
                         toolbar.getMenu().clear();
+                        toolbar.inflateMenu(R.menu.refresh_button);
                         toolbar.inflateMenu(R.menu.logout_button);
                         getSupportActionBar().setTitle("Profilo");
                         break;
@@ -157,7 +160,9 @@ public class Navigation extends AppCompatActivity {
                 serverService.logout(m.getSessionID());
                 return true;
             case R.id.btn_refresh:
-                // TODO: refresh bacheca
+                //TODO bugged
+                Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.update_rotation);
+                item.getActionView().startAnimation(animation);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -2,6 +2,7 @@ package com.example.utente.fotogram.Object_classes;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,43 +17,44 @@ import java.util.ArrayList;
 public class PostsAdapter extends ArrayAdapter {
 
     private Context context;
-    private ArrayList<Post> posts;
     private ImageHandler imageHandler;
+    private Post [] posts;
 
-    public PostsAdapter(Context context, int resource) {
-        super(context, resource);
-    }
-
-    public PostsAdapter(Context context, int resource, ArrayList<Post> posts) {
+    public PostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
         this.context = context;
         imageHandler= new ImageHandler(context);
+        this.posts= posts;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO: check errors
         View v= convertView;
 
         if(v == null){
             //recycle if needed, else inflate
             LayoutInflater li;
             li= LayoutInflater.from(this.context);
-            v= li.inflate(R.layout.item_logged_user_posts_item, null);
+            v= li.inflate(R.layout.item_user_posts_item, null);
         }
 
-        Post p= posts.get(position);
+        Post p= posts[position];
 
         if(p != null){
-            ImageView image= v.findViewById(R.id.bacheca_post_item_picture);
-            TextView didascalia= v.findViewById(R.id.bacheca_post_item_didascalia);
+            ImageView image= v.findViewById(R.id.item_post_item_img);
+            TextView didascalia= v.findViewById(R.id.item_post_item_msg);
 
             Bitmap bitmap= imageHandler.decodeString(p.getImg());
 
             if(bitmap != null) {
                 image.setImageBitmap(bitmap);
             }
-            didascalia.setText(p.getMsg());
+            if(p.getMsg().equals("")) {
+                didascalia.setTypeface(null, Typeface.ITALIC);
+                didascalia.setText(R.string.didascalia_empty);
+            }else{
+                didascalia.setText(p.getMsg());
+            }
 
         }
 

@@ -16,6 +16,12 @@ public class User {
         this.img= img;
     }
 
+    public User(String username, String img, Post [] posts){
+        this.username= username;
+        this.img= img;
+        this.posts= posts;
+    }
+
     public String getUsername() {
         return username;
     }
