@@ -37,7 +37,7 @@ public class OthersProfile extends AppCompatActivity {
         otherUser = m.getOtherUser();
 
         is_self_profile = otherUser.getUsername().equals(m.getActiveUserNickname());
-        following= m.getActiveUserFriends().containsKey(otherUser.getUsername()) & ! is_self_profile;
+        following= m.getActiveUserFriends().containsKey(otherUser.getUsername());
 
         getSupportActionBar().setTitle(otherUser.getUsername());
 
@@ -74,14 +74,24 @@ public class OthersProfile extends AppCompatActivity {
     private void followUnfollow() {
         if( is_self_profile ){
             Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
-        }else if( following ) {
-            followButton.setText(R.string.not_following);
-            serverService.unfollow(m.getSessionID(), otherUser.getUsername());
-            Toast.makeText(this, "Non segui più "+ otherUser.getUsername(), Toast.LENGTH_SHORT).show();
-        }else{
+        }else if(! following ) {
             followButton.setText(R.string.following);
             serverService.follow(m.getSessionID(), otherUser.getUsername(), otherUser.getImg());
-            Toast.makeText(this, "Hai iniziato a seguire " + otherUser.getUsername(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,
+                    "Hai iniziato a seguire " + otherUser.getUsername(),
+                    Toast.LENGTH_SHORT).show();
+
+            following= ! following;
+        }else{
+            followButton.setText(R.string.not_following);
+            serverService.unfollow(m.getSessionID(), otherUser.getUsername());
+            Toast.makeText(this,
+                    "Non segui più "+ otherUser.getUsername(),
+                    Toast.LENGTH_SHORT).show();
+
+            following= ! following;
         }
     }
+
+
 }
