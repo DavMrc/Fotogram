@@ -1,9 +1,14 @@
 package com.example.utente.fotogram.Object_classes;
 
+import com.android.volley.toolbox.StringRequest;
+
+import java.util.HashMap;
+
 public class User {
     private String username;
     private String img;
     private Post [] posts= new Post[10];
+    private HashMap<String, String> friends;
 
 //    costruttore
     public User(String username, String img){
@@ -33,6 +38,22 @@ public class User {
 
     public void setPosts(Post[] posts) {
         this.posts = posts;
+    }
+
+    public HashMap<String, String> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(HashMap<String, String> friends) {
+        this.friends = friends;
+    }
+
+    public void addFriend(String username, String img){
+        this.friends.put(username, img);
+    }
+
+    public void removeFriend(String username){
+        this.friends.remove(username);
     }
 
 }

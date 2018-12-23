@@ -7,10 +7,11 @@ public class Model {
     private static Model instance = null;
 
     private String sessionID;
-    private String activeUsername;
-    private String activePicture;
-    private Post [] activePosts= new Post[10];
-    private HashMap<String, String> activeUserFriends;
+//    private String activeUsername;
+//    private String activePicture;
+//    private Post [] activePosts= new Post[10];
+//    private HashMap<String, String> activeUserFriends;
+    private User activeUser;
     private User otherUser; // utente su cui si è fatto click dopo ricerca
 
     private Model() {}
@@ -22,6 +23,14 @@ public class Model {
         return instance;
     }
 
+    public User getActiveUser(){
+        return activeUser;
+    }
+
+    public void setActiveUser(User user){
+        this.activeUser= user;
+    }
+
     public String getSessionID(){
         return sessionID;
     }
@@ -31,49 +40,45 @@ public class Model {
     }
 
     public String getActiveUserNickname(){
-        return activeUsername;
+        return activeUser.getUsername();
     }
 
     public void setActiveUserNickname(String username){
-        this.activeUsername= username;
+        activeUser.setUsername(username);
     }
 
     public String getActiveUserImg(){
-        return activePicture;
+        return activeUser.getImg();
     }
 
     public void setActiveUserImg(String encodedImg){
-        this.activePicture= encodedImg;
+        activeUser.setImg(encodedImg);
     }
 
     public Post [] getActivePosts(){
-        return this.activePosts;
+        return activeUser.getPosts();
     }
 
     public void setActivePosts(Post [] posts){
-        this.activePosts= posts;
+        activeUser.setPosts(posts);
     }
 
     public HashMap<String, String> getActiveUserFriends(){
-        return this.activeUserFriends;
+        return activeUser.getFriends();
     }
 
-    public void setActiveUserFriends(HashMap<String, String> activeUserFriends){
-        this.activeUserFriends = activeUserFriends;
+    public void setActiveUserFriends(HashMap<String, String> friends){
+       activeUser.setFriends(friends);
     }
 
     public void addFriend(String username, String img){
-       if(! activeUserFriends.containsKey(username)){
-           activeUserFriends.put(username, img);
+       if(! activeUser.getFriends().containsKey(username) ){
+           activeUser.addFriend(username, img);
        }
     }
 
     public void removeFriend(String username){
-        activeUserFriends.remove(username);
-    }
-
-    public void emptyFriends(){
-        activeUserFriends.clear();
+        activeUser.removeFriend(username);
     }
 
     public User getOtherUser(){

@@ -42,7 +42,7 @@ public class OthersProfile extends AppCompatActivity {
 
         // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
-        Bitmap bitmap =imageHandler.decodeString(user.getImg());
+        Bitmap bitmap= imageHandler.decodeString(user.getImg());
         if(bitmap != null) {
             profilePic.setImageBitmap(bitmap);
         }

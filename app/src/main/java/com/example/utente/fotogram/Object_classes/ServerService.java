@@ -64,7 +64,7 @@ public class ServerService {
             @Override
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
-                m.setActiveUserNickname(username);
+//                m.setActiveUserNickname(username);
 
                 Log.d("DDD", "DDD ServerService Session id: "+sessionID);
 
@@ -168,8 +168,7 @@ public class ServerService {
             public void onResponse(String response) {
                 User activeUser= parseUser(response);
 
-                m.setActiveUserImg(activeUser.getImg());
-                m.setActivePosts(activeUser.getPosts());
+                m.setActiveUser(activeUser);
 
                 getFriends(sessionID);
             }
@@ -303,7 +302,9 @@ public class ServerService {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                parseFriends(serverResponse);
+                HashMap<String, String> friends= parseFriends(serverResponse);
+
+                m.setActiveUserFriends(friends);
 
 //                finally, move on to next Activity
                 privateContext.startActivity(new Intent(privateContext, Navigation.class));
@@ -397,7 +398,7 @@ public class ServerService {
         return gson.fromJson(jsonObject, User.class);
     }
 
-    private void parseFriends(String serverResponse){
+    private HashMap<String, String> parseFriends(String serverResponse){
         HashMap<String, String> friends= new HashMap<>();
         try {
             JSONObject jsonObject = new JSONObject(serverResponse);
@@ -414,7 +415,7 @@ public class ServerService {
             e.printStackTrace();
         }
 
-        m.setActiveUserFriends(friends);
+        return friends;
     }
 
     private ArrayList<User> parseSearchUsers(String serverResponse){
