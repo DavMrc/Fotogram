@@ -1,6 +1,7 @@
 package com.example.utente.fotogram.Object_classes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Model {
     private static Model instance = null;
@@ -9,7 +10,7 @@ public class Model {
     private String activeUsername;
     private String activePicture;
     private Post [] activePosts= new Post[10];
-    private ArrayList<User> activeUserFriends;
+    private HashMap<String, String> activeUserFriends;
     private User otherUser; // utente su cui si è fatto click dopo ricerca
 
     private Model() {}
@@ -53,33 +54,22 @@ public class Model {
         this.activePosts= posts;
     }
 
-    public ArrayList<User> getActiveUserFriends(){
+    public HashMap<String, String> getActiveUserFriends(){
         return this.activeUserFriends;
     }
 
-    public void setActiveUserFriends(ArrayList<User> activeUserFriends){
+    public void setActiveUserFriends(HashMap<String, String> activeUserFriends){
         this.activeUserFriends = activeUserFriends;
     }
 
-    public void addFriend(User user){
-        boolean areEquals= contiene(user);
-
-//        if there are no matches, add it
-        if(! areEquals){
-            activeUserFriends.add(user);
-        }
+    public void addFriend(String username, String img){
+       if(! activeUserFriends.containsKey(username)){
+           activeUserFriends.put(username, img);
+       }
     }
 
-    public boolean contiene(User user){
-        boolean areEquals= false;
-
-        for(User u: activeUserFriends){
-            if( u.getUsername().equals(user.getUsername()) ){
-                areEquals= true;
-            }
-        }
-
-        return areEquals;
+    public void removeFriend(String username){
+        activeUserFriends.remove(username);
     }
 
     public void emptyFriends(){

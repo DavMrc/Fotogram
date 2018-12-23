@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -37,8 +38,19 @@ public class ProfiloFragment extends Fragment {
     private ServerService serverService;
     private ImageHandler imageHandler;
 
+    private int friendsCount;
+    private TextView tv_friends;
+
     public ProfiloFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onResume() {
+        friendsCount= m.getActiveUserFriends().size()-1;
+        tv_friends.setText(String.valueOf(friendsCount));
+
+        super.onResume();
     }
 
     @Override
@@ -49,6 +61,7 @@ public class ProfiloFragment extends Fragment {
 
         context= getContext();
         m= Model.getInstance();
+        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
         serverService= ServerService.getInstance(context);
         imageHandler= new ImageHandler(context);
 
@@ -66,9 +79,8 @@ public class ProfiloFragment extends Fragment {
         username.setText(m.getActiveUserNickname());
 
 //        seguiti/amici che si sta seguendo
-        TextView friends= v.findViewById(R.id.txt_seguiti);
-        int skir= m.getActiveUserFriends().size() -1; // -1 perchè c'è anche l'activeUser
-        friends.setText(String.valueOf(skir));
+        tv_friends = v.findViewById(R.id.txt_seguiti);
+        tv_friends.setText(String.valueOf(friendsCount));
 
 //        bottone cambia immagine
         Button changeProPic = v.findViewById(R.id.btn_change_profile_pic);
@@ -76,15 +88,6 @@ public class ProfiloFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 checkStoragePermissions();
-            }
-        });
-
-//        only for debugging
-        Button clearFriends= v.findViewById(R.id.btn_clear_friends);
-        clearFriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                m.emptyFriends();
             }
         });
 

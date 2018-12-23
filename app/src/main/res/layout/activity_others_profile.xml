@@ -81,7 +81,7 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/button_gray_outline"
             android:fontFamily="sans-serif"
-            android:text="@string/follow"
+            android:text="@string/following"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -40,19 +40,25 @@ public class OthersProfile extends AppCompatActivity {
 
         getSupportActionBar().setTitle(user.getUsername());
 
+        // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
         Bitmap bitmap =imageHandler.decodeString(user.getImg());
         if(bitmap != null) {
             profilePic.setImageBitmap(bitmap);
         }
 
+        // username
         TextView username= findViewById(R.id.txt_username);
         username.setText(user.getUsername());
 
+        // bottone segui
         followButton= findViewById(R.id.btn_segui);
 
-        if(m.contiene(user)){
-            followButton.setText("Segui già");
+        // se l'utente è gia nella lista degli amici
+        if( m.getActiveUserFriends().containsKey(user.getUsername()) ){
+            followButton.setText(R.string.following);
+        }else{
+            followButton.setText(R.string.not_following);
         }
 
         followButton.setOnClickListener(new View.OnClickListener() {
@@ -64,12 +70,14 @@ public class OthersProfile extends AppCompatActivity {
     }
 
     private void followUnfollow() {
-        if(! m.contiene(user)){
-            followButton.setText("Segui già");
-            serverService.follow(m.getSessionID(), user);
-            Toast.makeText(this, "Ora siete amici", Toast.LENGTH_SHORT).show();
+        if(! m.getActiveUserFriends().containsKey(user.getUsername()) ){
+            followButton.setText(R.string.following);
+            serverService.follow(m.getSessionID(), user.getUsername(), user.getImg());
+            Toast.makeText(this, "Hai iniziato a seguire "+user.getUsername(), Toast.LENGTH_SHORT).show();
         }else{
-           Toast.makeText(this, "Siete già amici", Toast.LENGTH_SHORT).show();
+            followButton.setText(R.string.not_following);
+            serverService.unfollow(m.getSessionID(), user.getUsername());
+            Toast.makeText(this, "Non segui più "+user.getUsername(), Toast.LENGTH_SHORT).show();
         }
     }
 }

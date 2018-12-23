@@ -13,9 +13,10 @@ import com.example.utente.fotogram.Object_classes.User;
 import com.example.utente.fotogram.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BachecaFragment extends Fragment {
-    private ArrayList<User> friends;
+    private HashMap<String, String> friends;
 
     private Model m;
     private Context context;

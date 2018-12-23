@@ -17,6 +17,7 @@
     <string name="search_label">Cerca</string>
     <string name="search_hint">Cerca utenti...</string>
     <!--Misc-->
-    <string name="follow">Segui</string>
+    <string name="following">Stai seguendo</string>
+    <string name="not_following">Inizia a seguire</string>
 
 </resources>

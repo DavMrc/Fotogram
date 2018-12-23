@@ -328,14 +328,14 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void follow(final String sessionID, final User user){
+    public void follow(final String sessionID, final String username, final String img){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/follow";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                m.addFriend(user);
+                m.addFriend(username, img);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -350,7 +350,38 @@ public class ServerService {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", sessionID);
-                params.put("username", user.getUsername());
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    public void unfollow(final String sessionID, final String username){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.removeFriend(username);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(privateContext, "Impossibile smettere di seguire", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
+                params.put("username", username);
 
                 return params;
             }
@@ -367,7 +398,7 @@ public class ServerService {
     }
 
     private void parseFriends(String serverResponse){
-        ArrayList<User> friends= new ArrayList<>();
+        HashMap<String, String> friends= new HashMap<>();
         try {
             JSONObject jsonObject = new JSONObject(serverResponse);
             JSONArray array= jsonObject.getJSONArray("followed");
@@ -377,7 +408,7 @@ public class ServerService {
                 String username= pointedUser.getString("name");
                 String picture= pointedUser.getString("picture");
 
-                friends.add(new User(username, picture));
+                friends.put(username, picture);
             }
         }catch (JSONException e){
             e.printStackTrace();
