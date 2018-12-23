@@ -57,6 +57,9 @@ public class OthersProfile extends AppCompatActivity {
         // se l'utente è gia nella lista degli amici
         if( m.getActiveUserFriends().containsKey(user.getUsername()) ){
             followButton.setText(R.string.following);
+        } // se il profilo selezionato è sè stessi
+        if( user.getUsername().equals(m.getActiveUserNickname()) ){
+            followButton.setText(R.string.follow_yourself);
         }else{
             followButton.setText(R.string.not_following);
         }
@@ -70,10 +73,14 @@ public class OthersProfile extends AppCompatActivity {
     }
 
     private void followUnfollow() {
-        if(! m.getActiveUserFriends().containsKey(user.getUsername()) ){
+        // se non si sta già seguendo l'utente
+        if (! m.getActiveUserFriends().containsKey(user.getUsername())) {
             followButton.setText(R.string.following);
             serverService.follow(m.getSessionID(), user.getUsername(), user.getImg());
-            Toast.makeText(this, "Hai iniziato a seguire "+user.getUsername(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Hai iniziato a seguire " + user.getUsername(), Toast.LENGTH_SHORT).show();
+        } // se l'utente è sè stessi
+        if( m.getActiveUserFriends().containsKey(user.getUsername()) ){
+            Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
         }else{
             followButton.setText(R.string.not_following);
             serverService.unfollow(m.getSessionID(), user.getUsername());

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 public class ImageHandler {
     private Context context;
@@ -35,9 +36,8 @@ public class ImageHandler {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArr = baos.toByteArray();
-        String encoded = Base64.encodeToString(byteArr, Base64.DEFAULT);
 
-        return encoded;
+        return Base64.encodeToString(byteArr, Base64.DEFAULT);
     }
 
     public Bitmap decodeString(String encoded){

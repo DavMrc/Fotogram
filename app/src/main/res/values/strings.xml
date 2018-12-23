@@ -16,8 +16,9 @@
     <!--Ricerca-->
     <string name="search_label">Cerca</string>
     <string name="search_hint">Cerca utenti...</string>
-    <!--Misc-->
+    <!--Others profile-->
     <string name="following">Stai seguendo</string>
     <string name="not_following">Inizia a seguire</string>
+    <string name="follow_yourself">Impossibile seguire te stesso</string>
 
 </resources>
