@@ -7,10 +7,6 @@ public class Model {
     private static Model instance = null;
 
     private String sessionID;
-//    private String activeUsername;
-//    private String activePicture;
-//    private Post [] activePosts= new Post[10];
-//    private HashMap<String, String> activeUserFriends;
     private User activeUser;
     private User otherUser; // utente su cui si è fatto click dopo ricerca
 
