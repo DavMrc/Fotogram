@@ -10,6 +10,8 @@ public class Model {
     private User activeUser;
     private User otherUser; // utente su cui si è fatto click dopo ricerca
 
+    private Post [] wall;
+
     private Model() {}
 
     public static synchronized Model getInstance() {
@@ -85,4 +87,11 @@ public class Model {
         this.otherUser= user;
     }
 
+    public Post [] getWall(){
+        return this.wall;
+    }
+
+    public void setWall(Post [] wall) {
+        this.wall= wall;
+    }
 }

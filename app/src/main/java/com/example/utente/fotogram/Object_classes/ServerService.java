@@ -420,6 +420,39 @@ public class ServerService {
         queue.add(request);
     }
 
+    public void wall(final BachecaFragment fragment, final String sessionID){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/wall";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                Post[] wall= parseWall(response);
+                m.setWall(wall);
+
+                fragment.getPosts();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(privateContext, "Impossibile scaricare bacheca", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
     //JSON handlers
     private User parseUser(String jsonObject){
         Gson gson= new Gson();
@@ -466,6 +499,30 @@ public class ServerService {
         }
 
         return users;
+    }
+
+    private Post[] parseWall(String serverResponse){
+        Post [] posts= new Post[10];
+
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("posts");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedPost= array.getJSONObject(i);
+
+                String didascalia= pointedPost.getString("msg");
+                String img= pointedPost.getString("img");
+                String user= pointedPost.getString("user");
+                String timestamp= pointedPost.getString("timestamp");
+
+                posts[i]= new Post(user, didascalia, img, timestamp);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return posts;
     }
 
 }
