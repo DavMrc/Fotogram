@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
+import com.example.utente.fotogram.Object_classes.ProfilePostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.Object_classes.User;
 
@@ -22,6 +24,7 @@ public class OthersProfile extends AppCompatActivity {
     private ServerService serverService;
 
     private Button followButton;
+    private ListView postListView;
 
     private boolean is_self_profile;
     private boolean following;
@@ -51,6 +54,15 @@ public class OthersProfile extends AppCompatActivity {
         // username
         TextView username= findViewById(R.id.txt_username);
         username.setText(otherUser.getUsername());
+
+        // persone che segue
+        TextView followed= findViewById(R.id.txt_seguiti);
+        int friends= otherUser.getFriends().size()-1;
+        followed.setText(String.valueOf(friends));
+
+        // lista post
+        postListView= findViewById(R.id.others_posts);
+        getPosts();
 
         // bottone segui
         followButton= findViewById(R.id.btn_segui);
@@ -93,5 +105,12 @@ public class OthersProfile extends AppCompatActivity {
         }
     }
 
+    private void getPosts(){
+        ProfilePostsAdapter adapter = new ProfilePostsAdapter(
+                this,
+                R.layout.item_user_posts_item,
+                otherUser.getPosts());
+        postListView.setAdapter(adapter);
+    }
 
 }

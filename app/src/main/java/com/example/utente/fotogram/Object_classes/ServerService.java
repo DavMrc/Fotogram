@@ -186,7 +186,7 @@ public class ServerService {
 //                per evitare concatenazioni di metodi
                 if(first_getUserInfo) {
                     first_getUserInfo= false;
-                    getFriends(null, sessionID);
+                    getFriends(null, sessionID, "active");
                 }else {
 //                esegui due operazioni diverse in base al Fragment chiamante
                     if (callingFragment instanceof BachecaFragment) {
@@ -295,8 +295,8 @@ public class ServerService {
             @Override
             public void onResponse(String response) {
                 User otherUser= parseUser(response);
-
                 m.setOtherUser(otherUser);
+
                 privateContext.startActivity(new Intent(privateContext, OthersProfile.class));
             }
         }, new Response.ErrorListener() {
@@ -321,19 +321,19 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void getFriends(Fragment callingFragment, final String sessionID){
+    public void getFriends(Fragment callingFragment, final String sessionID, final String who){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
             @Override
             public void onResponse(String serverResponse) {
-                HashMap<String, String> friends= parseFriends(serverResponse);
+                HashMap<String, String> friends = parseFriends(serverResponse);
 
                 m.setActiveUserFriends(friends);
 
-                if(first_getFriends) {
-                    first_getFriends= false;
+                if (first_getFriends) {
+                    first_getFriends = false;
 //                finally, move on to next Activity
                     privateContext.startActivity(new Intent(privateContext, Navigation.class));
                 }

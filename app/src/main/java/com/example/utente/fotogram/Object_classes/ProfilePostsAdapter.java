@@ -14,13 +14,13 @@ import com.example.utente.fotogram.R;
 
 import java.util.ArrayList;
 
-public class PostsAdapter extends ArrayAdapter {
+public class ProfilePostsAdapter extends ArrayAdapter {
 
     private Context context;
     private ImageHandler imageHandler;
     private Post [] posts;
 
-    public PostsAdapter(Context context, int resource, Post [] posts) {
+    public ProfilePostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
         this.context = context;
         imageHandler= new ImageHandler(context);

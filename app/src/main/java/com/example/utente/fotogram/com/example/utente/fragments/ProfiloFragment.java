@@ -5,12 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +24,7 @@ import android.widget.Toast;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.PostsAdapter;
+import com.example.utente.fotogram.Object_classes.ProfilePostsAdapter;
 import com.example.utente.fotogram.Object_classes.ServerService;
 import com.example.utente.fotogram.R;
 
@@ -154,9 +152,9 @@ public class ProfiloFragment extends Fragment {
     }
 
     private void getPosts(){
-        PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.item_user_posts_item, m.getActivePosts());
+        ProfilePostsAdapter adapter = new ProfilePostsAdapter(context, R.layout.item_user_posts_item, m.getActivePosts());
 
-        postsListView.setAdapter(postsAdapter);
+        postsListView.setAdapter(adapter);
     }
 
     // chiamato da ServerService
