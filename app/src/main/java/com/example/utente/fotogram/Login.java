@@ -76,7 +76,7 @@ public class Login extends AppCompatActivity {
             m.setActiveUserNickname(username);
             m.setSessionID(sessionID);
 //      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
-            serverService.getActiveUserInfo(sessionID, username);
+            serverService.getActiveUserInfo(null, sessionID, username);
         }
     }
 

@@ -3,17 +3,20 @@ package com.example.utente.fotogram;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.Model;
@@ -159,11 +162,18 @@ public class Navigation extends AppCompatActivity {
             case R.id.btn_logout:
                 serverService.logout(m.getSessionID());
                 return true;
+
             case R.id.btn_refresh:
-                //TODO bugged
-                Animation animation = AnimationUtils.loadAnimation(getBaseContext(), R.anim.update_rotation);
-                item.getActionView().startAnimation(animation);
+                // effettua l'animazione
+                View v= findViewById(R.id.btn_refresh);
+                Animation animation= AnimationUtils.loadAnimation(this, R.anim.update_rotation);
+                animation.setRepeatCount(Animation.INFINITE);
+                v.startAnimation(animation);
+                item.setActionView(v);
+
+
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

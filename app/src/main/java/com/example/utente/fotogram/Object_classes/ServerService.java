@@ -3,6 +3,7 @@ package com.example.utente.fotogram.Object_classes;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.OthersProfile;
+import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
+import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 import com.google.gson.Gson;
 
@@ -27,13 +30,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerService {
-    //TODO: al boot dell'app, conviene scaricare la lista di amici da settare subito
-    //TODO: imparare hashmap per associare utente -> imm profilo
 
     private static ServerService serverService;
     private static Model m;
     private static Context privateContext;
     private static RequestQueue queue;
+
+    private static boolean first_login= true;
+    private static boolean first_getUserInfo= true;
+    private static boolean first_getFriends= true;
+
+//    per evitare concatenazioni di metodi (Login -> getUserInfo -> getFriends)
+//    la prima volta che ci si loggava, sono stati inseriti tre boolean che,
+//    nei rispettivi metodi, controllano se si sta eseguendo il login la prima volta
+//    allora lascia che si concatenino, per le successive i boolean impediranno
+//    la concatenazione
 
     //costruttore singleton
     private ServerService() {}
@@ -64,11 +75,13 @@ public class ServerService {
             @Override
             public void onResponse(String sessionID) {
                 m.setSessionID(sessionID);
-//                m.setActiveUserNickname(username);
 
                 Log.d("DDD", "DDD ServerService Session id: "+sessionID);
 
-                getActiveUserInfo(sessionID, username);
+                if(first_login) {
+                    first_login= false;
+                    getActiveUserInfo(null, sessionID, username);
+                }
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -159,7 +172,7 @@ public class ServerService {
 
     }
 
-    public void getActiveUserInfo(final String sessionID, final String username){
+    public void getActiveUserInfo(final Fragment callingFragment, final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -170,7 +183,20 @@ public class ServerService {
 
                 m.setActiveUser(activeUser);
 
-                getFriends(sessionID);
+//                per evitare concatenazioni di metodi
+                if(first_getUserInfo) {
+                    first_getUserInfo= false;
+                    getFriends(null, sessionID);
+                }
+
+//                esegui due operazioni diverse in base al Fragment chiamante
+                if(callingFragment instanceof BachecaFragment){
+                    BachecaFragment fr= (BachecaFragment) callingFragment;
+                    fr.onRefreshServerResponse();
+                }else if (callingFragment instanceof ProfiloFragment){
+                    ProfiloFragment fr= (ProfiloFragment) callingFragment;
+                    fr.onRefreshServerResponse();
+                }
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -295,7 +321,7 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void getFriends(final String sessionID){
+    public void getFriends(Fragment callingFragment, final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -306,8 +332,11 @@ public class ServerService {
 
                 m.setActiveUserFriends(friends);
 
+                if(first_getFriends) {
+                    first_getFriends= false;
 //                finally, move on to next Activity
-                privateContext.startActivity(new Intent(privateContext, Navigation.class));
+                    privateContext.startActivity(new Intent(privateContext, Navigation.class));
+                }
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -438,5 +467,5 @@ public class ServerService {
 
         return users;
     }
-
+    
 }

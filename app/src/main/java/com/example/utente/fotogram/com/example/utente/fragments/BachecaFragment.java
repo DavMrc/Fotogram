@@ -40,4 +40,8 @@ public class BachecaFragment extends Fragment {
 
         return v;
     }
+
+    public void onRefreshServerResponse(){
+
+    }
 }
