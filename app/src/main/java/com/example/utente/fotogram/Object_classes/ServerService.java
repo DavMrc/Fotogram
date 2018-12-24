@@ -118,6 +118,9 @@ public class ServerService {
                 editor.clear();
                 editor.commit();
 
+                // risetta il first_access a tutti i boolean
+                first_getFriends = first_getUserInfo = first_login = true;
+
                 m.setSessionID(null);
                 privateContext.startActivity(new Intent(privateContext, Login.class));
             }
@@ -172,7 +175,7 @@ public class ServerService {
 
     }
 
-    public void getActiveUserInfo(final Fragment callingFragment, final String sessionID, final String username){
+    public void getActiveUserInfo(final ProfiloFragment fragment, final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -187,15 +190,8 @@ public class ServerService {
                 if(first_getUserInfo) {
                     first_getUserInfo= false;
                     getFriends(null, sessionID);
-                }else {
-//                esegui due operazioni diverse in base al Fragment chiamante
-                    if (callingFragment instanceof BachecaFragment) {
-                        BachecaFragment fr = (BachecaFragment) callingFragment;
-                        fr.onRefreshUserInfo();
-                    } else if (callingFragment instanceof ProfiloFragment) {
-                        ProfiloFragment fr = (ProfiloFragment) callingFragment;
-                        fr.onRefreshUserInfo();
-                    }
+                }else{
+                    fragment.onRefreshUserInfo();
                 }
             }
         }, new Response.ErrorListener() {

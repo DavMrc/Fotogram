@@ -57,6 +57,8 @@ public class BachecaFragment extends Fragment {
 
     // richiamato da ServerService.wall
     public void getPosts(){
+        ((Navigation)getActivity()).stopRefreshAnimation();
+
         BachecaPostsAdapter adapter= new BachecaPostsAdapter(
                 context,
                 R.layout.item_bacheca_post_item,
@@ -65,10 +67,5 @@ public class BachecaFragment extends Fragment {
         postListView.setAdapter(adapter);
 
         progressBar.setVisibility(View.GONE);
-    }
-
-    // chiamato da ServerService
-    public void onRefreshUserInfo(){
-        ((Navigation)getActivity()).stopRefreshAnimation();
     }
 }

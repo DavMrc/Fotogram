@@ -55,10 +55,7 @@ public class OthersProfile extends AppCompatActivity {
         TextView username= findViewById(R.id.txt_username);
         username.setText(otherUser.getUsername());
 
-        // persone che segue
-        TextView followed= findViewById(R.id.txt_seguiti);
-        int friends= otherUser.getFriends().size()-1;
-        followed.setText(String.valueOf(friends));
+        //TODO: gli altri utenti non hanno una loro lista di amici?
 
         // lista post
         postListView= findViewById(R.id.others_posts);

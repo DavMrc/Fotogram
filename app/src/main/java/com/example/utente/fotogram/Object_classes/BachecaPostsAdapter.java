@@ -25,6 +25,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
     private Post [] posts;
     private HashMap<String, String> friends;
+    private boolean following= false;
 
     public BachecaPostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
@@ -48,11 +49,13 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             li= LayoutInflater.from(this.context);
             v= li.inflate(R.layout.item_bacheca_post_item, null);
         }
+        //TODO: come fermo l'inflating se l'array è finito?
 
         Post p= posts[position];
 
         if(p != null){
             final String username= p.getUsername();
+            final String img= friends.get(username);
 
             ImageView profileImg= v.findViewById(R.id.li_img_profilo);
             TextView tv_username= v.findViewById(R.id.li_username);
@@ -63,8 +66,8 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             Bitmap profileImgBitmap;
             Bitmap postBitmap= imageHandler.decodeString(p.getImg());
 
-            if(! friends.get(username).equals("")) {
-                profileImgBitmap= imageHandler.decodeString(friends.get(username));
+            if(! img.equals("")) {
+                profileImgBitmap= imageHandler.decodeString(img);
                 profileImg.setImageBitmap(profileImgBitmap);
             }
 
@@ -80,17 +83,35 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                 didascalia.setText(p.getMsg());
             }
 
+            following= friends.containsKey(username);
+
             unfollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // se l'utente cliccato non è sè stessi
-                    if(! m.getActiveUserNickname().equals(username)) {
-                        serverService.unfollow(m.getSessionID(), username);
-                        Toast.makeText(context, "Hai smesso di seguire " + username, Toast.LENGTH_SHORT).show();
+                    //TODO: se riclicca, dovrebbe ri-iniziare a seguire?
+
+                    if(following){
+                        // se l'utente cliccato non è sè stessi
+                        if(! m.getActiveUserNickname().equals(username)) {
+//                            serverService.unfollow(m.getSessionID(), username);
+                            Toast.makeText(context, "Hai smesso di seguire " + username, Toast.LENGTH_SHORT).show();
+                            following= ! following;
+                        }else{
+                            Toast.makeText(context,
+                                    "Non puoi smettere di seguire te stesso",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }else{
-                        Toast.makeText(context,
-                                "Non puoi smettere di seguire te stesso",
-                                Toast.LENGTH_SHORT).show();
+                        // se l'utente cliccato non è sè stessi
+                        if(! m.getActiveUserNickname().equals(username)) {
+//                            serverService.follow(m.getSessionID(), username, img);
+                            Toast.makeText(context, "Hai iniziato a seguire " + username, Toast.LENGTH_SHORT).show();
+                            following= ! following;
+                        }else{
+                            Toast.makeText(context,
+                                    "Non iniziare a seguire te stesso",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });

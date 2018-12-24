@@ -24,10 +24,10 @@ import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
 public class Navigation extends AppCompatActivity {
 
-    private Fragment bacheca= new BachecaFragment();
-    private Fragment cerca= new RicercaFragment();
-    private Fragment nuovo_post= new Nuovo_Post_Fragment();
-    private Fragment profilo= new ProfiloFragment();
+    private BachecaFragment bacheca= new BachecaFragment();
+    private RicercaFragment cerca= new RicercaFragment();
+    private Nuovo_Post_Fragment nuovo_post= new Nuovo_Post_Fragment();
+    private ProfiloFragment profilo= new ProfiloFragment();
     private Fragment active= bacheca;
     private FragmentManager fManager= getSupportFragmentManager();
 
@@ -44,7 +44,7 @@ public class Navigation extends AppCompatActivity {
 
         m= Model.getInstance();
         serverService= ServerService.getInstance(this);
-        Login.activity.finish();
+//        Login.activity.finish();
 
         hideBottomNavBar();
 
@@ -168,7 +168,7 @@ public class Navigation extends AppCompatActivity {
                 refreshView.startAnimation(animation);
                 item.setActionView(refreshView);
 
-                serverService.getActiveUserInfo(bacheca, m.getSessionID(), m.getActiveUserNickname());
+                serverService.wall(bacheca, m.getSessionID());
 
                 return true;
 
@@ -191,7 +191,9 @@ public class Navigation extends AppCompatActivity {
 
     // chiamato dai Fragment
     public void stopRefreshAnimation(){
-        refreshView.clearAnimation();
+        if(refreshView != null) {
+            refreshView.clearAnimation();
+        }
     }
 
 }
