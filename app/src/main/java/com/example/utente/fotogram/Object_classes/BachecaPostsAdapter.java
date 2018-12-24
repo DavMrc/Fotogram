@@ -93,7 +93,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                     if(following){
                         // se l'utente cliccato non è sè stessi
                         if(! m.getActiveUserNickname().equals(username)) {
-//                            serverService.unfollow(m.getSessionID(), username);
+                            serverService.unfollow(m.getSessionID(), username);
                             Toast.makeText(context, "Hai smesso di seguire " + username, Toast.LENGTH_SHORT).show();
                             following= ! following;
                         }else{
@@ -104,7 +104,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                     }else{
                         // se l'utente cliccato non è sè stessi
                         if(! m.getActiveUserNickname().equals(username)) {
-//                            serverService.follow(m.getSessionID(), username, img);
+                            serverService.follow(m.getSessionID(), username, img);
                             Toast.makeText(context, "Hai iniziato a seguire " + username, Toast.LENGTH_SHORT).show();
                             following= ! following;
                         }else{

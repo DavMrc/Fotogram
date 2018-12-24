@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
+    <!--TODO: fare layout per tablet-->
+
     <ImageView
         android:id="@+id/img.logo"
         android:layout_width="203dp"
