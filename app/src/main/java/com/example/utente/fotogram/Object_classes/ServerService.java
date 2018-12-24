@@ -186,7 +186,7 @@ public class ServerService {
 //                per evitare concatenazioni di metodi
                 if(first_getUserInfo) {
                     first_getUserInfo= false;
-                    getFriends(null, sessionID, "active");
+                    getFriends(null, sessionID);
                 }else {
 //                esegui due operazioni diverse in base al Fragment chiamante
                     if (callingFragment instanceof BachecaFragment) {
@@ -321,7 +321,7 @@ public class ServerService {
         queue.add(request);
     }
 
-    public void getFriends(Fragment callingFragment, final String sessionID, final String who){
+    public void getFriends(Fragment callingFragment, final String sessionID){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
