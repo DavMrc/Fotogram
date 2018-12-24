@@ -96,14 +96,14 @@ public class Nuovo_Post_Fragment extends Fragment {
             }
         });
 
-        // bottone per cancellare l'immagine
+        // bottone rosso per cancellare l'immagine
         cancelPost= v.findViewById(R.id.btn_cancel_post);
         cancelPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chooseImage.setImageResource(R.drawable.ic_insert_photo_blue_grey_500_48dp);
 
-                // nasconde i bottoni
+                // lo nasconde
                 cancelPost.setVisibility(View.GONE);
             }
         });
@@ -129,6 +129,7 @@ public class Nuovo_Post_Fragment extends Fragment {
         });
     }
 
+    // TODO: non è ben sincronizzato: non compare la scritta E POI ti fa partire subito l'intent
     private void checkStoragePermissions(){
 //        permissions haven't been granted
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {

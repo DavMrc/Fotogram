@@ -100,6 +100,7 @@ public class ProfiloFragment extends Fragment {
         return v;
     }
 
+    // TODO: non è ben sincronizzato: non compare la scritta E POI ti fa partire subito l'intent
     private void checkStoragePermissions(){
 //        permission isn't granted: prompt the user
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -140,7 +141,7 @@ public class ProfiloFragment extends Fragment {
         if(requestCode == 20 & resultCode == Activity.RESULT_OK) {
             Uri imageURI = data.getData();
 
-            if(imageURI !=null){
+            if(imageURI != null){
                 proPic.setImageURI(imageURI);
 
 //              aggiorna su server e Model
