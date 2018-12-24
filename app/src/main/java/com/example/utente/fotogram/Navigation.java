@@ -3,21 +3,17 @@ package com.example.utente.fotogram;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v7.widget.Toolbar;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.ServerService;
@@ -37,6 +33,7 @@ public class Navigation extends AppCompatActivity {
 
     private Toolbar toolbar;
     private ServerService serverService;
+    private View refreshView;
 
     private Model m;
 
@@ -54,7 +51,7 @@ public class Navigation extends AppCompatActivity {
         toolbar= findViewById(R.id.toolbar);
         // TODO: this doesn't get inflated right-away
         toolbar.setTitle("Bacheca");
-        toolbar.inflateMenu(R.menu.refresh_button);
+        toolbar.inflateMenu(R.menu.refresh_button_bacheca);
         setSupportActionBar(toolbar);
 
         setupFooter();
@@ -123,7 +120,7 @@ public class Navigation extends AppCompatActivity {
 
                         getSupportActionBar().setTitle("Bacheca");
                         toolbar.getMenu().clear();
-                        toolbar.inflateMenu(R.menu.refresh_button);
+                        toolbar.inflateMenu(R.menu.refresh_button_bacheca);
                         break;
                     case R.id.cerca:
                         fManager.beginTransaction().hide(active).show(cerca).commit();
@@ -144,7 +141,7 @@ public class Navigation extends AppCompatActivity {
                         active= profilo;
 
                         toolbar.getMenu().clear();
-                        toolbar.inflateMenu(R.menu.refresh_button);
+                        toolbar.inflateMenu(R.menu.refresh_profilo_button);
                         toolbar.inflateMenu(R.menu.logout_button);
                         getSupportActionBar().setTitle("Profilo");
                         break;
@@ -163,14 +160,27 @@ public class Navigation extends AppCompatActivity {
                 serverService.logout(m.getSessionID());
                 return true;
 
-            case R.id.btn_refresh:
+            case R.id.btn_refresh_bacheca:
                 // effettua l'animazione
-                View v= findViewById(R.id.btn_refresh);
+                refreshView= findViewById(R.id.btn_refresh_bacheca);
                 Animation animation= AnimationUtils.loadAnimation(this, R.anim.update_rotation);
                 animation.setRepeatCount(Animation.INFINITE);
-                v.startAnimation(animation);
-                item.setActionView(v);
+                refreshView.startAnimation(animation);
+                item.setActionView(refreshView);
 
+                serverService.getActiveUserInfo(bacheca, m.getSessionID(), m.getActiveUserNickname());
+
+                return true;
+
+            case R.id.btn_refresh_profilo:
+                // effettua l'animazione
+                refreshView= findViewById(R.id.btn_refresh_profilo);
+                Animation animation1= AnimationUtils.loadAnimation(this, R.anim.update_rotation);
+                animation1.setRepeatCount(Animation.INFINITE);
+                refreshView.startAnimation(animation1);
+                item.setActionView(refreshView);
+
+                serverService.getActiveUserInfo(profilo, m.getSessionID(), m.getActiveUserNickname());
 
                 return true;
 
@@ -178,4 +188,9 @@ public class Navigation extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    public void stopRefreshAnimation(){
+        refreshView.clearAnimation();
+    }
+
 }

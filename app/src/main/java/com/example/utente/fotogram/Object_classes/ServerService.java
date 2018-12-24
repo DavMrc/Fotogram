@@ -192,10 +192,10 @@ public class ServerService {
 //                esegui due operazioni diverse in base al Fragment chiamante
                 if(callingFragment instanceof BachecaFragment){
                     BachecaFragment fr= (BachecaFragment) callingFragment;
-                    fr.onRefreshServerResponse();
+                    fr.onRefreshUserInfo();
                 }else if (callingFragment instanceof ProfiloFragment){
                     ProfiloFragment fr= (ProfiloFragment) callingFragment;
-                    fr.onRefreshServerResponse();
+                    fr.onRefreshUserInfo();
                 }
             }
         }, new Response.ErrorListener() {
@@ -467,5 +467,5 @@ public class ServerService {
 
         return users;
     }
-    
+
 }

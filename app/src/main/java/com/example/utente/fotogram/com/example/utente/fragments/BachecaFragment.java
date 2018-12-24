@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.User;
@@ -41,7 +42,7 @@ public class BachecaFragment extends Fragment {
         return v;
     }
 
-    public void onRefreshServerResponse(){
-
+    public void onRefreshUserInfo(){
+        ((Navigation)getActivity()).stopRefreshAnimation();
     }
 }

@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.Object_classes.ImageHandler;
 import com.example.utente.fotogram.Object_classes.Model;
 import com.example.utente.fotogram.Object_classes.PostsAdapter;
@@ -42,6 +43,7 @@ public class ProfiloFragment extends Fragment {
 
     private int friendsCount;
     private TextView tv_friends;
+    private ListView postsListView;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class ProfiloFragment extends Fragment {
 
         serverService.getActiveUserInfo(ProfiloFragment.this, m.getSessionID(), m.getActiveUserNickname());
         proPic= v.findViewById(R.id.img_profile_pic);
+        postsListView= v.findViewById(R.id.personal_posts);
 
 //        immagine profilo
         String image= m.getActiveUserImg();
@@ -93,7 +96,7 @@ public class ProfiloFragment extends Fragment {
             }
         });
 
-        getPosts(v);
+        getPosts();
 
         return v;
     }
@@ -150,14 +153,14 @@ public class ProfiloFragment extends Fragment {
         }
     }
 
-    private void getPosts(View v){
-        ListView postsListView= v.findViewById(R.id.personal_posts);
+    private void getPosts(){
         PostsAdapter postsAdapter= new PostsAdapter(context, R.layout.item_user_posts_item, m.getActivePosts());
 
         postsListView.setAdapter(postsAdapter);
     }
 
-    public void onRefreshServerResponse(){
-
+    public void onRefreshUserInfo(){
+        ((Navigation)getActivity()).stopRefreshAnimation();
+        getPosts();
     }
 }
