@@ -187,15 +187,15 @@ public class ServerService {
                 if(first_getUserInfo) {
                     first_getUserInfo= false;
                     getFriends(null, sessionID);
-                }
-
+                }else {
 //                esegui due operazioni diverse in base al Fragment chiamante
-                if(callingFragment instanceof BachecaFragment){
-                    BachecaFragment fr= (BachecaFragment) callingFragment;
-                    fr.onRefreshUserInfo();
-                }else if (callingFragment instanceof ProfiloFragment){
-                    ProfiloFragment fr= (ProfiloFragment) callingFragment;
-                    fr.onRefreshUserInfo();
+                    if (callingFragment instanceof BachecaFragment) {
+                        BachecaFragment fr = (BachecaFragment) callingFragment;
+                        fr.onRefreshUserInfo();
+                    } else if (callingFragment instanceof ProfiloFragment) {
+                        ProfiloFragment fr = (ProfiloFragment) callingFragment;
+                        fr.onRefreshUserInfo();
+                    }
                 }
             }
         }, new Response.ErrorListener() {

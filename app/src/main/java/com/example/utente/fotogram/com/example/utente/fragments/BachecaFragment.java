@@ -42,6 +42,7 @@ public class BachecaFragment extends Fragment {
         return v;
     }
 
+    // chiamato da ServerService
     public void onRefreshUserInfo(){
         ((Navigation)getActivity()).stopRefreshAnimation();
     }

@@ -189,6 +189,7 @@ public class Navigation extends AppCompatActivity {
         }
     }
 
+    // chiamato dai Fragment
     public void stopRefreshAnimation(){
         refreshView.clearAnimation();
     }

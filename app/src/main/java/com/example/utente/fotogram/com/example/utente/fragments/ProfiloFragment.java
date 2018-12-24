@@ -69,7 +69,6 @@ public class ProfiloFragment extends Fragment {
         serverService= ServerService.getInstance(context);
         imageHandler= new ImageHandler(context);
 
-        serverService.getActiveUserInfo(ProfiloFragment.this, m.getSessionID(), m.getActiveUserNickname());
         proPic= v.findViewById(R.id.img_profile_pic);
         postsListView= v.findViewById(R.id.personal_posts);
 
@@ -159,6 +158,7 @@ public class ProfiloFragment extends Fragment {
         postsListView.setAdapter(postsAdapter);
     }
 
+    // chiamato da ServerService
     public void onRefreshUserInfo(){
         ((Navigation)getActivity()).stopRefreshAnimation();
         getPosts();
