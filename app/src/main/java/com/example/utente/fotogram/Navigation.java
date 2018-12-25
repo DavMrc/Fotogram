@@ -14,13 +14,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
+import com.example.utente.fotogram.Model_Controller.User;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 
 public class Navigation extends AppCompatActivity {
 
@@ -66,7 +75,7 @@ public class Navigation extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        saveSession();
+//        saveSession();
     }
 
     @Override
@@ -98,22 +107,43 @@ public class Navigation extends AppCompatActivity {
     }
 
     private void saveSession(){
-        String username= m.getActiveUserNickname();
-        String img= m.getActiveUserImg();
-        String sessionID= m.getSessionID();
+//        String username= m.getActiveUserNickname();
+//        String img= m.getActiveUserImg();
+//        String sessionID= m.getSessionID();
+//
+//        Context context= this;
+//
+//        // crea le SharedPref di nome "preferences" e ci salva username e password
+//        // potranno essere usate da Login
+//        SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor= sharedPref.edit();
+//
+//        editor.putString("username", username);
+//        editor.putString("img", img);
+//        editor.putString("sessionID", sessionID);
+//
+//        editor.commit();
 
-        Context context= this;
-
-        // crea le SharedPref di nome "preferences" e ci salva username e password
-        // potranno essere usate da Login
-        SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor= sharedPref.edit();
-
-        editor.putString("username", username);
-        editor.putString("img", img);
-        editor.putString("sessionID", sessionID);
-
-        editor.commit();
+//        User activeUser= m.getActiveUser();
+//        String fileName= "saved_user";
+//
+//        try {
+//            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), fileName));
+//            ObjectOutputStream objectOut = new ObjectOutputStream(fos);
+//            objectOut.writeObject(activeUser);
+//
+//            fos.close();
+//            objectOut.close();
+//
+//            Toast.makeText(this,
+//                    "Success in writing",
+//                    Toast.LENGTH_SHORT).show();
+//        }catch (Exception e){
+//            Toast.makeText(this,
+//                    "Errore durante la scritture dell'utente",
+//                    Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        }
     }
 
     private void setupFooter(){

@@ -1,8 +1,11 @@
 package com.example.utente.fotogram.Model_Controller;
 
+import android.support.annotation.Nullable;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String img;
     private Post [] posts= new Post[10];
@@ -12,6 +15,13 @@ public class User {
     public User(String username, String img){
         this.username= username;
         this.img= img;
+    }
+//    costruttore completo per le SharedPreferences
+    public User(String username, String img, Post [] posts, HashMap<String, String> friends){
+        this.username= username;
+        this.img= img;
+        this.posts= posts;
+        this.friends= friends;
     }
 
     public String getUsername() {

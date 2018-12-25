@@ -12,9 +12,20 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
+import com.example.utente.fotogram.Model_Controller.User;
+
+import org.apache.commons.io.IOUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 
 public class Login extends AppCompatActivity {
 
@@ -68,17 +79,40 @@ public class Login extends AppCompatActivity {
     private void readPreferences(){
         // legge il file con session ID, username ecc
 //         il file viene scritto in Navigation
-        SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
+//        SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
+////
+////        String username= sharedPref.getString("username", null);
+////        String img= sharedPref.getString("img", null);
+////        String sessionID= sharedPref.getString("sessionID", null);
+////
+////        if( username != null && img != null && sessionID != null ){
+////            //TODO: tutto
+//////      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
+////            serverService.getActiveUserInfo(null, sessionID, username);
+////        }
 
-        String username= sharedPref.getString("username", null);
-        String img= sharedPref.getString("img", null);
-        String sessionID= sharedPref.getString("sessionID", null);
+//        String fileName= "saved_user";
+//
+//        try {
+//            FileInputStream fis = openFileInput(fileName);
+//            ObjectInputStream ois= new ObjectInputStream(fis);
+//
+//            User restoredUser= (User) ois.readObject();
+////            m.setActiveUser(restoredUser);
+//
+//            fis.close();
+//            ois.close();
+//
+//            Toast.makeText(this,
+//                    "Success in reading",
+//                    Toast.LENGTH_SHORT).show();
+//        }catch (Exception e){
+//            Toast.makeText(this,
+//                    "Errore durante la lettura dell'utente",
+//                    Toast.LENGTH_SHORT).show();
+//            e.printStackTrace();
+//        }
 
-        if( username != null && img != null && sessionID != null ){
-            //TODO: tutto
-//      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
-            serverService.getActiveUserInfo(null, sessionID, username);
-        }
     }
 
     private void hideBottomNavBar(){
