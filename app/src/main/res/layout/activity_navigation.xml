@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/light_gray_xl"
+        android:background="@color/main_light_blue"
+        app:titleTextColor="@color/white"
         android:elevation="4dp" />
 
     <!--container dei fragments-->

@@ -59,7 +59,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
             ImageView profileImg= v.findViewById(R.id.li_img_profilo);
             TextView tv_username= v.findViewById(R.id.li_username);
-            ImageView unfollow= v.findViewById(R.id.li_unfollow);
+            final ImageView unfollow= v.findViewById(R.id.li_unfollow);
             ImageView post= v.findViewById(R.id.li_post);
             TextView didascalia= v.findViewById(R.id.li_didascalia);
 
@@ -74,6 +74,12 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             tv_username.setText(username);
 
             post.setImageBitmap(postBitmap);
+            post.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    serverService.getOtherUserInfo(m.getSessionID(), username);
+                }
+            });
 
             if(p.getMsg().equals("")) {
                 didascalia.setTypeface(null, Typeface.ITALIC);
@@ -94,22 +100,13 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                         // se l'utente cliccato non è sè stessi
                         if(! m.getActiveUserNickname().equals(username)) {
                             serverService.unfollow(m.getSessionID(), username);
-                            Toast.makeText(context, "Hai smesso di seguire " + username, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context,
+                                    "Hai smesso di seguire " + username,
+                                    Toast.LENGTH_SHORT).show();
                             following= ! following;
                         }else{
                             Toast.makeText(context,
                                     "Non puoi smettere di seguire te stesso",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        // se l'utente cliccato non è sè stessi
-                        if(! m.getActiveUserNickname().equals(username)) {
-                            serverService.follow(m.getSessionID(), username, img);
-                            Toast.makeText(context, "Hai iniziato a seguire " + username, Toast.LENGTH_SHORT).show();
-                            following= ! following;
-                        }else{
-                            Toast.makeText(context,
-                                    "Non iniziare a seguire te stesso",
                                     Toast.LENGTH_SHORT).show();
                         }
                     }

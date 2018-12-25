@@ -67,8 +67,12 @@ public class OthersProfile extends AppCompatActivity {
         if(is_self_profile){
             followButton.setText(R.string.follow_yourself);
         }else if( following ){
+            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
+            followButton.setTextColor(getResources().getColor(R.color.white));
             followButton.setText(R.string.following);
         }else{
+            followButton.setBackgroundResource(R.drawable.button_gray_outline);
+            followButton.setTextColor(getResources().getColor(R.color.black));
             followButton.setText(R.string.not_following);
         }
 
@@ -84,7 +88,10 @@ public class OthersProfile extends AppCompatActivity {
         if( is_self_profile ){
             Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
         }else if(! following ) {
+            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
+            followButton.setTextColor(getResources().getColor(R.color.white));
             followButton.setText(R.string.following);
+
             serverService.follow(m.getSessionID(), otherUser.getUsername(), otherUser.getImg());
             Toast.makeText(this,
                     "Hai iniziato a seguire " + otherUser.getUsername(),
@@ -92,7 +99,10 @@ public class OthersProfile extends AppCompatActivity {
 
             following= ! following;
         }else{
+            followButton.setBackgroundResource(R.drawable.button_gray_outline);
+            followButton.setTextColor(getResources().getColor(R.color.black));
             followButton.setText(R.string.not_following);
+
             serverService.unfollow(m.getSessionID(), otherUser.getUsername());
             Toast.makeText(this,
                     "Non segui più "+ otherUser.getUsername(),

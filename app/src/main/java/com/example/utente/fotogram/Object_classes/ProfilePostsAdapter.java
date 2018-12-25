@@ -53,6 +53,7 @@ public class ProfilePostsAdapter extends ArrayAdapter {
                 didascalia.setTypeface(null, Typeface.ITALIC);
                 didascalia.setText(R.string.didascalia_empty);
             }else{
+                didascalia.setTypeface(null, Typeface.NORMAL);
                 didascalia.setText(p.getMsg());
             }
 

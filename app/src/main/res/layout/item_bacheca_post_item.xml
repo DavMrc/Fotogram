@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/li.img_profilo"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignStart="@id/li.post"
+        android:layout_marginTop="10dp"
         tools:srcCompat="@tools:sample/avatars[0]" />
 
     <TextView
@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/li.img_profilo"
         android:text="Username"
         android:textSize="16sp"
@@ -28,7 +28,7 @@
         android:layout_width="260dp"
         android:layout_height="240dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:scaleType="fitXY"
         tools:srcCompat="@tools:sample/avatars[3]" />
 
@@ -37,6 +37,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="-30dp"
         android:layout_toEndOf="@id/li.post"
         android:background="@drawable/person_remove" />
@@ -48,6 +49,7 @@
         android:layout_below="@id/li.post"
         android:layout_alignStart="@id/li.post"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:text="Didascalia"
-        android:textSize="15sp" />
+        android:textSize="16sp" />
 </RelativeLayout>
