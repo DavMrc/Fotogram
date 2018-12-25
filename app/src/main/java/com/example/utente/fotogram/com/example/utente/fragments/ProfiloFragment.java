@@ -21,11 +21,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ServerService;
+import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
 
 import java.io.File;

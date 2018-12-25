@@ -32,10 +32,6 @@
             android:parentActivityName=".Navigation"
             android:theme="@style/Theme.Design.Light"></activity>
 
-        <activity
-            android:name=".YourFollowed"
-            android:parentActivityName=".Navigation"
-            android:theme="@style/Theme.Design.Light"></activity>
     </application>
 
 </manifest>

@@ -9,11 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.Model_Controller.BachecaPostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
+import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
 
 import java.util.HashMap;
