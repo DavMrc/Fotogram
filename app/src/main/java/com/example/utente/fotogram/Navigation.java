@@ -77,15 +77,29 @@ public class Navigation extends AppCompatActivity {
     }
 
     private void hideBottomNavBar(){
-        View decorView = getWindow().getDecorView();
+        final View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE
+                  View.SYSTEM_UI_FLAG_IMMERSIVE
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+//                barra di sistema riapparsa, nasconderla
+                if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
+                    decorView.setSystemUiVisibility(
+                              View.SYSTEM_UI_FLAG_IMMERSIVE
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    );
+                }
+            }
+        });
     }
 
     private void saveSession(){
-        String nickname= m.getActiveUserNickname();
+        String username= m.getActiveUserNickname();
+        String img= m.getActiveUserImg();
         String sessionID= m.getSessionID();
 
         Context context= this;
@@ -95,7 +109,8 @@ public class Navigation extends AppCompatActivity {
         SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor= sharedPref.edit();
 
-        editor.putString("username", nickname);
+        editor.putString("username", username);
+        editor.putString("img", img);
         editor.putString("sessionID", sessionID);
 
         editor.commit();

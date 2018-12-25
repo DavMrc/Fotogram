@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerService {
+    // TODO: metodi concatenati tutti insieme al Login o solo login e poi nei fragment i successivi?
 
     private static ServerService serverService;
     private static Model m;
@@ -63,12 +64,7 @@ public class ServerService {
     }
 
     public void login(final String username, final String password){
-        /* dopo aver effettuato
-        la chiamata di rete /login, setta nel model sessionID e username, per poi
-        chiamare il metodo getActiveUserInfo, che ottiene l'immagine e la lista dei post.
-        Questo è stato fatto per motivi di sincronizzazione.
-        */
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida

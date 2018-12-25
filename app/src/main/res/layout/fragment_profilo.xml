@@ -146,7 +146,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <!--TODO: senza motivo, ogni tanto si alza e copre la scritta-->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="fill_parent"

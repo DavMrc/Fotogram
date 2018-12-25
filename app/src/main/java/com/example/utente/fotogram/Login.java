@@ -21,6 +21,7 @@ public class Login extends AppCompatActivity {
     private static Model m;
     private static ServerService serverService;
     public static Activity activity;
+    private ServerService serverService1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,23 +71,35 @@ public class Login extends AppCompatActivity {
         SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         String username= sharedPref.getString("username", null);
+        String img= sharedPref.getString("img", null);
         String sessionID= sharedPref.getString("sessionID", null);
 
-        if( sessionID != null && username != null){
-            m.setActiveUserNickname(username);
-            m.setSessionID(sessionID);
+        if( username != null && img != null && sessionID != null ){
+            //TODO: tutto
 //      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
             serverService.getActiveUserInfo(null, sessionID, username);
         }
     }
 
     private void hideBottomNavBar(){
-        // nasconde la bottom navbar
-        View decorView = getWindow().getDecorView();
+        final View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE         // immersive
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                  View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+//                barra di sistema riapparsa, nasconderla
+                if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
+                    decorView.setSystemUiVisibility(
+                              View.SYSTEM_UI_FLAG_IMMERSIVE
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    );
+                }
+            }
+        });
     }
 
     private void setConstraintLayoutListener(){
