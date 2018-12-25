@@ -106,15 +106,17 @@
         android:id="@+id/txt.username"
         android:layout_width="153dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/nome_utente"
         android:textAlignment="center"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img.profile_pic" />
+        app:layout_constraintTop_toBottomOf="@+id/img.profile_pic"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView"
@@ -144,6 +146,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+    <!--TODO: l'altezza hardcoded non è scalabile con altre dimensioni di telefoni-->
     <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="fill_parent"
