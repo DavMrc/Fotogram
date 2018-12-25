@@ -1,4 +1,4 @@
-package com.example.utente.fotogram.Object_classes;
+package com.example.utente.fotogram.Model_Controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,8 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.utente.fotogram.R;
-
-import java.util.ArrayList;
 
 public class ProfilePostsAdapter extends ArrayAdapter {
 

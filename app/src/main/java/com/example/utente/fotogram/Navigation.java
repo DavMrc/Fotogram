@@ -15,8 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.ServerService;
+import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;

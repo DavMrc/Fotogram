@@ -13,8 +13,8 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.ServerService;
+import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.ServerService;
 
 public class Login extends AppCompatActivity {
 

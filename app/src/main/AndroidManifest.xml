@@ -25,13 +25,17 @@
         <activity
             android:name=".Navigation"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Design.Light.NoActionBar">
-        </activity>
-        <!--Others Profile-->
-        <activity android:name=".OthersProfile"
+            android:theme="@style/Theme.Design.Light.NoActionBar"></activity>
+        <!-- Others Profile -->
+        <activity
+            android:name=".OthersProfile"
             android:parentActivityName=".Navigation"
-            android:theme="@style/Theme.Design.Light">
-        </activity>
+            android:theme="@style/Theme.Design.Light"></activity>
+
+        <activity
+            android:name=".YourFollowed"
+            android:parentActivityName=".Navigation"
+            android:theme="@style/Theme.Design.Light"></activity>
     </application>
 
 </manifest>

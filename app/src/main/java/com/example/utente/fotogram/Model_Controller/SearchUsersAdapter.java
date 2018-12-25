@@ -1,4 +1,4 @@
-package com.example.utente.fotogram.Object_classes;
+package com.example.utente.fotogram.Model_Controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.example.utente.fotogram.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchUsersAdapter extends ArrayAdapter {
 

@@ -5,48 +5,32 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.utente.fotogram.Object_classes.ImageHandler;
-import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.Post;
-import com.example.utente.fotogram.Object_classes.ServerService;
+import com.example.utente.fotogram.Model_Controller.ImageHandler;
+import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.Post;
+import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.R;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Nuovo_Post_Fragment extends Fragment {
 

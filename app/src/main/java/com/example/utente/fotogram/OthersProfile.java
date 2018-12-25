@@ -10,11 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.utente.fotogram.Object_classes.ImageHandler;
-import com.example.utente.fotogram.Object_classes.Model;
-import com.example.utente.fotogram.Object_classes.ProfilePostsAdapter;
-import com.example.utente.fotogram.Object_classes.ServerService;
-import com.example.utente.fotogram.Object_classes.User;
+import com.example.utente.fotogram.Model_Controller.ImageHandler;
+import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
+import com.example.utente.fotogram.Model_Controller.ServerService;
+import com.example.utente.fotogram.Model_Controller.User;
 
 public class OthersProfile extends AppCompatActivity {
 

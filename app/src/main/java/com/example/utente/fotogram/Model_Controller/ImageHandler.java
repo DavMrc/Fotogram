@@ -1,4 +1,4 @@
-package com.example.utente.fotogram.Object_classes;
+package com.example.utente.fotogram.Model_Controller;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,11 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 public class ImageHandler {
     private Context context;

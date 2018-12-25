@@ -1,6 +1,4 @@
-package com.example.utente.fotogram.Object_classes;
-
-import com.android.volley.toolbox.StringRequest;
+package com.example.utente.fotogram.Model_Controller;
 
 import java.util.HashMap;
 

@@ -1,9 +1,8 @@
-package com.example.utente.fotogram.Object_classes;
+package com.example.utente.fotogram.Model_Controller;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

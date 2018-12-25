@@ -1,6 +1,5 @@
-package com.example.utente.fotogram.Object_classes;
+package com.example.utente.fotogram.Model_Controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Model {
