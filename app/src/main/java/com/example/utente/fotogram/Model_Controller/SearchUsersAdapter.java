@@ -44,12 +44,12 @@ public class SearchUsersAdapter extends ArrayAdapter {
             ImageView image= v.findViewById(R.id.item_profile_pic);
             TextView username= v.findViewById(R.id.item_username);
 
-            Bitmap bitmap= imageHandler.decodeString(u.getImg());
+            username.setText(u.getUsername());
 
-            if( bitmap != null) {
+            if(u.getImg() != null) {
+                Bitmap bitmap = imageHandler.decodeString(u.getImg());
                 image.setImageBitmap(bitmap);
             }
-            username.setText(u.getUsername());
         }
 
         return v;

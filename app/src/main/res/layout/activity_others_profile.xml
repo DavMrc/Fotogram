@@ -13,7 +13,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -28,7 +28,9 @@
             android:layout_marginBottom="48dp"
             android:text="@string/seguaci"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/label.seguiti"
@@ -52,6 +54,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
             android:text="16"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@+id/label.seguaci"
             app:layout_constraintStart_toStartOf="@+id/label.seguaci"
@@ -65,6 +68,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
             android:text="18"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="@+id/label.seguiti"
             app:layout_constraintStart_toStartOf="@+id/label.seguiti"
@@ -110,6 +114,7 @@
         android:text="@string/nome_utente"
         android:textAlignment="center"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/relativeLayout2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,7 +151,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <!--TODO: l'altezza hardcoded non è scalabile con altre dimensioni di telefoni-->
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="fill_parent"
@@ -155,7 +166,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline"
         app:layout_constraintVertical_bias="1.0">
 
         <ListView
