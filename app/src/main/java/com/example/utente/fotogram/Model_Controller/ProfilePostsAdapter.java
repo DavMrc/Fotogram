@@ -12,17 +12,25 @@ import android.widget.TextView;
 
 import com.example.utente.fotogram.R;
 
+import java.lang.reflect.Type;
+
 public class ProfilePostsAdapter extends ArrayAdapter {
 
     private Context context;
     private ImageHandler imageHandler;
     private Post [] posts;
 
+    private Typeface roboto_light;
+    private Typeface roboto_light_italic;
+
     public ProfilePostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
         this.context = context;
         imageHandler= new ImageHandler(context);
         this.posts= posts;
+
+        roboto_light= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light.ttf");
+        roboto_light_italic= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light_italic.ttf");
     }
 
     @Override
@@ -48,10 +56,10 @@ public class ProfilePostsAdapter extends ArrayAdapter {
                 image.setImageBitmap(bitmap);
             }
             if(p.getMsg().equals("")) {
-                didascalia.setTypeface(null, Typeface.ITALIC);
+                didascalia.setTypeface(roboto_light_italic);
                 didascalia.setText(R.string.didascalia_empty);
             }else{
-                didascalia.setTypeface(null, Typeface.NORMAL);
+                didascalia.setTypeface(roboto_light);
                 didascalia.setText(p.getMsg());
             }
 

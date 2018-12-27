@@ -26,6 +26,9 @@ public class BachecaPostsAdapter extends ArrayAdapter {
     private HashMap<String, String> friends;
     private boolean following= false;
 
+    private Typeface roboto_light;
+    private Typeface roboto_light_italic;
+
     public BachecaPostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
 
@@ -36,6 +39,9 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
         m= Model.getInstance();
         friends= m.getActiveUserFriends();
+
+        roboto_light= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light.ttf");
+        roboto_light_italic= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light_italic.ttf");
     }
 
     @Override
@@ -81,10 +87,10 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             });
 
             if(p.getMsg().equals("")) {
-                didascalia.setTypeface(null, Typeface.ITALIC);
+                didascalia.setTypeface(roboto_light_italic);
                 didascalia.setText(R.string.didascalia_empty);
             }else{
-                didascalia.setTypeface(null, Typeface.NORMAL);
+                didascalia.setTypeface(roboto_light);
                 didascalia.setText(p.getMsg());
             }
 
