@@ -54,7 +54,7 @@ public class Nuovo_Post_Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_nuovo__post_, container, false);
+        View v= inflater.inflate(R.layout.fragment_nuovo__post, container, false);
 
         m= Model.getInstance();
         context= getContext();
