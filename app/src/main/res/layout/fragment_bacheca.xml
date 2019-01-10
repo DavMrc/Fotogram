@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".com.example.utente.fragments.BachecaFragment">
 
+    <!--TODO: se l'utente non ha contatti, far vedere qualcosa di "adatto"-->
+
     <ProgressBar
         android:id="@+id/wall_progress_bar"
         style="?android:attr/progressBarStyle"

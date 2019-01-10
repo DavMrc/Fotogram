@@ -1,14 +1,12 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,12 +25,13 @@ import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.R;
+import com.example.utente.fotogram.onPermissionGranted;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Nuovo_Post_Fragment extends Fragment {
+public class Nuovo_Post_Fragment extends Fragment implements onPermissionGranted {
 
     private ImageView chooseImage;
     private ImageButton cancelPost;
@@ -113,32 +112,17 @@ public class Nuovo_Post_Fragment extends Fragment {
         });
     }
 
-    // TODO: non è ben sincronizzato: non compare la scritta E POI ti fa partire subito l'intent
     private void checkStoragePermissions(){
 //        permissions haven't been granted
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }else{
-//        permissions have been granted, proceed
+//        permissions have been previously granted, proceed
             addImage();
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    addImage();
-                } else {
-                    Toast.makeText(context, "Permesso negato", Toast.LENGTH_SHORT).show();
-                }
-                return;
-            }
-        }
-    }
-
-    private void addImage(){
+    public void addImage(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -147,24 +131,6 @@ public class Nuovo_Post_Fragment extends Fragment {
         Uri actualPictures= Uri.parse(picturePath);
         photoPickerIntent.setDataAndType(actualPictures,"image/*");
         startActivityForResult(photoPickerIntent, 20);
-    }
-
-    @Override
-    // relativo al photoPickerIntent, serve per aggiunge l'immagine
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 20 & resultCode == Activity.RESULT_OK) {
-
-            selectedImageUri = data.getData();
-
-            if(selectedImageUri != null){
-                chooseImage.setImageURI(selectedImageUri);
-
-                // mostra il bottone "delete"
-                cancelPost.setVisibility(View.VISIBLE);
-            }else{
-                Toast.makeText(context, "Impossibile caricare immagine", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 
     private void sendImageToServer(){
@@ -181,5 +147,10 @@ public class Nuovo_Post_Fragment extends Fragment {
         }else{
             Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onPermissionGranted() {
+        addImage();
     }
 }

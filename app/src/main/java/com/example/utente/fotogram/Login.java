@@ -2,7 +2,6 @@ package com.example.utente.fotogram;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -12,20 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
-import com.example.utente.fotogram.Model_Controller.User;
-
-import org.apache.commons.io.IOUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 
 public class Login extends AppCompatActivity {
 
@@ -61,6 +49,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // call login
+
+                // TODO: se le credenziali non sono valide, non dovrebbe comparire la progressBar
                 progressBar.setVisibility(View.VISIBLE);
 
                 String username = tv_username.getText().toString();
@@ -154,5 +144,9 @@ public class Login extends AppCompatActivity {
         if( getResources().getBoolean(R.bool.portait_only) ){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    public static interface onPermissionGranted {
+
     }
 }

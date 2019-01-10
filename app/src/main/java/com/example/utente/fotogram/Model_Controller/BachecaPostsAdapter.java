@@ -3,6 +3,7 @@ package com.example.utente.fotogram.Model_Controller;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,10 @@ public class BachecaPostsAdapter extends ArrayAdapter {
         m= Model.getInstance();
         friends= m.getActiveUserFriends();
 
-        roboto_light= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light.ttf");
-        roboto_light_italic= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light_italic.ttf");
+        roboto_light= ResourcesCompat.getFont(context, R.font.roboto_light);
+        roboto_light_italic= ResourcesCompat.getFont(context, R.font.roboto_light_italic);
+
+        // roboto_light= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light.ttf");
     }
 
     @Override
@@ -54,7 +57,6 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             li= LayoutInflater.from(this.context);
             v= li.inflate(R.layout.item_bacheca_post_item, null);
         }
-        //TODO: come fermo l'inflating se l'array è finito?
 
         Post p= posts[position];
 

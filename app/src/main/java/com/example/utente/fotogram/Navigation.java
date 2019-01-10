@@ -3,6 +3,7 @@ package com.example.utente.fotogram;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -10,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -58,9 +60,7 @@ public class Navigation extends AppCompatActivity {
         hideBottomNavBar();
 
         toolbar= findViewById(R.id.toolbar);
-        // TODO: this doesn't get inflated right-away
         toolbar.setTitle("Bacheca");
-        toolbar.inflateMenu(R.menu.refresh_button_bacheca);
         setSupportActionBar(toolbar);
 
         setupFooter();
@@ -231,6 +231,25 @@ public class Navigation extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // per gestire le autorizzazioni allo storage
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(active instanceof Nuovo_Post_Fragment){
+                        nuovo_post.onPermissionGranted();
+                    }else if(active instanceof ProfiloFragment){
+                        profilo.onPermissionGranted();
+                    }
+                }else{
+                    Toast.makeText(this, "Permesso negato", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
         }
     }
 

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -19,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
@@ -27,10 +25,11 @@ import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
+import com.example.utente.fotogram.onPermissionGranted;
 
 import java.io.File;
 
-public class ProfiloFragment extends Fragment {
+public class ProfiloFragment extends Fragment implements onPermissionGranted {
 
     private Model m;
 
@@ -98,7 +97,6 @@ public class ProfiloFragment extends Fragment {
         return v;
     }
 
-    // TODO: non è ben sincronizzato: non compare la scritta E POI ti fa partire subito l'intent
     private void checkStoragePermissions(){
 //        permission isn't granted: prompt the user
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -106,19 +104,6 @@ public class ProfiloFragment extends Fragment {
         }else{
 //            permissions were already granted, proceed normally
             changeProfilePic();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case 1: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    changeProfilePic();
-                } else {
-                    Toast.makeText(context, "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
         }
     }
 
@@ -161,5 +146,10 @@ public class ProfiloFragment extends Fragment {
     public void onRefreshUserInfo(){
         ((Navigation)getActivity()).stopRefreshAnimation();
         getPosts();
+    }
+
+    @Override
+    public void onPermissionGranted() {
+        changeProfilePic();
     }
 }

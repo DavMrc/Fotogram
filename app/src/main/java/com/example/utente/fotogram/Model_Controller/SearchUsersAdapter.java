@@ -46,9 +46,11 @@ public class SearchUsersAdapter extends ArrayAdapter {
 
             username.setText(u.getUsername());
 
-            if(u.getImg() != null) {
+            try{
                 Bitmap bitmap = imageHandler.decodeString(u.getImg());
                 image.setImageBitmap(bitmap);
+            }catch (Exception e) {
+                // non gestisco l'errore perchè c'è il placeholder dell'immagine
             }
         }
 
