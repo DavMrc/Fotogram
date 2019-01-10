@@ -213,7 +213,7 @@ public class Navigation extends AppCompatActivity {
                 refreshView.startAnimation(animation);
                 item.setActionView(refreshView);
 
-                serverService.wall(bacheca, m.getSessionID());
+                bacheca.getWall();
 
                 return true;
 
@@ -241,14 +241,13 @@ public class Navigation extends AppCompatActivity {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if(active instanceof Nuovo_Post_Fragment){
-                        nuovo_post.onPermissionGranted();
+                        nuovo_post.addImage();
                     }else if(active instanceof ProfiloFragment){
-                        profilo.onPermissionGranted();
+                        profilo.changeProfilePic();
                     }
-                }else{
+                }else {
                     Toast.makeText(this, "Permesso negato", Toast.LENGTH_SHORT).show();
                 }
-                return;
             }
         }
     }

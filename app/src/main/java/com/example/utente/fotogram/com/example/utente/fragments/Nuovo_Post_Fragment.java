@@ -25,13 +25,12 @@ import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.R;
-import com.example.utente.fotogram.onPermissionGranted;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Nuovo_Post_Fragment extends Fragment implements onPermissionGranted {
+public class Nuovo_Post_Fragment extends Fragment {
 
     private ImageView chooseImage;
     private ImageButton cancelPost;
@@ -147,10 +146,5 @@ public class Nuovo_Post_Fragment extends Fragment implements onPermissionGranted
         }else{
             Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    @Override
-    public void onPermissionGranted() {
-        addImage();
     }
 }

@@ -25,11 +25,10 @@ import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
-import com.example.utente.fotogram.onPermissionGranted;
 
 import java.io.File;
 
-public class ProfiloFragment extends Fragment implements onPermissionGranted {
+public class ProfiloFragment extends Fragment {
 
     private Model m;
 
@@ -107,7 +106,7 @@ public class ProfiloFragment extends Fragment implements onPermissionGranted {
         }
     }
 
-    private void changeProfilePic(){
+    public void changeProfilePic(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -146,10 +145,5 @@ public class ProfiloFragment extends Fragment implements onPermissionGranted {
     public void onRefreshUserInfo(){
         ((Navigation)getActivity()).stopRefreshAnimation();
         getPosts();
-    }
-
-    @Override
-    public void onPermissionGranted() {
-        changeProfilePic();
     }
 }

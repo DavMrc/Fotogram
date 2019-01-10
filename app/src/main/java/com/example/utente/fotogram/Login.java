@@ -2,25 +2,37 @@ package com.example.utente.fotogram;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
     private static Model m;
     private static ServerService serverService;
     public static Activity activity;
-    private ServerService serverService1;
+    private static RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +40,7 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         m= Model.getInstance();
+        queue= Volley.newRequestQueue(Login.this);
         serverService = ServerService.getInstance(Login.this);
 //        oggetto richiamato nell'OnCreate di Navigation per
 //        terminare Login e impedire di ritornarci (session_id consistency)
@@ -55,9 +68,45 @@ public class Login extends AppCompatActivity {
 
                 String username = tv_username.getText().toString();
                 String password = tv_password.getText().toString();
-                serverService.login(username, password);
+
+                login(username, password);
             }
         });
+    }
+
+    private void login(final String username, final String password){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.setSessionID(sessionID);
+
+                Log.d("DDD", "DDD ServerService Session id: "+sessionID);
+
+                startActivity(new Intent(Login.this, Navigation.class));
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("username", username);
+                params.put("password", password);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 
     @Override
