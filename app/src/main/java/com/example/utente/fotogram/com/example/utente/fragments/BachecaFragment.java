@@ -1,6 +1,7 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Model_Controller.BachecaPostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
@@ -33,14 +33,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BachecaFragment extends Fragment {
-    private HashMap<String, String> friends;
 
     private Model m;
     private Context context;
     private ImageHandler imageHandler;
     private static RequestQueue queue;
-    private ServerService serverService;
 
+    private HashMap<String, String> friends;
     private ListView postListView;
     private ProgressBar progressBar;
 
@@ -58,18 +57,49 @@ public class BachecaFragment extends Fragment {
         imageHandler= new ImageHandler(context);
         m= Model.getInstance();
         queue= Volley.newRequestQueue(context);
-        serverService= ServerService.getInstance(context);
 
         postListView= v.findViewById(R.id.bacheca_posts);
         progressBar= v.findViewById(R.id.wall_progress_bar);
-//        friends= m.getActiveUserFriends();
 
-        getWall();
+        getFriendsAndWall();
 
         return v;
     }
 
-    public void getWall(){
+    public void getFriendsAndWall(){
+
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                friends = parseFriends(serverResponse);
+                m.setActiveUserFriends(friends);
+
+                getWall();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    private void getWall(){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/wall";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -130,6 +160,26 @@ public class BachecaFragment extends Fragment {
         }
 
         return posts;
+    }
+
+    private HashMap<String, String> parseFriends(String serverResponse){
+        HashMap<String, String> friends= new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("followed");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                friends.put(username, picture);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return friends;
     }
 
 }

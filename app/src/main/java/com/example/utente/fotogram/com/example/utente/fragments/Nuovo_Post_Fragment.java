@@ -20,6 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
@@ -29,6 +35,8 @@ import com.example.utente.fotogram.R;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Nuovo_Post_Fragment extends Fragment {
 
@@ -39,7 +47,7 @@ public class Nuovo_Post_Fragment extends Fragment {
     private Context context;
     private Model m;
     private ImageHandler imageHandler;
-    private ServerService serverService;
+    private static RequestQueue queue;
     private Post post;
 
     private TextView tv_didascalia;
@@ -57,7 +65,7 @@ public class Nuovo_Post_Fragment extends Fragment {
         m= Model.getInstance();
         context= getContext();
         imageHandler= new ImageHandler(context);
-        serverService= ServerService.getInstance(context);
+        queue= Volley.newRequestQueue(context);
 
         tv_didascalia= v.findViewById(R.id.txt_didascalia);
 
@@ -117,11 +125,11 @@ public class Nuovo_Post_Fragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }else{
 //        permissions have been previously granted, proceed
-            addImage();
+            addImageFromGallery();
         }
     }
 
-    public void addImage(){
+    public void addImageFromGallery(){
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 
         File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -134,17 +142,51 @@ public class Nuovo_Post_Fragment extends Fragment {
 
     private void sendImageToServer(){
         String didascalia= tv_didascalia.getText().toString();
+
         if(selectedImageUri != null) {
             String encoded = imageHandler.encodeFromUri(selectedImageUri);
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ms").format(new Date());
 
             post= new Post(m.getActiveUserNickname(), didascalia, encoded, timeStamp);
 
-            serverService.createPost(m.getSessionID(), post);
+            sendPost(post);
             // risetta la didascalia a nulla dopo la creazione del post
             tv_didascalia.setText("");
         }else{
             Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendPost(final Post post){
+        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+//                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("img", post.getImg());
+                params.put("message", post.getMsg());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 }

@@ -1,7 +1,5 @@
 package com.example.utente.fotogram;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,18 +17,10 @@ import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
-import com.example.utente.fotogram.Model_Controller.User;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 
 public class Navigation extends AppCompatActivity {
 
@@ -202,7 +191,7 @@ public class Navigation extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.btn_logout:
-                serverService.logout(m.getSessionID());
+                profilo.logout();
                 return true;
 
             case R.id.btn_refresh_bacheca:
@@ -213,7 +202,7 @@ public class Navigation extends AppCompatActivity {
                 refreshView.startAnimation(animation);
                 item.setActionView(refreshView);
 
-                bacheca.getWall();
+                bacheca.getFriendsAndWall();
 
                 return true;
 
@@ -241,7 +230,7 @@ public class Navigation extends AppCompatActivity {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if(active instanceof Nuovo_Post_Fragment){
-                        nuovo_post.addImage();
+                        nuovo_post.addImageFromGallery();
                     }else if(active instanceof ProfiloFragment){
                         profilo.changeProfilePic();
                     }

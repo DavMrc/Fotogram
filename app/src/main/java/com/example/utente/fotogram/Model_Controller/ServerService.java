@@ -63,114 +63,6 @@ public class ServerService {
         return serverService;
     }
 
-    public void login(final String username, final String password){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String sessionID) {
-                m.setSessionID(sessionID);
-
-                Log.d("DDD", "DDD ServerService Session id: "+sessionID);
-
-                if(first_login) {
-                    first_login= false;
-                    getActiveUserInfo(null, sessionID, username);
-                }
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(privateContext, "Credenziali non valide", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", password);
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
-
-    public void logout(final String sessionID){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String sessionID) {
-//                CANCELLA le sharedPreferences
-                SharedPreferences sharedPref= privateContext.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor= sharedPref.edit();
-                editor.clear();
-                editor.commit();
-
-                // risetta il first_access a tutti i boolean
-                first_getFriends = first_getUserInfo = first_login = true;
-
-                m.setSessionID(null);
-                privateContext.startActivity(new Intent(privateContext, Login.class));
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(privateContext, "Impossibile fare logout", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", sessionID);
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-
-    }
-
-    public void updatePicture(final String sessionID, final String picture){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
-
-        StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(privateContext, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(privateContext, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", sessionID);
-                params.put("picture", picture);
-
-                return params;
-            }
-        };
-
-        queue.add(request);
-
-    }
-
     public void getActiveUserInfo(final ProfiloFragment fragment, final String sessionID, final String username){
         final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
@@ -185,7 +77,7 @@ public class ServerService {
 //                per evitare concatenazioni di metodi
                 if(first_getUserInfo) {
                     first_getUserInfo= false;
-                    getFriends(null, sessionID);
+//                    getFriends(null, sessionID);
                 }else{
                     fragment.onRefreshUserInfo();
                 }
@@ -305,43 +197,6 @@ public class ServerService {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", sessionID);
                 params.put("username", username);
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
-
-    public void getFriends(Fragment callingFragment, final String sessionID){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                HashMap<String, String> friends = parseFriends(serverResponse);
-
-                m.setActiveUserFriends(friends);
-
-                if (first_getFriends) {
-                    first_getFriends = false;
-//                finally, move on to next Activity
-                    privateContext.startActivity(new Intent(privateContext, Navigation.class));
-                }
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", sessionID);
 
                 return params;
             }

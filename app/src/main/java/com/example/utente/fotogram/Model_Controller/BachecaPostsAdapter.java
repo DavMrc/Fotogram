@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import java.util.HashMap;
 public class BachecaPostsAdapter extends ArrayAdapter {
 
     private Context context;
-    private ServerService serverService;
     private ImageHandler imageHandler;
     private Model m;
 
@@ -36,7 +36,6 @@ public class BachecaPostsAdapter extends ArrayAdapter {
         this.context = context;
         this.posts= posts;
         imageHandler= new ImageHandler(context);
-        serverService= ServerService.getInstance(context);
 
         m= Model.getInstance();
         friends= m.getActiveUserFriends();
@@ -84,7 +83,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             post.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    serverService.getOtherUserInfo(m.getSessionID(), username);
+                    // TODO: go to others profile
                 }
             });
 
@@ -101,12 +100,11 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             unfollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: se riclicca, dovrebbe ri-iniziare a seguire?
 
                     if(following){
                         // se l'utente cliccato non è sè stessi
                         if(! m.getActiveUserNickname().equals(username)) {
-                            serverService.unfollow(m.getSessionID(), username);
+                            // TODO unfollow
                             Toast.makeText(context,
                                     "Hai smesso di seguire " + username,
                                     Toast.LENGTH_SHORT).show();
