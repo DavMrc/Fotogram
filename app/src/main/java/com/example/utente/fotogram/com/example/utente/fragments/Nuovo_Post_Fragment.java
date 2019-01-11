@@ -141,15 +141,45 @@ public class Nuovo_Post_Fragment extends Fragment {
     }
 
     private void sendImageToServer(){
-        String didascalia= tv_didascalia.getText().toString();
-
         if(selectedImageUri != null) {
-            String encoded = imageHandler.encodeFromUri(selectedImageUri);
+            final String didascalia= tv_didascalia.getText().toString();
+            final String encoded = imageHandler.encodeFromUri(selectedImageUri);
             String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ms").format(new Date());
 
-            post= new Post(m.getActiveUserNickname(), didascalia, encoded, timeStamp);
+//           ---------------------START REQUEST--------------------
 
-            sendPost(post);
+            String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
+
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
+                    params.put("img", encoded);
+                    params.put("message", didascalia);
+
+                    return params;
+                }
+            };// finisce la StringRequest
+
+            queue.add(request);
+
+//            ---------------------END REQUEST----------------------
+
             // risetta la didascalia a nulla dopo la creazione del post
             tv_didascalia.setText("");
         }else{
@@ -157,36 +187,4 @@ public class Nuovo_Post_Fragment extends Fragment {
         }
     }
 
-    private void sendPost(final Post post){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
-//                Log.d("DDD", "DDD CreatePost Session id: "+sessionID);
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("img", post.getImg());
-                params.put("message", post.getMsg());
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
 }

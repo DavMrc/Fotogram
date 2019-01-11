@@ -13,9 +13,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.utente.fotogram.OthersProfile;
 import com.example.utente.fotogram.R;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class BachecaPostsAdapter extends ArrayAdapter {
 
@@ -103,8 +109,8 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
                     if(following){
                         // se l'utente cliccato non è sè stessi
-                        if(! m.getActiveUserNickname().equals(username)) {
-                            // TODO unfollow
+                        if(! m.getUsername().equals(username)) {
+                            unfollowServerCall();
                             Toast.makeText(context,
                                     "Hai smesso di seguire " + username,
                                     Toast.LENGTH_SHORT).show();
@@ -121,5 +127,36 @@ public class BachecaPostsAdapter extends ArrayAdapter {
         }
 
         return v;
+    }
+
+    private void unfollowServerCall(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.removeFriend(username);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile smettere di seguire", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 }

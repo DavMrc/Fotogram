@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,10 +31,14 @@ import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
@@ -80,14 +85,14 @@ public class ProfiloFragment extends Fragment {
         postsListView= v.findViewById(R.id.personal_posts);
 
 //        immagine profilo
-        String image= m.getActiveUserImg();
+        String image= m.getImage();
         if(image != null){
             proPic.setImageBitmap(imageHandler.decodeString(image));
         }// altrimenti c'è il placeholder
 
 //        username
         TextView username= v.findViewById(R.id.txt_username);
-        username.setText(m.getActiveUserNickname());
+        username.setText(m.getUsername());
 
 //        seguiti/amici che si sta seguendo
         tv_friends = v.findViewById(R.id.txt_seguiti);
@@ -141,13 +146,13 @@ public class ProfiloFragment extends Fragment {
                 String encoded= imageHandler.encodeFromUri(imageURI);
                 updatePictureOnServer(encoded);
 
-                m.setActiveUserImg(encoded);
+                m.setImage(encoded);
             }
         }
     }
 
     private void updatePictureOnServer(final String encoded){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
 
         StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -172,6 +177,66 @@ public class ProfiloFragment extends Fragment {
         };
 
         queue.add(request);
+    }
+
+    public void getPosts(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                ProfilePostsAdapter adapter = new ProfilePostsAdapter(
+                        context,
+                        R.layout.item_user_posts_item,
+                        parsePosts(response));
+                postsListView.setAdapter(adapter);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("username", m.getUsername());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    private Post[] parsePosts(String serverResponse){
+        Post [] posts= new Post[10];
+        String username= m.getUsername();
+
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("posts");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedPost= array.getJSONObject(i);
+
+                String didascalia= pointedPost.getString("msg");
+                String img= pointedPost.getString("img");
+                String timestamp= pointedPost.getString("timestamp");
+
+                posts[i]= new Post(username, didascalia, img, timestamp);
+            }
+        }catch (JSONException e){
+                    Log.d("DDD", "DDD Sbagliato parsing dei post");
+            e.printStackTrace();
+        }
+
+        return posts;
     }
 
     public void logout(){
@@ -216,11 +281,8 @@ public class ProfiloFragment extends Fragment {
     // chiamato da ServerService
     public void onRefreshUserInfo(){
         ((Navigation)getActivity()).stopRefreshAnimation();
+
         getPosts();
     }
 
-    private void getPosts(){
-        ProfilePostsAdapter adapter = new ProfilePostsAdapter(context, R.layout.item_user_posts_item, m.getActivePosts());
-        postsListView.setAdapter(adapter);
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.utente.fotogram;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,18 +11,31 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
+import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Model_Controller.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class OthersProfile extends AppCompatActivity {
 
-    private User otherUser;
+    private String username;
+    private String img;
+    private Post[] posts;
+
     private Model m;
     private ImageHandler imageHandler;
-    private ServerService serverService;
+    private static RequestQueue queue;
 
     private Button followButton;
     private ListView postListView;
@@ -34,15 +48,19 @@ public class OthersProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_others_profile);
 
+        Intent intent= getIntent();
+
         m= Model.getInstance();
         imageHandler= new ImageHandler(this);
-        serverService= ServerService.getInstance(this);
-        otherUser = m.getOtherUser();
+        queue= Volley.newRequestQueue(this);
+        username= intent.getStringExtra("username");
 
-        is_self_profile = otherUser.getUsername().equals(m.getActiveUserNickname());
-        following= m.getActiveUserFriends().containsKey(otherUser.getUsername());
+        getUserInfo();
 
-        getSupportActionBar().setTitle(otherUser.getUsername());
+        is_self_profile = username.equals(m.getUsername());
+        following= m.getActiveUserFriends().containsKey(username);
+
+        getSupportActionBar().setTitle(username);
 
         // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
@@ -52,8 +70,8 @@ public class OthersProfile extends AppCompatActivity {
         }
 
         // username
-        TextView username= findViewById(R.id.txt_username);
-        username.setText(otherUser.getUsername());
+        TextView tv_username= findViewById(R.id.txt_username);
+        tv_username.setText(username);
 
         //TODO: gli altri utenti non hanno una loro lista di amici?
 
@@ -84,6 +102,10 @@ public class OthersProfile extends AppCompatActivity {
         });
     }
 
+    private void getUserInfo(){
+
+    }
+
     private void followUnfollow() {
         if( is_self_profile ){
             Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
@@ -92,9 +114,9 @@ public class OthersProfile extends AppCompatActivity {
             followButton.setTextColor(getResources().getColor(R.color.white));
             followButton.setText(R.string.following);
 
-            serverService.follow(m.getSessionID(), otherUser.getUsername(), otherUser.getImg());
+            followServerCall();
             Toast.makeText(this,
-                    "Hai iniziato a seguire " + otherUser.getUsername(),
+                    "Hai iniziato a seguire " + username,
                     Toast.LENGTH_SHORT).show();
 
             following= ! following;
@@ -103,13 +125,75 @@ public class OthersProfile extends AppCompatActivity {
             followButton.setTextColor(getResources().getColor(R.color.black));
             followButton.setText(R.string.not_following);
 
-            serverService.unfollow(m.getSessionID(), otherUser.getUsername());
+            unfollowServerCall();
             Toast.makeText(this,
-                    "Non segui più "+ otherUser.getUsername(),
+                    "Non segui più "+ username,
                     Toast.LENGTH_SHORT).show();
 
             following= ! following;
         }
+    }
+
+    private void followServerCall(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/follow";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.addFriend(username, img);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(OthersProfile.this, "Impossibile seguire", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    private void unfollowServerCall(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String sessionID) {
+                m.removeFriend(username);
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(OthersProfile.this, "Impossibile smettere di seguire", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 
     private void getPosts(){

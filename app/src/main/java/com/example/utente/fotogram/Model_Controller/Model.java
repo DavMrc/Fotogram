@@ -6,10 +6,11 @@ public class Model {
     private static Model instance = null;
 
     private String sessionID;
+    private String username;
+    private HashMap<String, String> friends;
+
     private User activeUser;
     private User otherUser; // utente su cui si è fatto click dopo ricerca
-
-    private Post [] wall;
 
     private Model() {}
 
@@ -20,13 +21,13 @@ public class Model {
         return instance;
     }
 
-    public User getActiveUser(){
-        return activeUser;
-    }
-
-    public void setActiveUser(User user){
-        this.activeUser= user;
-    }
+//    public User getActiveUser(){
+//        return activeUser;
+//    }
+//
+//    public void setActiveUser(User user){
+//        this.activeUser= user;
+//    }
 
     public String getSessionID(){
         return sessionID;
@@ -36,29 +37,37 @@ public class Model {
         this.sessionID= sessionID;
     }
 
-    public String getActiveUserNickname(){
-        return activeUser.getUsername();
+    public String getUsername(){
+        return this.username;
     }
 
-    public void setActiveUserNickname(String username){
-        activeUser.setUsername(username);
+    public void setUsername(String username){
+        this.username= username;
     }
 
-    public String getActiveUserImg(){
-        return activeUser.getImg();
+    public String getImage(){
+        return this.friends.get(username);
     }
 
-    public void setActiveUserImg(String encodedImg){
-        activeUser.setImg(encodedImg);
+    public void setImage(String image){
+        this.friends.replace(username, image);
     }
 
-    public Post [] getActivePosts(){
-        return activeUser.getPosts();
-    }
-
-    public void setActivePosts(Post [] posts){
-        activeUser.setPosts(posts);
-    }
+//    public String getActiveUserNickname(){
+//        return activeUser.getUsername();
+//    }
+//
+//    public void setActiveUserNickname(String username){
+//        activeUser.setUsername(username);
+//    }
+//
+//    public String getActiveUserImg(){
+//        return activeUser.getImg();
+//    }
+//
+//    public void setActiveUserImg(String encodedImg){
+//        activeUser.setImg(encodedImg);
+//    }
 
     public HashMap<String, String> getActiveUserFriends(){
         return activeUser.getFriends();
@@ -69,28 +78,10 @@ public class Model {
     }
 
     public void addFriend(String username, String img){
-       if(! activeUser.getFriends().containsKey(username) ){
-           activeUser.addFriend(username, img);
-       }
+        this.friends.put(username, img);
     }
 
     public void removeFriend(String username){
-        activeUser.removeFriend(username);
-    }
-
-    public User getOtherUser(){
-        return this.otherUser;
-    }
-
-    public void setOtherUser(User user){
-        this.otherUser= user;
-    }
-
-    public Post [] getWall(){
-        return this.wall;
-    }
-
-    public void setWall(Post [] wall) {
-        this.wall= wall;
+        this.friends.remove(username);
     }
 }

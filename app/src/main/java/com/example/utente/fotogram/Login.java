@@ -24,15 +24,20 @@ import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.ServerService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
     private static Model m;
-    private static ServerService serverService;
     public static Activity activity;
     private static RequestQueue queue;
+
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +46,6 @@ public class Login extends AppCompatActivity {
 
         m= Model.getInstance();
         queue= Volley.newRequestQueue(Login.this);
-        serverService = ServerService.getInstance(Login.this);
 //        oggetto richiamato nell'OnCreate di Navigation per
 //        terminare Login e impedire di ritornarci (session_id consistency)
         activity= this;
@@ -55,7 +59,7 @@ public class Login extends AppCompatActivity {
 
         final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
-        final ProgressBar progressBar= findViewById(R.id.progressBar);
+        progressBar= findViewById(R.id.progressBar);
 
         Button login = findViewById(R.id.btn_accedi);
         login.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +67,6 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 // call login
 
-                // TODO: se le credenziali non sono valide, non dovrebbe comparire la progressBar
                 progressBar.setVisibility(View.VISIBLE);
 
                 String username = tv_username.getText().toString();
@@ -81,11 +84,12 @@ public class Login extends AppCompatActivity {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                m.setSessionID(sessionID);
-
                 Log.d("DDD", "DDD ServerService Session id: "+sessionID);
 
-                startActivity(new Intent(Login.this, Navigation.class));
+                m.setSessionID(sessionID);
+                m.setUsername(username);
+
+                getFriends(sessionID);
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -93,6 +97,7 @@ public class Login extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         }) {
             // parametri richiesta POST
@@ -101,6 +106,37 @@ public class Login extends AppCompatActivity {
                 Map<String, String> params = new HashMap<>();
                 params.put("username", username);
                 params.put("password", password);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    private void getFriends(final String sessionID){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                m.setActiveUserFriends( parseFriends(serverResponse));
+
+                startActivity(new Intent(Login.this, Navigation.class));
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", sessionID);
 
                 return params;
             }
@@ -195,7 +231,25 @@ public class Login extends AppCompatActivity {
         }
     }
 
-    public static interface onPermissionGranted {
+//    -----------------JSON HANDLER---------------------
 
+    private HashMap<String, String> parseFriends(String serverResponse){
+        HashMap<String, String> friends= new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("followed");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                friends.put(username, picture);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return friends;
     }
 }

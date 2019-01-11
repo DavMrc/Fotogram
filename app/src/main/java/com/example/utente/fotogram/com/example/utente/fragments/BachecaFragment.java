@@ -61,46 +61,13 @@ public class BachecaFragment extends Fragment {
         postListView= v.findViewById(R.id.bacheca_posts);
         progressBar= v.findViewById(R.id.wall_progress_bar);
 
-        getFriendsAndWall();
+        getWall();
 
         return v;
     }
 
-    public void getFriendsAndWall(){
-
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                friends = parseFriends(serverResponse);
-                m.setActiveUserFriends(friends);
-
-                getWall();
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
-
-    private void getWall(){
-        final String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/wall";
+    public void getWall(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/wall";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             // risposta valida
@@ -160,26 +127,6 @@ public class BachecaFragment extends Fragment {
         }
 
         return posts;
-    }
-
-    private HashMap<String, String> parseFriends(String serverResponse){
-        HashMap<String, String> friends= new HashMap<>();
-        try {
-            JSONObject jsonObject = new JSONObject(serverResponse);
-            JSONArray array= jsonObject.getJSONArray("followed");
-
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedUser= array.getJSONObject(i);
-                String username= pointedUser.getString("name");
-                String picture= pointedUser.getString("picture");
-
-                friends.put(username, picture);
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        return friends;
     }
 
 }

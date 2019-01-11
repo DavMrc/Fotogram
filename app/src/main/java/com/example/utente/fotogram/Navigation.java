@@ -202,7 +202,7 @@ public class Navigation extends AppCompatActivity {
                 refreshView.startAnimation(animation);
                 item.setActionView(refreshView);
 
-                bacheca.getFriendsAndWall();
+                bacheca.getWall();
 
                 return true;
 
