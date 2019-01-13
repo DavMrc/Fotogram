@@ -19,19 +19,16 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
-import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Model_Controller.User;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class OthersProfile extends AppCompatActivity {
 
-    private String username;
-    private String img;
-    private Post[] posts;
+    private User otherUser;
 
     private Model m;
     private ImageHandler imageHandler;
@@ -53,14 +50,52 @@ public class OthersProfile extends AppCompatActivity {
         m= Model.getInstance();
         imageHandler= new ImageHandler(this);
         queue= Volley.newRequestQueue(this);
-        username= intent.getStringExtra("username");
 
-        getUserInfo();
+        String username= intent.getStringExtra("username");
+
+        getUserInfo(username);
 
         is_self_profile = username.equals(m.getUsername());
         following= m.getActiveUserFriends().containsKey(username);
+    }
 
-        getSupportActionBar().setTitle(username);
+    private void getUserInfo(final String username){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String response) {
+                Gson gson= new Gson();
+                otherUser= gson.fromJson(response, User.class);
+
+                updateUI();
+                showPosts();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Toast.makeText(OthersProfile.this, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+                params.put("username", username);
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
+    }
+
+    private void updateUI(){
+        getSupportActionBar().setTitle(otherUser.getUsername());
 
         // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
@@ -71,13 +106,10 @@ public class OthersProfile extends AppCompatActivity {
 
         // username
         TextView tv_username= findViewById(R.id.txt_username);
-        tv_username.setText(username);
-
-        //TODO: gli altri utenti non hanno una loro lista di amici?
+        tv_username.setText(otherUser.getUsername());
 
         // lista post
         postListView= findViewById(R.id.others_posts);
-        getPosts();
 
         // bottone segui
         followButton= findViewById(R.id.btn_segui);
@@ -102,10 +134,6 @@ public class OthersProfile extends AppCompatActivity {
         });
     }
 
-    private void getUserInfo(){
-
-    }
-
     private void followUnfollow() {
         if( is_self_profile ){
             Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
@@ -116,7 +144,7 @@ public class OthersProfile extends AppCompatActivity {
 
             followServerCall();
             Toast.makeText(this,
-                    "Hai iniziato a seguire " + username,
+                    "Hai iniziato a seguire " + otherUser.getUsername(),
                     Toast.LENGTH_SHORT).show();
 
             following= ! following;
@@ -127,7 +155,7 @@ public class OthersProfile extends AppCompatActivity {
 
             unfollowServerCall();
             Toast.makeText(this,
-                    "Non segui più "+ username,
+                    "Non segui più "+ otherUser.getUsername(),
                     Toast.LENGTH_SHORT).show();
 
             following= ! following;
@@ -141,7 +169,7 @@ public class OthersProfile extends AppCompatActivity {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                m.addFriend(username, img);
+                m.addFriend(otherUser.getUsername(), otherUser.getImg());
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -156,7 +184,7 @@ public class OthersProfile extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", m.getSessionID());
-                params.put("username", username);
+                params.put("username", otherUser.getUsername());
 
                 return params;
             }
@@ -172,7 +200,7 @@ public class OthersProfile extends AppCompatActivity {
             // risposta valida
             @Override
             public void onResponse(String sessionID) {
-                m.removeFriend(username);
+                m.removeFriend(otherUser.getUsername());
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -187,7 +215,7 @@ public class OthersProfile extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("session_id", m.getSessionID());
-                params.put("username", username);
+                params.put("username", otherUser.getUsername());
 
                 return params;
             }
@@ -196,7 +224,7 @@ public class OthersProfile extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void getPosts(){
+    private void showPosts(){
         ProfilePostsAdapter adapter = new ProfilePostsAdapter(
                 this,
                 R.layout.item_user_posts_item,

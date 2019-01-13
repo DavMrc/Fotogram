@@ -29,7 +29,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.R;
 
 import java.io.File;

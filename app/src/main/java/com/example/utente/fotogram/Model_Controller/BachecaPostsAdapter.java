@@ -14,9 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.OthersProfile;
 import com.example.utente.fotogram.R;
 
@@ -28,6 +30,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
     private Context context;
     private ImageHandler imageHandler;
     private Model m;
+    private static RequestQueue queue;
 
     private Post [] posts;
     private HashMap<String, String> friends;
@@ -45,6 +48,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
         m= Model.getInstance();
         friends= m.getActiveUserFriends();
+        queue= Volley.newRequestQueue(context);
 
         roboto_light= ResourcesCompat.getFont(context, R.font.roboto_light);
         roboto_light_italic= ResourcesCompat.getFont(context, R.font.roboto_light_italic);
@@ -110,7 +114,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                     if(following){
                         // se l'utente cliccato non è sè stessi
                         if(! m.getUsername().equals(username)) {
-                            unfollowServerCall();
+                            unfollowServerCall(username);
                             Toast.makeText(context,
                                     "Hai smesso di seguire " + username,
                                     Toast.LENGTH_SHORT).show();
@@ -129,7 +133,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
         return v;
     }
 
-    private void unfollowServerCall(){
+    private void unfollowServerCall(final String username){
         String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {

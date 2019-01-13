@@ -22,7 +22,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.SearchUsersAdapter;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Model_Controller.User;
 import com.example.utente.fotogram.OthersProfile;
 import com.example.utente.fotogram.R;

@@ -1,7 +1,6 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import com.example.utente.fotogram.Model_Controller.BachecaPostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
 
@@ -83,6 +81,7 @@ public class BachecaFragment extends Fragment {
                 postListView.setAdapter(adapter);
 
                 progressBar.setVisibility(View.GONE);
+                ((Navigation)getActivity()).stopRefreshAnimation();
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore

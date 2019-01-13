@@ -16,7 +16,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.example.utente.fotogram.Model_Controller.Model;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 import com.example.utente.fotogram.com.example.utente.fragments.BachecaFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragment;
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
@@ -32,7 +31,6 @@ public class Navigation extends AppCompatActivity {
     private FragmentManager fManager= getSupportFragmentManager();
 
     private Toolbar toolbar;
-    private ServerService serverService;
     private View refreshView;
 
     private Model m;
@@ -43,7 +41,6 @@ public class Navigation extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
 
         m= Model.getInstance();
-        serverService= ServerService.getInstance(this);
         Login.activity.finish();
 
         hideBottomNavBar();
@@ -214,7 +211,7 @@ public class Navigation extends AppCompatActivity {
                 refreshView.startAnimation(animation1);
                 item.setActionView(refreshView);
 
-                serverService.getActiveUserInfo(profilo, m.getSessionID(), m.getActiveUserNickname());
+                profilo.getUserInfo();
 
                 return true;
 

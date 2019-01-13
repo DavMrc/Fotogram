@@ -22,7 +22,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.Model;
-import com.example.utente.fotogram.Model_Controller.ServerService;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -98,7 +98,7 @@ public class ProfiloFragment extends Fragment {
         return view;
     }
 
-    private void getUserInfo(){
+    public void getUserInfo(){
         String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
         StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
@@ -110,6 +110,7 @@ public class ProfiloFragment extends Fragment {
 
                 updateUI();
                 showPosts();
+                ((Navigation)getActivity()).stopRefreshAnimation();
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -266,13 +267,6 @@ public class ProfiloFragment extends Fragment {
         };// finisce la StringRequest
 
         queue.add(request);
-    }
-
-    // chiamato da ServerService
-    public void onRefreshUserInfo(){
-        ((Navigation)getActivity()).stopRefreshAnimation();
-
-        getUserInfo();
     }
 
 }

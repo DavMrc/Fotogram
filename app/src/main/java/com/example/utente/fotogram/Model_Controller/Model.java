@@ -45,7 +45,7 @@ public class Model {
         this.username= username;
     }
 
-    public String getImage(){
+    public String getImage(String username){
         return this.friends.get(username);
     }
 
@@ -70,11 +70,11 @@ public class Model {
 //    }
 
     public HashMap<String, String> getActiveUserFriends(){
-        return activeUser.getFriends();
+        return friends;
     }
 
     public void setActiveUserFriends(HashMap<String, String> friends){
-       activeUser.setFriends(friends);
+       this.friends= friends;
     }
 
     public void addFriend(String username, String img){
