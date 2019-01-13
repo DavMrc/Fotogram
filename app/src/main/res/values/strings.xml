@@ -19,7 +19,7 @@
     <!--Others profile-->
     <string name="following">Stai seguendo</string>
     <string name="not_following">Inizia a seguire</string>
-    <string name="follow_yourself">Impossibile seguire te stesso</string>
+    <string name="follow_yourself">Non puoi seguire te stesso</string>
     <!--Misc-->
     <string name="didascalia_empty">Questo post è senza didascalia.</string>
 

@@ -1,6 +1,7 @@
 package com.example.utente.fotogram.Model_Controller;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.support.v4.content.res.ResourcesCompat;
@@ -69,15 +70,15 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
         Post p= posts[position];
 
+        ImageView profileImg= v.findViewById(R.id.li_img_profilo);
+        final TextView tv_username= v.findViewById(R.id.li_username);
+        ImageView unfollow= v.findViewById(R.id.li_unfollow);
+        ImageView post= v.findViewById(R.id.li_post);
+        TextView didascalia= v.findViewById(R.id.li_didascalia);
+
         if(p != null){
             final String username= p.getUsername();
             final String img= friends.get(username);
-
-            ImageView profileImg= v.findViewById(R.id.li_img_profilo);
-            TextView tv_username= v.findViewById(R.id.li_username);
-            final ImageView unfollow= v.findViewById(R.id.li_unfollow);
-            ImageView post= v.findViewById(R.id.li_post);
-            TextView didascalia= v.findViewById(R.id.li_didascalia);
 
             Bitmap profileImgBitmap;
             Bitmap postBitmap= imageHandler.decodeString(p.getImg());
@@ -125,6 +126,16 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
+                }
+            });
+
+//            click listener su tutta la view che porta ad OthersProfile
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent= new Intent(new Intent(context, OthersProfile.class));
+                    intent.putExtra("username", tv_username.getText());
+                    context.startActivity(intent);
                 }
             });
 
