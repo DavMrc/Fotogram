@@ -1,5 +1,7 @@
 package com.example.utente.fotogram;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -61,7 +63,7 @@ public class Navigation extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-//        saveSession();
+        saveSession();
     }
 
     @Override
@@ -72,43 +74,20 @@ public class Navigation extends AppCompatActivity {
     }
 
     private void saveSession(){
-//        String username= m.getActiveUserNickname();
-//        String img= m.getActiveUserImg();
-//        String sessionID= m.getSessionID();
-//
-//        Context context= this;
-//
-//        // crea le SharedPref di nome "preferences" e ci salva username e password
-//        // potranno essere usate da Login
-//        SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor= sharedPref.edit();
-//
-//        editor.putString("username", username);
-//        editor.putString("img", img);
-//        editor.putString("sessionID", sessionID);
-//
-//        editor.commit();
+        String username= m.getUsername();
+        String sessionID= m.getSessionID();
 
-//        User activeUser= m.getActiveUser();
-//        String fileName= "saved_user";
-//
-//        try {
-//            FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), fileName));
-//            ObjectOutputStream objectOut = new ObjectOutputStream(fos);
-//            objectOut.writeObject(activeUser);
-//
-//            fos.close();
-//            objectOut.close();
-//
-//            Toast.makeText(this,
-//                    "Success in writing",
-//                    Toast.LENGTH_SHORT).show();
-//        }catch (Exception e){
-//            Toast.makeText(this,
-//                    "Errore durante la scritture dell'utente",
-//                    Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
+        Context context= this;
+
+        // crea le SharedPref di nome "preferences" e ci salva username e password
+        // potranno essere usate da Login
+        SharedPreferences sharedPref= context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor= sharedPref.edit();
+
+        editor.putString("username", username);
+        editor.putString("sessionID", sessionID);
+
+        editor.commit();
     }
 
     private void hideBottomNavBar(){

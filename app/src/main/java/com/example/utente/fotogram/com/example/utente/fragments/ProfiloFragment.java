@@ -70,8 +70,10 @@ public class ProfiloFragment extends Fragment {
 
     @Override
     public void onResume() {
-        friendsCount= m.getActiveUserFriends().size()-1;
-        tv_friends.setText(String.valueOf(friendsCount));
+        if( m.getActiveUserFriends() != null) {
+            friendsCount = m.getActiveUserFriends().size() - 1;
+            tv_friends.setText(String.valueOf(friendsCount));
+        }
 
         super.onResume();
     }
@@ -84,7 +86,6 @@ public class ProfiloFragment extends Fragment {
 
         context= getContext();
         m= Model.getInstance();
-        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
         queue= Volley.newRequestQueue(context);
         imageHandler= new ImageHandler(context);
 
@@ -161,6 +162,10 @@ public class ProfiloFragment extends Fragment {
             tv_no_posts.setVisibility(View.VISIBLE);
             tv_no_posts.setText(R.string.you_have_no_posts);
         }
+
+//        friends count
+        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
+        tv_friends.setText(String.valueOf(friendsCount));
     }
 
     public void showPosts(){

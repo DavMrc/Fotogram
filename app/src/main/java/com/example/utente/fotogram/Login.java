@@ -3,6 +3,7 @@ package com.example.utente.fotogram;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -50,7 +51,7 @@ public class Login extends AppCompatActivity {
         activity= this;
 
 //      commentare per invalidare le SharedPreferences
-//        readPreferences();
+        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -88,7 +89,7 @@ public class Login extends AppCompatActivity {
                 m.setSessionID(sessionID);
                 m.setUsername(username);
 
-                getFriends(sessionID);
+                startActivity(new Intent(Login.this, Navigation.class));
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -113,37 +114,6 @@ public class Login extends AppCompatActivity {
         queue.add(request);
     }
 
-    private void getFriends(final String sessionID){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                m.setActiveUserFriends( parseFriends(serverResponse));
-
-                startActivity(new Intent(Login.this, Navigation.class));
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", sessionID);
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
-
     @Override
     protected void onResume() {
         hideBottomNavBar();
@@ -151,42 +121,19 @@ public class Login extends AppCompatActivity {
     }
 
     private void readPreferences(){
-        // legge il file con session ID, username ecc
+//         legge il file con session ID, username ecc
 //         il file viene scritto in Navigation
-//        SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
-////
-////        String username= sharedPref.getString("username", null);
-////        String img= sharedPref.getString("img", null);
-////        String sessionID= sharedPref.getString("sessionID", null);
-////
-////        if( username != null && img != null && sessionID != null ){
-////            //TODO: tutto
-//////      TODO: al Resume, l'app va brevemente alla Login e poi passa alla Navigation a causa del delay della chiamata di rete
-////            serverService.getActiveUserInfo(null, sessionID, username);
-////        }
+        SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
-//        String fileName= "saved_user";
-//
-//        try {
-//            FileInputStream fis = openFileInput(fileName);
-//            ObjectInputStream ois= new ObjectInputStream(fis);
-//
-//            User restoredUser= (User) ois.readObject();
-////            m.setActiveUser(restoredUser);
-//
-//            fis.close();
-//            ois.close();
-//
-//            Toast.makeText(this,
-//                    "Success in reading",
-//                    Toast.LENGTH_SHORT).show();
-//        }catch (Exception e){
-//            Toast.makeText(this,
-//                    "Errore durante la lettura dell'utente",
-//                    Toast.LENGTH_SHORT).show();
-//            e.printStackTrace();
-//        }
+        String username= sharedPref.getString("username", null);
+        String sessionID= sharedPref.getString("sessionID", null);
 
+        if( username != null && sessionID != null ){
+            m.setSessionID(sessionID);
+            m.setUsername(username);
+
+            startActivity(new Intent(Login.this, Navigation.class));
+        }
     }
 
     private void hideBottomNavBar(){
@@ -228,27 +175,5 @@ public class Login extends AppCompatActivity {
         if( getResources().getBoolean(R.bool.portait_only) ){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-    }
-
-//    -----------------JSON HANDLER---------------------
-
-    private HashMap<String, String> parseFriends(String serverResponse){
-        HashMap<String, String> friends= new HashMap<>();
-        try {
-            JSONObject jsonObject = new JSONObject(serverResponse);
-            JSONArray array= jsonObject.getJSONArray("followed");
-
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedUser= array.getJSONObject(i);
-                String username= pointedUser.getString("name");
-                String picture= pointedUser.getString("picture");
-
-                friends.put(username, picture);
-            }
-        }catch (JSONException e){
-            e.printStackTrace();
-        }
-
-        return friends;
     }
 }

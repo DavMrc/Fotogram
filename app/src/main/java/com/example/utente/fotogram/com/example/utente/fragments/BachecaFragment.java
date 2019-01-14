@@ -61,9 +61,40 @@ public class BachecaFragment extends Fragment {
 
         no_posts= v.findViewById(R.id.no_posts);
 
-        getWall();
+        getFriends(); // will also get Wall
 
         return v;
+    }
+
+    private void getFriends(){
+        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
+
+        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            // risposta valida
+            @Override
+            public void onResponse(String serverResponse) {
+                m.setActiveUserFriends( parseFriends(serverResponse));
+
+                getWall();
+            }
+        }, new Response.ErrorListener() {
+            // risposta ad un errore
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }) {
+            // parametri richiesta POST
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("session_id", m.getSessionID());
+
+                return params;
+            }
+        };// finisce la StringRequest
+
+        queue.add(request);
     }
 
     public void getWall(){
@@ -143,6 +174,26 @@ public class BachecaFragment extends Fragment {
         }
 
         return posts;
+    }
+
+    private HashMap<String, String> parseFriends(String serverResponse){
+        HashMap<String, String> friends= new HashMap<>();
+        try {
+            JSONObject jsonObject = new JSONObject(serverResponse);
+            JSONArray array= jsonObject.getJSONArray("followed");
+
+            for(int i=0; i < array.length(); i++){
+                JSONObject pointedUser= array.getJSONObject(i);
+                String username= pointedUser.getString("name");
+                String picture= pointedUser.getString("picture");
+
+                friends.put(username, picture);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return friends;
     }
 
 }
