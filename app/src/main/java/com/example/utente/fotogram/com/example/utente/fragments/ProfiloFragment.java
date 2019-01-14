@@ -60,6 +60,7 @@ public class ProfiloFragment extends Fragment {
     private int friendsCount;
     private TextView tv_friends;
     private TextView tv_username;
+    private TextView tv_no_posts;
     private Button changeProPic;
     private ListView postsListView;
 
@@ -91,6 +92,7 @@ public class ProfiloFragment extends Fragment {
         postsListView= view.findViewById(R.id.personal_posts);
         tv_username= view.findViewById(R.id.txt_username);
         tv_friends = view.findViewById(R.id.txt_seguiti);
+        tv_no_posts= view.findViewById(R.id.no_posts);
         changeProPic = view.findViewById(R.id.btn_change_profile_pic);
 
         getUserInfo();
@@ -153,6 +155,20 @@ public class ProfiloFragment extends Fragment {
                 checkStoragePermissions();
             }
         });
+
+//        se non hai postato nulla
+        if(user.getPosts().length == 0) {
+            tv_no_posts.setVisibility(View.VISIBLE);
+            tv_no_posts.setText(R.string.you_have_no_posts);
+        }
+    }
+
+    public void showPosts(){
+        ProfilePostsAdapter adapter = new ProfilePostsAdapter(
+                context,
+                R.layout.item_user_posts_item,
+                user.getPosts());
+        postsListView.setAdapter(adapter);
     }
 
     private void checkStoragePermissions(){
@@ -185,11 +201,9 @@ public class ProfiloFragment extends Fragment {
             if(imageURI != null){
                 proPic.setImageURI(imageURI);
 
-//              aggiorna su server e Model
+//              aggiorna su server
                 String encoded= imageHandler.encodeFromUri(imageURI);
                 updatePictureOnServer(encoded);
-
-//                m.setImage(encoded);
             }
         }
     }
@@ -220,14 +234,6 @@ public class ProfiloFragment extends Fragment {
         };
 
         queue.add(request);
-    }
-
-    public void showPosts(){
-        ProfilePostsAdapter adapter = new ProfilePostsAdapter(
-                context,
-                R.layout.item_user_posts_item,
-                user.getPosts());
-        postsListView.setAdapter(adapter);
     }
 
     public void logout(){

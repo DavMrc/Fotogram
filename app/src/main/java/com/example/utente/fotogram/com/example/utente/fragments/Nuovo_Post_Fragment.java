@@ -1,6 +1,7 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -47,7 +48,6 @@ public class Nuovo_Post_Fragment extends Fragment {
     private Model m;
     private ImageHandler imageHandler;
     private static RequestQueue queue;
-    private Post post;
 
     private TextView tv_didascalia;
 
@@ -74,8 +74,7 @@ public class Nuovo_Post_Fragment extends Fragment {
     }
 
     private void setListeners(View v){
-        // aggiunge un listener a tutto il CL in modo da chiudere
-        // la tastiera quando si fa click ovunque
+        // aggiunge un listener a tutto il CL
         final ConstraintLayout constraintLayout = v.findViewById(R.id.constraint_layout);
         constraintLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,32 +117,10 @@ public class Nuovo_Post_Fragment extends Fragment {
         });
     }
 
-    private void checkStoragePermissions(){
-//        permissions haven't been granted
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }else{
-//        permissions have been previously granted, proceed
-            addImageFromGallery();
-        }
-    }
-
-    public void addImageFromGallery(){
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-
-        File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        String picturePath= pictureDirectory.getPath();
-
-        Uri actualPictures= Uri.parse(picturePath);
-        photoPickerIntent.setDataAndType(actualPictures,"image/*");
-        startActivityForResult(photoPickerIntent, 20);
-    }
-
     private void sendImageToServer(){
         if(selectedImageUri != null) {
             final String didascalia= tv_didascalia.getText().toString();
             final String encoded = imageHandler.encodeFromUri(selectedImageUri);
-            String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.ms").format(new Date());
 
 //           ---------------------START REQUEST--------------------
 
@@ -183,6 +160,45 @@ public class Nuovo_Post_Fragment extends Fragment {
             tv_didascalia.setText("");
         }else{
             Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void checkStoragePermissions(){
+//        permissions haven't been granted
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }else{
+//        permissions have been previously granted, proceed
+            addImageFromGallery();
+        }
+    }
+
+    public void addImageFromGallery(){
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+
+        File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        String picturePath= pictureDirectory.getPath();
+
+        Uri actualPictures= Uri.parse(picturePath);
+        photoPickerIntent.setDataAndType(actualPictures,"image/*");
+        startActivityForResult(photoPickerIntent, 20);
+    }
+
+    @Override
+    // relativo al photoPickerIntent, serve per aggiunge l'immagine
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 20 & resultCode == Activity.RESULT_OK) {
+
+            selectedImageUri = data.getData();
+
+            if(selectedImageUri != null){
+                chooseImage.setImageURI(selectedImageUri);
+
+                // mostra il bottone "delete"
+                cancelPost.setVisibility(View.VISIBLE);
+            }else{
+                Toast.makeText(context, "Impossibile caricare immagine", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

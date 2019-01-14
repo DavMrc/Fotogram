@@ -22,5 +22,8 @@
     <string name="follow_yourself">Non puoi seguire te stesso</string>
     <!--Misc-->
     <string name="didascalia_empty">Questo post è senza didascalia.</string>
+    <string name="they_have_no_posts">L\'utente non ha ancora postato nulla</string>
+    <string name="you_have_no_posts">Non hai ancora postato nulla</string>
+    <string name="no_wall">Non ci sono ancora post. Fatti degli amici oppure inizia a postare qualche foto per vederle qui!</string>
 
 </resources>

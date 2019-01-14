@@ -120,37 +120,6 @@ public class RicercaFragment extends Fragment{
         queue.add(request);
     }
 
-    private void getOtherUserInfo(final String otherUserUsername){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
-
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String response) {
-
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("username", otherUserUsername);
-
-                return params;
-            }
-        };// finisce la StringRequest
-
-        queue.add(request);
-    }
-
     private ArrayList<User> parseSearchUsers(String serverResponse){
         ArrayList<User> users= new ArrayList<>();
 

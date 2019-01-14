@@ -71,27 +71,6 @@ public class Navigation extends AppCompatActivity {
         hideBottomNavBar();
     }
 
-    private void hideBottomNavBar(){
-        final View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                  View.SYSTEM_UI_FLAG_IMMERSIVE
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        );
-
-        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-//                barra di sistema riapparsa, nasconderla
-                if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
-                    decorView.setSystemUiVisibility(
-                              View.SYSTEM_UI_FLAG_IMMERSIVE
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    );
-                }
-            }
-        });
-    }
-
     private void saveSession(){
 //        String username= m.getActiveUserNickname();
 //        String img= m.getActiveUserImg();
@@ -130,6 +109,27 @@ public class Navigation extends AppCompatActivity {
 //                    Toast.LENGTH_SHORT).show();
 //            e.printStackTrace();
 //        }
+    }
+
+    private void hideBottomNavBar(){
+        final View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                  View.SYSTEM_UI_FLAG_IMMERSIVE
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        );
+
+        decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+            @Override
+            public void onSystemUiVisibilityChange(int visibility) {
+//                barra di sistema riapparsa, nasconderla
+                if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
+                    decorView.setSystemUiVisibility(
+                              View.SYSTEM_UI_FLAG_IMMERSIVE
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    );
+                }
+            }
+        });
     }
 
     private void setupFooter(){

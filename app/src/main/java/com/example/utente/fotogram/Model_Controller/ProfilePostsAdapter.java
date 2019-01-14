@@ -27,8 +27,8 @@ public class ProfilePostsAdapter extends ArrayAdapter {
     public ProfilePostsAdapter(Context context, int resource, Post [] posts) {
         super(context, resource, posts);
         this.context = context;
-        imageHandler= new ImageHandler(context);
         this.posts= posts;
+        imageHandler= new ImageHandler(context);
 
         roboto_light= ResourcesCompat.getFont(context, R.font.roboto_light);
         roboto_light_italic= ResourcesCompat.getFont(context, R.font.roboto_light_italic);
@@ -39,28 +39,28 @@ public class ProfilePostsAdapter extends ArrayAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View v= convertView;
 
-        if(v == null){
+        if (v == null) {
             //recycle if needed, else inflate
             LayoutInflater li;
-            li= LayoutInflater.from(this.context);
-            v= li.inflate(R.layout.item_user_posts_item, null);
+            li = LayoutInflater.from(this.context);
+            v = li.inflate(R.layout.item_user_posts_item, null);
         }
 
-        Post p= posts[position];
+        Post p = posts[position];
 
-        if(p != null){
-            ImageView image= v.findViewById(R.id.item_post_item_img);
-            TextView didascalia= v.findViewById(R.id.item_post_item_msg);
+        if (p != null) {
+            ImageView image = v.findViewById(R.id.item_post_item_img);
+            TextView didascalia = v.findViewById(R.id.item_post_item_msg);
 
-            Bitmap bitmap= imageHandler.decodeString(p.getImg());
+            Bitmap bitmap = imageHandler.decodeString(p.getImg());
 
-            if(bitmap != null) {
+            if (bitmap != null) {
                 image.setImageBitmap(bitmap);
             }
-            if(p.getMsg().equals("")) {
+            if (p.getMsg().equals("")) {
                 didascalia.setTypeface(roboto_light_italic);
                 didascalia.setText(R.string.didascalia_empty);
-            }else{
+            } else {
                 didascalia.setTypeface(roboto_light);
                 didascalia.setText(p.getMsg());
             }

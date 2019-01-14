@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -34,11 +35,11 @@ public class BachecaFragment extends Fragment {
 
     private Model m;
     private Context context;
-    private ImageHandler imageHandler;
     private static RequestQueue queue;
 
     private HashMap<String, String> friends;
     private ListView postListView;
+    private TextView no_posts;
     private ProgressBar progressBar;
 
     public BachecaFragment() {
@@ -52,12 +53,13 @@ public class BachecaFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_bacheca, container, false);
 
         context= getContext();
-        imageHandler= new ImageHandler(context);
         m= Model.getInstance();
         queue= Volley.newRequestQueue(context);
 
         postListView= v.findViewById(R.id.bacheca_posts);
         progressBar= v.findViewById(R.id.wall_progress_bar);
+
+        no_posts= v.findViewById(R.id.no_posts);
 
         getWall();
 
@@ -73,15 +75,24 @@ public class BachecaFragment extends Fragment {
             public void onResponse(String response) {
                 Post[] wall= parseWall(response);
 
-                BachecaPostsAdapter adapter= new BachecaPostsAdapter(
-                        context,
-                        R.layout.item_bacheca_post_item,
-                        wall
-                );
-                postListView.setAdapter(adapter);
+                if(wall.length== 0) {
+                    no_posts.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.GONE);
+                    no_posts.setText(R.string.no_wall);
 
-                progressBar.setVisibility(View.GONE);
-                ((Navigation)getActivity()).stopRefreshAnimation();
+                    ((Navigation) getActivity()).stopRefreshAnimation();
+                }else {
+
+                    BachecaPostsAdapter adapter = new BachecaPostsAdapter(
+                            context,
+                            R.layout.item_bacheca_post_item,
+                            wall
+                    );
+                    postListView.setAdapter(adapter);
+
+                    progressBar.setVisibility(View.GONE);
+                    ((Navigation) getActivity()).stopRefreshAnimation();
+                }
             }
         }, new Response.ErrorListener() {
             // risposta ad un errore
@@ -105,21 +116,27 @@ public class BachecaFragment extends Fragment {
     }
 
     private Post[] parseWall(String serverResponse){
-        Post [] posts= new Post[10];
+        Post [] posts= null;
 
         try {
             JSONObject jsonObject = new JSONObject(serverResponse);
             JSONArray array= jsonObject.getJSONArray("posts");
 
-            for(int i=0; i < array.length(); i++){
-                JSONObject pointedPost= array.getJSONObject(i);
+            if(array.length()== 0){
+                posts= new Post[0];
+            }else {
+                posts= new Post[10];
 
-                String didascalia= pointedPost.getString("msg");
-                String img= pointedPost.getString("img");
-                String user= pointedPost.getString("user");
-                String timestamp= pointedPost.getString("timestamp");
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject pointedPost = array.getJSONObject(i);
 
-                posts[i]= new Post(user, didascalia, img, timestamp);
+                    String didascalia = pointedPost.getString("msg");
+                    String img = pointedPost.getString("img");
+                    String user = pointedPost.getString("user");
+                    String timestamp = pointedPost.getString("timestamp");
+
+                    posts[i] = new Post(user, didascalia, img, timestamp);
+                }
             }
         }catch (JSONException e){
             e.printStackTrace();

@@ -9,9 +9,6 @@ public class Model {
     private String username;
     private HashMap<String, String> friends;
 
-    private User activeUser;
-    private User otherUser; // utente su cui si è fatto click dopo ricerca
-
     private Model() {}
 
     public static synchronized Model getInstance() {
@@ -20,14 +17,6 @@ public class Model {
         }
         return instance;
     }
-
-//    public User getActiveUser(){
-//        return activeUser;
-//    }
-//
-//    public void setActiveUser(User user){
-//        this.activeUser= user;
-//    }
 
     public String getSessionID(){
         return sessionID;
@@ -52,22 +41,6 @@ public class Model {
     public void setImage(String image){
         this.friends.replace(username, image);
     }
-
-//    public String getActiveUserNickname(){
-//        return activeUser.getUsername();
-//    }
-//
-//    public void setActiveUserNickname(String username){
-//        activeUser.setUsername(username);
-//    }
-//
-//    public String getActiveUserImg(){
-//        return activeUser.getImg();
-//    }
-//
-//    public void setActiveUserImg(String encodedImg){
-//        activeUser.setImg(encodedImg);
-//    }
 
     public HashMap<String, String> getActiveUserFriends(){
         return friends;

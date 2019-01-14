@@ -23,6 +23,8 @@ import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.User;
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -225,11 +227,23 @@ public class OthersProfile extends AppCompatActivity {
     }
 
     private void showPosts(){
-        ProfilePostsAdapter adapter = new ProfilePostsAdapter(
-                this,
-                R.layout.item_user_posts_item,
-                otherUser.getPosts());
-        postListView.setAdapter(adapter);
+        if(otherUser.getPosts().length== 0) {
+            TextView no_posts = findViewById(R.id.no_posts);
+
+            if(is_self_profile) {
+                no_posts.setVisibility(View.VISIBLE);
+                no_posts.setText(R.string.you_have_no_posts);
+            }else{
+                no_posts.setVisibility(View.VISIBLE);
+                no_posts.setText(R.string.they_have_no_posts);
+            }
+        }else{
+            ProfilePostsAdapter adapter = new ProfilePostsAdapter(
+                    this,
+                    R.layout.item_user_posts_item,
+                    otherUser.getPosts());
+            postListView.setAdapter(adapter);
+        }
     }
 
 }

@@ -68,10 +68,10 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             v= li.inflate(R.layout.item_bacheca_post_item, null);
         }
 
-        Post p= posts[position];
+        final Post p= posts[position];
 
         ImageView profileImg= v.findViewById(R.id.li_img_profilo);
-        final TextView tv_username= v.findViewById(R.id.li_username);
+        TextView tv_username= v.findViewById(R.id.li_username);
         ImageView unfollow= v.findViewById(R.id.li_unfollow);
         ImageView post= v.findViewById(R.id.li_post);
         TextView didascalia= v.findViewById(R.id.li_didascalia);
@@ -94,7 +94,10 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             post.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: go to others profile
+                    Intent intent= new Intent(context, OthersProfile.class);
+                    intent.putExtra("username", p.getUsername());
+
+                    context.startActivity(intent);
                 }
             });
 
@@ -126,16 +129,6 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
-                }
-            });
-
-//            click listener su tutta la view che porta ad OthersProfile
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent= new Intent(new Intent(context, OthersProfile.class));
-                    intent.putExtra("username", tv_username.getText());
-                    context.startActivity(intent);
                 }
             });
 
