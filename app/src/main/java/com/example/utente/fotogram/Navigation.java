@@ -23,6 +23,9 @@ import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragm
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Navigation extends AppCompatActivity {
 
     private BachecaFragment bacheca= new BachecaFragment();
@@ -103,7 +106,7 @@ public class Navigation extends AppCompatActivity {
 //                barra di sistema riapparsa, nasconderla
                 if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
                     decorView.setSystemUiVisibility(
-                              View.SYSTEM_UI_FLAG_IMMERSIVE
+                            View.SYSTEM_UI_FLAG_IMMERSIVE
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     );
                 }

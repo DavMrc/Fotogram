@@ -224,7 +224,7 @@ public class ProfiloFragment extends Fragment {
         }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Richiesta al server errata", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Impossibile aggiornare immagine su server", Toast.LENGTH_SHORT).show();
             }
         }){
             // parametri richiesta POST
