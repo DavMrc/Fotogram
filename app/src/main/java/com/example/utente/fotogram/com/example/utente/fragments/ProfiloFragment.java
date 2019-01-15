@@ -6,12 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +47,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
+import me.shaohui.advancedluban.Luban;
+import me.shaohui.advancedluban.OnCompressListener;
 
 public class ProfiloFragment extends Fragment {
 
@@ -55,7 +64,6 @@ public class ProfiloFragment extends Fragment {
     public ImageView proPic;
     private Context context;
     private static RequestQueue queue;
-    private ImageHandler imageHandler;
 
     private int friendsCount;
     private TextView tv_friends;
@@ -87,7 +95,6 @@ public class ProfiloFragment extends Fragment {
         context= getContext();
         m= Model.getInstance();
         queue= Volley.newRequestQueue(context);
-        imageHandler= new ImageHandler(context);
 
         proPic= view.findViewById(R.id.img_profile_pic);
         postsListView= view.findViewById(R.id.personal_posts);
@@ -140,7 +147,7 @@ public class ProfiloFragment extends Fragment {
     private void updateUI(){
 //        immagine profilo
         if(user.getImg() != null){
-            proPic.setImageBitmap(imageHandler.decodeString(user.getImg()));
+            proPic.setImageBitmap(ImageHandler.decodeString(user.getImg()));
         }// altrimenti c'è il placeholder
 
 //        username
@@ -180,7 +187,7 @@ public class ProfiloFragment extends Fragment {
 //        permission isn't granted: prompt the user
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }else{
+        }else if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 //            permissions were already granted, proceed normally
             changeProfilePic();
         }
@@ -207,10 +214,60 @@ public class ProfiloFragment extends Fragment {
                 proPic.setImageURI(imageURI);
 
 //              aggiorna su server
-                String encoded= imageHandler.encodeFromUri(imageURI);
-                updatePictureOnServer(encoded);
+                encodeFromUri(imageURI);
             }
         }
+    }
+
+    public void encodeFromUri(Uri uri){
+        String [] filePathColumn= {MediaStore.Images.Media.DATA};
+
+        Cursor cursor= context.getContentResolver().query(uri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex= cursor.getColumnIndex(filePathColumn[0]);
+        String path= cursor.getString(columnIndex);
+        cursor.close();
+
+        File imageAsFile= new File(path);
+//        Log.d("DDD", "DDD File size before compression: "+imageAsFile.length()/1024);
+
+        final String[] mString = new String[1];
+
+        if(imageAsFile.length()/1024 > 90){
+            Luban.compress(context, imageAsFile).setMaxSize(90).putGear(Luban.CUSTOM_GEAR).launch(new OnCompressListener() {
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onSuccess(File file) {
+                    mString[0] = fileToBase64(file);
+                    updatePictureOnServer(mString[0]);
+//                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    e.printStackTrace();
+                    Toast.makeText(context,
+                            "Errore durante la compressione dell'immagine",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            mString[0] = fileToBase64(imageAsFile);
+            updatePictureOnServer(mString[0]);
+        }
+    }
+
+    private String fileToBase64(File file){
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        byte[] byteArr = baos.toByteArray();
+
+        return Base64.encodeToString(byteArr, Base64.DEFAULT);
     }
 
     private void updatePictureOnServer(final String encoded){

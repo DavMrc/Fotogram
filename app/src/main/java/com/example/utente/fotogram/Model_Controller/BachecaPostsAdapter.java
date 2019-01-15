@@ -29,7 +29,6 @@ import java.util.Map;
 public class BachecaPostsAdapter extends ArrayAdapter {
 
     private Context context;
-    private ImageHandler imageHandler;
     private Model m;
     private static RequestQueue queue;
 
@@ -45,7 +44,6 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
         this.context = context;
         this.posts= posts;
-        imageHandler= new ImageHandler(context);
 
         m= Model.getInstance();
         friends= m.getActiveUserFriends();
@@ -81,10 +79,10 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             final String img= friends.get(username);
 
             Bitmap profileImgBitmap;
-            Bitmap postBitmap= imageHandler.decodeString(p.getImg());
+            Bitmap postBitmap= ImageHandler.decodeString(p.getImg());
 
             if(! img.equals("")) {
-                profileImgBitmap= imageHandler.decodeString(img);
+                profileImgBitmap= ImageHandler.decodeString(img);
                 profileImg.setImageBitmap(profileImgBitmap);
             }
 

@@ -5,13 +5,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +38,15 @@ import com.example.utente.fotogram.Model_Controller.Model;
 import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import me.shaohui.advancedluban.Luban;
+import me.shaohui.advancedluban.OnCompressListener;
 
 public class Nuovo_Post_Fragment extends Fragment {
 
@@ -46,7 +56,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 
     private Context context;
     private Model m;
-    private ImageHandler imageHandler;
+//    private ImageHandler imageHandler;
     private static RequestQueue queue;
 
     private TextView tv_didascalia;
@@ -63,7 +73,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 
         m= Model.getInstance();
         context= getContext();
-        imageHandler= new ImageHandler(context);
+//        imageHandler= new ImageHandler(context);
         queue= Volley.newRequestQueue(context);
 
         tv_didascalia= v.findViewById(R.id.txt_didascalia);
@@ -112,17 +122,65 @@ public class Nuovo_Post_Fragment extends Fragment {
         createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendImageToServer();
+                encodeFromUri(selectedImageUri);
             }
         });
     }
 
-    private void sendImageToServer(){
+    public void encodeFromUri(Uri uri){
+        String [] filePathColumn= {MediaStore.Images.Media.DATA};
+
+        Cursor cursor= context.getContentResolver().query(uri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+
+        int columnIndex= cursor.getColumnIndex(filePathColumn[0]);
+        String path= cursor.getString(columnIndex);
+        cursor.close();
+
+        File imageAsFile= new File(path);
+//        Log.d("DDD", "DDD File size before compression: "+imageAsFile.length()/1024);
+
+        final String[] mString = new String[1];
+
+        if(imageAsFile.length()/1024 > 90){
+            Luban.compress(context, imageAsFile).setMaxSize(90).putGear(Luban.CUSTOM_GEAR).launch(new OnCompressListener() {
+                @Override
+                public void onStart() {
+                }
+
+                @Override
+                public void onSuccess(File file) {
+                    mString[0] = fileToBase64(file);
+                    sendImageToServer(mString[0]);
+//                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    e.printStackTrace();
+                    Toast.makeText(context,
+                            "Errore durante la compressione dell'immagine",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            mString[0] = fileToBase64(imageAsFile);
+            sendImageToServer(mString[0]);
+        }
+    }
+
+    private String fileToBase64(File file){
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        byte[] byteArr = baos.toByteArray();
+
+        return Base64.encodeToString(byteArr, Base64.DEFAULT);
+    }
+
+    private void sendImageToServer(final String encoded){
         if(selectedImageUri != null) {
             final String didascalia= tv_didascalia.getText().toString();
-            final String encoded = imageHandler.encodeFromUri(selectedImageUri);
-
-//           ---------------------START REQUEST--------------------
 
             String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
 
@@ -131,6 +189,8 @@ public class Nuovo_Post_Fragment extends Fragment {
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+                    // risetta la didascalia a nulla dopo la creazione del post
+                    tv_didascalia.setText("");
                 }
             }, new Response.ErrorListener() {
                 // risposta ad un errore
@@ -153,11 +213,6 @@ public class Nuovo_Post_Fragment extends Fragment {
             };// finisce la StringRequest
 
             queue.add(request);
-
-//            ---------------------END REQUEST----------------------
-
-            // risetta la didascalia a nulla dopo la creazione del post
-            tv_didascalia.setText("");
         }else{
             Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
         }
@@ -167,7 +222,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 //        permissions haven't been granted
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }else{
+        }else if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 //        permissions have been previously granted, proceed
             addImageFromGallery();
         }

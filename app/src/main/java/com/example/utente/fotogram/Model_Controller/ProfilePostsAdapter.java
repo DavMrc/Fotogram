@@ -18,7 +18,6 @@ import java.lang.reflect.Type;
 public class ProfilePostsAdapter extends ArrayAdapter {
 
     private Context context;
-    private ImageHandler imageHandler;
     private Post [] posts;
 
     private Typeface roboto_light;
@@ -28,7 +27,6 @@ public class ProfilePostsAdapter extends ArrayAdapter {
         super(context, resource, posts);
         this.context = context;
         this.posts= posts;
-        imageHandler= new ImageHandler(context);
 
         roboto_light= ResourcesCompat.getFont(context, R.font.roboto_light);
         roboto_light_italic= ResourcesCompat.getFont(context, R.font.roboto_light_italic);
@@ -52,7 +50,7 @@ public class ProfilePostsAdapter extends ArrayAdapter {
             ImageView image = v.findViewById(R.id.item_post_item_img);
             TextView didascalia = v.findViewById(R.id.item_post_item_msg);
 
-            Bitmap bitmap = imageHandler.decodeString(p.getImg());
+            Bitmap bitmap = ImageHandler.decodeString(p.getImg());
 
             if (bitmap != null) {
                 image.setImageBitmap(bitmap);

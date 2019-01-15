@@ -33,7 +33,6 @@ public class OthersProfile extends AppCompatActivity {
     private User otherUser;
 
     private Model m;
-    private ImageHandler imageHandler;
     private static RequestQueue queue;
 
     private Button followButton;
@@ -50,7 +49,6 @@ public class OthersProfile extends AppCompatActivity {
         Intent intent= getIntent();
 
         m= Model.getInstance();
-        imageHandler= new ImageHandler(this);
         queue= Volley.newRequestQueue(this);
 
         String username= intent.getStringExtra("username");
@@ -101,7 +99,7 @@ public class OthersProfile extends AppCompatActivity {
 
         // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
-        Bitmap bitmap= imageHandler.decodeString(otherUser.getImg());
+        Bitmap bitmap= ImageHandler.decodeString(otherUser.getImg());
         if(bitmap != null) {
             profilePic.setImageBitmap(bitmap);
         }

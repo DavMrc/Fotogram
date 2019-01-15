@@ -17,14 +17,11 @@ public class SearchUsersAdapter extends ArrayAdapter {
 
     private Context context;
     private ArrayList<User> users;
-    private ImageHandler imageHandler;
 
     public SearchUsersAdapter(Context context, int resource, ArrayList<User> users) {
         super(context, resource, users);
         this.context= context;
         this.users= users;
-
-        imageHandler= new ImageHandler(context);
     }
 
     @Override
@@ -47,7 +44,7 @@ public class SearchUsersAdapter extends ArrayAdapter {
             username.setText(u.getUsername());
 
             try{
-                Bitmap bitmap = imageHandler.decodeString(u.getImg());
+                Bitmap bitmap = ImageHandler.decodeString(u.getImg());
                 image.setImageBitmap(bitmap);
             }catch (Exception e) {
                 // non gestisco l'errore perchè c'è il placeholder dell'immagine

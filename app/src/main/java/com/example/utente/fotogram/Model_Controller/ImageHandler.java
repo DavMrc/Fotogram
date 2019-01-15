@@ -7,37 +7,18 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
-public class ImageHandler {
-    private Context context;
-    private Model m;
+import me.shaohui.advancedluban.Luban;
+import me.shaohui.advancedluban.OnCompressListener;
 
-    public ImageHandler(Context context) {
-        this.context= context;
-        m= Model.getInstance();
-    }
+public abstract class ImageHandler {
 
-    public String encodeFromUri(Uri uri){
-        String [] filePathColumn= {MediaStore.Images.Media.DATA};
-
-        Cursor cursor= context.getContentResolver().query(uri, filePathColumn, null, null, null);
-        cursor.moveToFirst();
-
-        int columnIndex= cursor.getColumnIndex(filePathColumn[0]);
-        String path= cursor.getString(columnIndex);
-        cursor.close();
-
-        final Bitmap bitmap = BitmapFactory.decodeFile(path);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] byteArr = baos.toByteArray();
-
-        return Base64.encodeToString(byteArr, Base64.DEFAULT);
-    }
-
-    public Bitmap decodeString(String encoded){
+    public static Bitmap decodeString(String encoded){
         if(encoded != null) {
             byte[] byteArr = Base64.decode(encoded, Base64.DEFAULT);
 
@@ -46,5 +27,4 @@ public class ImageHandler {
             return null;
         }
     }
-
 }
