@@ -76,7 +76,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
 
         if(p != null){
             final String username= p.getUsername();
-            final String img= friends.get(username);
+            final String img= m.getImage(username);
 
             Bitmap profileImgBitmap;
             Bitmap postBitmap= ImageHandler.decodeString(p.getImg());

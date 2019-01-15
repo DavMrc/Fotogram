@@ -246,6 +246,7 @@ public class ProfiloFragment extends Fragment {
                 public void onSuccess(File file) {
                     mString[0] = fileToBase64(file);
                     updatePictureOnServer(mString[0]);
+                    m.setImage(mString[0]);
 //                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
                 }
 
