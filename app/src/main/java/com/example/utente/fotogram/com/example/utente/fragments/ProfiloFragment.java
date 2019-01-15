@@ -72,6 +72,8 @@ public class ProfiloFragment extends Fragment {
     private Button changeProPic;
     private ListView postsListView;
 
+    private int PROFILE_IMAGE_SIZE= 10;
+
     public ProfiloFragment() {
         // Required empty public constructor
     }
@@ -234,8 +236,8 @@ public class ProfiloFragment extends Fragment {
 
         final String[] mString = new String[1];
 
-        if(imageAsFile.length()/1024 > 90){
-            Luban.compress(context, imageAsFile).setMaxSize(90).putGear(Luban.CUSTOM_GEAR).launch(new OnCompressListener() {
+        if(imageAsFile.length()/1024 > PROFILE_IMAGE_SIZE){
+            Luban.compress(context, imageAsFile).setMaxSize(PROFILE_IMAGE_SIZE).putGear(Luban.CUSTOM_GEAR).launch(new OnCompressListener() {
                 @Override
                 public void onStart() {
                 }
@@ -264,7 +266,7 @@ public class ProfiloFragment extends Fragment {
     private String fileToBase64(File file){
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] byteArr = baos.toByteArray();
 
         return Base64.encodeToString(byteArr, Base64.DEFAULT);
