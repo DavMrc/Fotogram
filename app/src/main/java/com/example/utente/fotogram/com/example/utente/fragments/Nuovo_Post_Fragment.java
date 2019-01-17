@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -149,7 +150,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 
                 @Override
                 public void onSuccess(File file) {
-                    mString[0] = fileToBase64(file);
+                    mString[0] = ImageHandler.fileToBase64(file);
                     sendImageToServer(mString[0]);
 //                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
                 }
@@ -163,18 +164,9 @@ public class Nuovo_Post_Fragment extends Fragment {
                 }
             });
         }else{
-            mString[0] = fileToBase64(imageAsFile);
+            mString[0] = ImageHandler.fileToBase64(imageAsFile);
             sendImageToServer(mString[0]);
         }
-    }
-
-    private String fileToBase64(File file){
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] byteArr = baos.toByteArray();
-
-        return Base64.encodeToString(byteArr, Base64.DEFAULT);
     }
 
     private void sendImageToServer(final String encoded){

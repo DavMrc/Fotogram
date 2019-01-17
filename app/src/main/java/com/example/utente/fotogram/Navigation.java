@@ -78,6 +78,7 @@ public class Navigation extends AppCompatActivity {
 
     private void saveSession(){
         String username= m.getUsername();
+        String img= m.getImage(username);
         String sessionID= m.getSessionID();
 
         Context context= this;
@@ -88,6 +89,7 @@ public class Navigation extends AppCompatActivity {
         SharedPreferences.Editor editor= sharedPref.edit();
 
         editor.putString("username", username);
+        editor.putString("img", img);
         editor.putString("sessionID", sessionID);
 
         editor.commit();

@@ -126,11 +126,13 @@ public class Login extends AppCompatActivity {
         SharedPreferences sharedPref= getSharedPreferences("preferences", Context.MODE_PRIVATE);
 
         String username= sharedPref.getString("username", null);
+        String img= sharedPref.getString("img", null);
         String sessionID= sharedPref.getString("sessionID", null);
 
-        if( username != null && sessionID != null ){
+        if( username != null && img != null && sessionID != null ){
             m.setSessionID(sessionID);
             m.setUsername(username);
+            m.setImage(img);
 
             startActivity(new Intent(Login.this, Navigation.class));
         }

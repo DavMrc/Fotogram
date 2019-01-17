@@ -148,7 +148,9 @@ public class ProfiloFragment extends Fragment {
 
     private void updateUI(){
 //        immagine profilo
-        if(user.getImg() != null){
+        if(m.getImage(m.getUsername()) != null){
+            proPic.setImageBitmap(ImageHandler.decodeString(m.getImage(m.getUsername())));
+        }else if(user.getImg() != null){
             proPic.setImageBitmap(ImageHandler.decodeString(user.getImg()));
         }// altrimenti c'è il placeholder
 
@@ -215,7 +217,7 @@ public class ProfiloFragment extends Fragment {
             if(imageURI != null){
                 proPic.setImageURI(imageURI);
 
-//              aggiorna su server
+//              aggiorna su server e model
                 encodeFromUri(imageURI);
             }
         }
@@ -232,8 +234,6 @@ public class ProfiloFragment extends Fragment {
         cursor.close();
 
         File imageAsFile= new File(path);
-//        Log.d("DDD", "DDD File size before compression: "+imageAsFile.length()/1024);
-
         final String[] mString = new String[1];
 
         if(imageAsFile.length()/1024 > PROFILE_IMAGE_SIZE){
@@ -244,10 +244,9 @@ public class ProfiloFragment extends Fragment {
 
                 @Override
                 public void onSuccess(File file) {
-                    mString[0] = fileToBase64(file);
+                    mString[0] = ImageHandler.fileToBase64(file);
                     updatePictureOnServer(mString[0]);
                     m.setImage(mString[0]);
-//                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
                 }
 
                 @Override
@@ -259,18 +258,10 @@ public class ProfiloFragment extends Fragment {
                 }
             });
         }else{
-            mString[0] = fileToBase64(imageAsFile);
+            mString[0] = ImageHandler.fileToBase64(imageAsFile);
             updatePictureOnServer(mString[0]);
+            m.setImage(mString[0]);
         }
-    }
-
-    private String fileToBase64(File file){
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] byteArr = baos.toByteArray();
-
-        return Base64.encodeToString(byteArr, Base64.DEFAULT);
     }
 
     private void updatePictureOnServer(final String encoded){

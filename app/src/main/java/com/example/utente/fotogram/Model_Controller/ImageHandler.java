@@ -27,4 +27,13 @@ public abstract class ImageHandler {
             return null;
         }
     }
+
+    public static String fileToBase64(File file){
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] byteArr = baos.toByteArray();
+
+        return Base64.encodeToString(byteArr, Base64.DEFAULT);
+    }
 }
