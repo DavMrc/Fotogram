@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -138,7 +140,6 @@ public class Nuovo_Post_Fragment extends Fragment {
         cursor.close();
 
         File imageAsFile= new File(path);
-//        Log.d("DDD", "DDD File size before compression: "+imageAsFile.length()/1024);
 
         final String[] mString = new String[1];
 
@@ -152,7 +153,6 @@ public class Nuovo_Post_Fragment extends Fragment {
                 public void onSuccess(File file) {
                     mString[0] = ImageHandler.fileToBase64(file);
                     sendImageToServer(mString[0]);
-//                    Log.d("DDD", "DDD File size after compression: "+file.length()/1024);
                 }
 
                 @Override
@@ -170,42 +170,46 @@ public class Nuovo_Post_Fragment extends Fragment {
     }
 
     private void sendImageToServer(final String encoded){
-        if(selectedImageUri != null) {
-            final String didascalia= tv_didascalia.getText().toString();
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            if (selectedImageUri != null) {
+                final String didascalia = tv_didascalia.getText().toString();
 
-            String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
+                String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/create_post";
 
-            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-                // risposta valida
-                @Override
-                public void onResponse(String response) {
-                    Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
-                    // risetta la didascalia a nulla dopo la creazione del post
-                    tv_didascalia.setText("");
-                }
-            }, new Response.ErrorListener() {
-                // risposta ad un errore
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    error.printStackTrace();
-                    Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
-                }
-            }) {
-                // parametri richiesta POST
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("session_id", m.getSessionID());
-                    params.put("img", encoded);
-                    params.put("message", didascalia);
+                StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                    // risposta valida
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
+                        // risetta la didascalia a nulla dopo la creazione del post
+                        tv_didascalia.setText("");
+                    }
+                }, new Response.ErrorListener() {
+                    // risposta ad un errore
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(context, "Impossibile inviare immagine al server", Toast.LENGTH_LONG).show();
+                    }
+                }) {
+                    // parametri richiesta POST
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("session_id", m.getSessionID());
+                        params.put("img", encoded);
+                        params.put("message", didascalia);
 
-                    return params;
-                }
-            };// finisce la StringRequest
+                        return params;
+                    }
+                };// finisce la StringRequest
 
-            queue.add(request);
-        }else{
-            Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
+                queue.add(request);
+            } else {
+                Toast.makeText(context, "Immagine non valida", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -245,6 +249,18 @@ public class Nuovo_Post_Fragment extends Fragment {
             }else{
                 Toast.makeText(context, "Impossibile caricare immagine", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
         }
     }
 

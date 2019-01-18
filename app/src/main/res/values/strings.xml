@@ -25,5 +25,6 @@
     <string name="they_have_no_posts">L\'utente non ha ancora postato nulla</string>
     <string name="you_have_no_posts">Non hai ancora postato nulla</string>
     <string name="no_wall">Non ci sono ancora post. Fatti degli amici oppure inizia a postare qualche foto per vederle qui!</string>
+    <string name="no_internet">Non sei connesso ad internet</string>
 
 </resources>

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -95,7 +97,11 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                     Intent intent= new Intent(context, OthersProfile.class);
                     intent.putExtra("username", p.getUsername());
 
-                    context.startActivity(intent);
+                    if(! isConnected()) {
+                        Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                    }else {
+                        context.startActivity(intent);
+                    }
                 }
             });
 
@@ -136,33 +142,49 @@ public class BachecaPostsAdapter extends ArrayAdapter {
     }
 
     private void unfollowServerCall(final String username){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/unfollow";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String sessionID) {
-                m.removeFriend(username);
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile smettere di seguire", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("username", username);
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String sessionID) {
+                    m.removeFriend(username);
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(context, "Impossibile smettere di seguire", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
+                    params.put("username", username);
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    return params;
+                }
+            };// finisce la StringRequest
 
-        queue.add(request);
+            queue.add(request);
+        }
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

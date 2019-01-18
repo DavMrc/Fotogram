@@ -1,6 +1,8 @@
 package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Model_Controller.BachecaPostsAdapter;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
@@ -67,34 +70,41 @@ public class BachecaFragment extends Fragment {
     }
 
     private void getFriends(){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+            ((Navigation) getActivity()).stopRefreshAnimation();
+        }else {
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                m.setActiveUserFriends( parseFriends(serverResponse));
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/followed";
 
-                getWall();
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String serverResponse) {
+                    m.setActiveUserFriends(parseFriends(serverResponse));
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    getWall();
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
 
-        queue.add(request);
+                    return params;
+                }
+            };// finisce la StringRequest
+
+            queue.add(request);
+        }
     }
 
     public void getWall(){
@@ -194,6 +204,18 @@ public class BachecaFragment extends Fragment {
         }
 
         return friends;
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

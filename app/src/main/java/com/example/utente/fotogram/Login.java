@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +25,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Model_Controller.Model;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +49,7 @@ public class Login extends AppCompatActivity {
         activity= this;
 
 //      commentare per invalidare le SharedPreferences
-        readPreferences();
+//        readPreferences();
 
         hideBottomNavBar();
         setConstraintLayoutListener();
@@ -67,8 +65,6 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 // call login
 
-                progressBar.setVisibility(View.VISIBLE);
-
                 String username = tv_username.getText().toString();
                 String password = tv_password.getText().toString();
 
@@ -78,46 +74,65 @@ public class Login extends AppCompatActivity {
     }
 
     private void login(final String username, final String password){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
+        if(! isConnected()) {
+            Toast.makeText(Login.this, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            progressBar.setVisibility(View.VISIBLE);
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String sessionID) {
-                Log.d("DDD", "DDD ServerService Session id: "+sessionID);
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/login";
 
-                m.setSessionID(sessionID);
-                m.setUsername(username);
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String sessionID) {
+                    Log.d("DDD", "DDD ServerService Session id: " + sessionID);
 
-                startActivity(new Intent(Login.this, Navigation.class));
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("username", username);
-                params.put("password", password);
+                    m.setSessionID(sessionID);
+                    m.setUsername(username);
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    startActivity(new Intent(Login.this, Navigation.class));
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(Login.this, "Credenziali non valide", Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("username", username);
+                    params.put("password", password);
 
-        queue.add(request);
+                    return params;
+                }
+            };// finisce la StringRequest
+
+            queue.add(request);
+        }
     }
 
     @Override
     protected void onResume() {
-        hideBottomNavBar();
         super.onResume();
+
+        hideBottomNavBar();
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private void readPreferences(){

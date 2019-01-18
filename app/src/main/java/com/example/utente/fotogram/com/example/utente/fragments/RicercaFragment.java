@@ -2,6 +2,8 @@ package com.example.utente.fotogram.com.example.utente.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -75,49 +77,53 @@ public class RicercaFragment extends Fragment{
     }
 
     private void searchUser(final String query){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/users";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String serverResponse) {
-                final ArrayList<User> users = parseSearchUsers(serverResponse);
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String serverResponse) {
+                    final ArrayList<User> users = parseSearchUsers(serverResponse);
 
-                SearchUsersAdapter adapter= new SearchUsersAdapter(context, R.layout.item_search_result_item, users);
+                    SearchUsersAdapter adapter = new SearchUsersAdapter(context, R.layout.item_search_result_item, users);
 
-                listView.setAdapter(adapter);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String clickedUserUsername = users.get(position).getUsername();
+                    listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            String clickedUserUsername = users.get(position).getUsername();
 
-                        Intent intent= new Intent(context, OthersProfile.class);
-                        intent.putExtra("username", clickedUserUsername);
+                            Intent intent = new Intent(context, OthersProfile.class);
+                            intent.putExtra("username", clickedUserUsername);
 
-                        context.startActivity(intent);
-                    }
-                });
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("usernamestart", query);
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(context, "Impossibile effettuare ricerca", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
+                    params.put("usernamestart", query);
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    return params;
+                }
+            };// finisce la StringRequest
 
-        queue.add(request);
+            queue.add(request);
+        }
     }
 
     private ArrayList<User> parseSearchUsers(String serverResponse){
@@ -139,6 +145,18 @@ public class RicercaFragment extends Fragment{
         }
 
         return users;
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

@@ -9,6 +9,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -111,39 +113,44 @@ public class ProfiloFragment extends Fragment {
     }
 
     public void getUserInfo(){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+            ((Navigation) getActivity()).stopRefreshAnimation();
+        }else {
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/profile";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String response) {
-                Gson gson= new Gson();
-                user= gson.fromJson(response, User.class);
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String response) {
+                    Gson gson = new Gson();
+                    user = gson.fromJson(response, User.class);
 
-                updateUI();
-                showPosts();
-                ((Navigation)getActivity()).stopRefreshAnimation();
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("username", m.getUsername());
+                    updateUI();
+                    showPosts();
+                    ((Navigation) getActivity()).stopRefreshAnimation();
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(context, "Impossibile ottenere informazioni utente", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
+                    params.put("username", m.getUsername());
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    return params;
+                }
+            };// finisce la StringRequest
 
-        queue.add(request);
+            queue.add(request);
+        }
     }
 
     private void updateUI(){
@@ -265,70 +272,91 @@ public class ProfiloFragment extends Fragment {
     }
 
     private void updatePictureOnServer(final String encoded){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/picture_update";
 
-        StringRequest request= new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Toast.makeText(context, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Impossibile aggiornare immagine su server", Toast.LENGTH_SHORT).show();
-            }
-        }){
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
-                params.put("picture", encoded);
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Toast.makeText(context, "Aggiornata immagine su server", Toast.LENGTH_SHORT).show();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(context, "Impossibile aggiornare immagine su server", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
+                    params.put("picture", encoded);
 
-                return params;
-            }
-        };
+                    return params;
+                }
+            };
 
-        queue.add(request);
+            queue.add(request);
+        }
     }
 
     public void logout(){
-        String url= "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
+        if(! isConnected()) {
+            Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "https://ewserver.di.unimi.it/mobicomp/fotogram/logout";
 
-        StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            // risposta valida
-            @Override
-            public void onResponse(String sessionID) {
+            StringRequest request = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                // risposta valida
+                @Override
+                public void onResponse(String sessionID) {
 //                CANCELLA le sharedPreferences
-                try {
-                    SharedPreferences sharedPref = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.clear();
-                    editor.commit();
-                }catch (Exception e){ }
+                    try {
+                        SharedPreferences sharedPref = context.getSharedPreferences("preferences", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.clear();
+                        editor.commit();
+                    } catch (Exception e) {
+                    }
 
-                m.setSessionID(null);
-                context.startActivity(new Intent(context, Login.class));
-            }
-        }, new Response.ErrorListener() {
-            // risposta ad un errore
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-                Toast.makeText(context, "Impossibile fare logout", Toast.LENGTH_LONG).show();
-            }
-        }) {
-            // parametri richiesta POST
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("session_id", m.getSessionID());
+                    m.setSessionID(null);
+                    context.startActivity(new Intent(context, Login.class));
+                }
+            }, new Response.ErrorListener() {
+                // risposta ad un errore
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    Toast.makeText(context, "Impossibile fare logout", Toast.LENGTH_LONG).show();
+                }
+            }) {
+                // parametri richiesta POST
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("session_id", m.getSessionID());
 
-                return params;
-            }
-        };// finisce la StringRequest
+                    return params;
+                }
+            };// finisce la StringRequest
 
-        queue.add(request);
+            queue.add(request);
+        }
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
