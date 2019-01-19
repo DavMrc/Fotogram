@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity {
 
         hideBottomNavBar();
         setConstraintLayoutListener();
-        allowLandscape();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         final TextView tv_username = findViewById(R.id.txt_username);
         final TextView tv_password = findViewById(R.id.txt_password);
@@ -187,10 +187,10 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void allowLandscape(){
-        // permette la versione landscape solo per i tablet
-        if( getResources().getBoolean(R.bool.portait_only) ){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
-    }
+//    private void allowLandscape(){
+//        // permette la versione landscape solo per i tablet
+//        if( getResources().getBoolean(R.bool.portait_only) ){
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        }
+//    }
 }

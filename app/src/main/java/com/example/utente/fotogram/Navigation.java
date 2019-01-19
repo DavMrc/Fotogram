@@ -49,17 +49,18 @@ public class Navigation extends AppCompatActivity {
         Login.activity.finish();
 
         hideBottomNavBar();
+        setupFooter();
 
         toolbar= findViewById(R.id.toolbar);
         toolbar.setTitle("Bacheca");
         setSupportActionBar(toolbar);
 
-        setupFooter();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        // permette la versione landscape solo per i tablet
-        if(getResources().getBoolean(R.bool.portait_only) == true){
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
+//        // permette la versione landscape solo per i tablet
+//        if(getResources().getBoolean(R.bool.portait_only) == true){
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        }
     }
 
     @Override
