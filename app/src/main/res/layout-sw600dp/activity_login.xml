@@ -7,97 +7,127 @@
     android:layout_height="match_parent"
     tools:context=".Login">
 
+    <!--TODO: fare layout per tablet-->
+
     <ImageView
         android:id="@+id/img.logo"
-        android:layout_width="283dp"
-        android:layout_height="267dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="302dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/txt.welcome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logoxxxhdpi" />
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/txt.welcome"
-        android:layout_width="260dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="356dp"
-        android:gravity="center_vertical|center_horizontal"
+        android:fontFamily="@font/roboto_light"
         android:text="@string/benvenuto"
-        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.75" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="264dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="388dp"
-        android:gravity="center_horizontal|center_vertical"
+        android:fontFamily="@font/roboto_light"
         android:text="@string/log_in"
-        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt.welcome"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="118dp"
+        android:layout_height="116dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nickname_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="516dp"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/txt.username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nickname"
-            android:textSize="24sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/search_container"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
-        android:layout_width="360dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="584dp"
-        app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/txt.password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:textSize="24sp" />
-    </android.support.design.widget.TextInputLayout>
-
-    <Button
-        android:id="@+id/btn.accedi"
-        android:layout_width="323dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="88dp"
-        android:background="@drawable/light_blue_14dp_radius_button"
-        android:text="Accedi"
-        android:textColor="#D4D4D4"
-        android:textSize="24sp"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="404dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <Button
+            android:id="@+id/btn.accedi"
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            android:background="@drawable/light_blue_14dp_radius_button"
+            android:fontFamily="@font/roboto_regular"
+            android:text="Accedi"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pwd_container"
+            app:layout_constraintVertical_bias="0.36" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nickname_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/txt.username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Era" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/pwd_container"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="8dp"
+            app:errorEnabled="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nickname_container"
+            app:layout_constraintVertical_bias="0.120000005">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/txt.password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Era" />
+        </android.support.design.widget.TextInputLayout>
+
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
