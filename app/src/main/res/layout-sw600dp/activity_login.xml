@@ -11,8 +11,8 @@
 
     <ImageView
         android:id="@+id/img.logo"
-        android:layout_width="320dp"
-        android:layout_height="271dp"
+        android:layout_width="255dp"
+        android:layout_height="223dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/txt.welcome"
         app:layout_constraintEnd_toEndOf="parent"
@@ -82,7 +82,6 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
             android:layout_width="460dp"
             android:layout_height="50dp"
-            app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
@@ -103,7 +102,6 @@
             android:layout_width="460dp"
             android:layout_height="50dp"
             android:layout_marginTop="24dp"
-            app:errorEnabled="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
