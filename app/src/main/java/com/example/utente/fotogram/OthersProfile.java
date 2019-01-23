@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,8 +23,6 @@ import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.User;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +33,7 @@ public class OthersProfile extends AppCompatActivity {
     private Model m;
     private static RequestQueue queue;
 
-    private Button followButton;
+    private ImageButton followButton;
     private ListView postListView;
 
     private boolean is_self_profile;
@@ -114,16 +112,23 @@ public class OthersProfile extends AppCompatActivity {
         // bottone segui
         followButton= findViewById(R.id.btn_segui);
 
+//        if(is_self_profile){
+//            followButton.setText(R.string.follow_yourself);
+//        }else if( following ){
+//            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
+//            followButton.setTextColor(getResources().getColor(R.color.white));
+//            followButton.setText(R.string.following);
+//        }else{
+//            followButton.setBackgroundResource(R.drawable.button_gray_outline);
+//            followButton.setTextColor(getResources().getColor(R.color.black));
+//            followButton.setText(R.string.not_following);
+//        }
         if(is_self_profile){
-            followButton.setText(R.string.follow_yourself);
+            followButton.setVisibility(View.GONE);
         }else if( following ){
-            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
-            followButton.setTextColor(getResources().getColor(R.color.white));
-            followButton.setText(R.string.following);
+            followButton.setBackgroundResource(R.drawable.person_added);
         }else{
-            followButton.setBackgroundResource(R.drawable.button_gray_outline);
-            followButton.setTextColor(getResources().getColor(R.color.black));
-            followButton.setText(R.string.not_following);
+            followButton.setBackgroundResource(R.drawable.person_add);
         }
 
         followButton.setOnClickListener(new View.OnClickListener() {
@@ -135,12 +140,35 @@ public class OthersProfile extends AppCompatActivity {
     }
 
     private void followUnfollow() {
+//        if( is_self_profile ){
+//            Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
+//        }else if(! following ) {
+//            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
+//            followButton.setTextColor(getResources().getColor(R.color.white));
+//            followButton.setText(R.string.following);
+//
+//            followServerCall();
+//            Toast.makeText(this,
+//                    "Hai iniziato a seguire " + otherUser.getUsername(),
+//                    Toast.LENGTH_SHORT).show();
+//
+//            following= ! following;
+//        }else{
+//            followButton.setBackgroundResource(R.drawable.button_gray_outline);
+//            followButton.setTextColor(getResources().getColor(R.color.black));
+//            followButton.setText(R.string.not_following);
+//
+//            unfollowServerCall();
+//            Toast.makeText(this,
+//                    "Non segui più "+ otherUser.getUsername(),
+//                    Toast.LENGTH_SHORT).show();
+//
+//            following= ! following;
+//        }
         if( is_self_profile ){
             Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
         }else if(! following ) {
-            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
-            followButton.setTextColor(getResources().getColor(R.color.white));
-            followButton.setText(R.string.following);
+            followButton.setBackgroundResource(R.drawable.person_added);
 
             followServerCall();
             Toast.makeText(this,
@@ -149,9 +177,7 @@ public class OthersProfile extends AppCompatActivity {
 
             following= ! following;
         }else{
-            followButton.setBackgroundResource(R.drawable.button_gray_outline);
-            followButton.setTextColor(getResources().getColor(R.color.black));
-            followButton.setText(R.string.not_following);
+            followButton.setBackgroundResource(R.drawable.person_add);
 
             unfollowServerCall();
             Toast.makeText(this,

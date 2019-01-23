@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -71,7 +72,7 @@ public class ProfiloFragment extends Fragment {
     private TextView tv_friends;
     private TextView tv_username;
     private TextView tv_no_posts;
-    private Button changeProPic;
+    private ImageButton changeProPic;
     private ListView postsListView;
 
     private int PROFILE_IMAGE_SIZE= 10;
@@ -165,7 +166,9 @@ public class ProfiloFragment extends Fragment {
         tv_username.setText(user.getUsername());
 
 //        seguiti/amici che si sta seguendo
-        tv_friends.setText(String.valueOf(friendsCount));
+        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
+        String frCnt= String.valueOf(friendsCount)+" seguiti";
+        tv_friends.setText(frCnt);
 
 //        bottone cambia immagine
         changeProPic.setOnClickListener(new View.OnClickListener() {
@@ -180,10 +183,6 @@ public class ProfiloFragment extends Fragment {
             tv_no_posts.setVisibility(View.VISIBLE);
             tv_no_posts.setText(R.string.you_have_no_posts);
         }
-
-//        friends count
-        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
-        tv_friends.setText(String.valueOf(friendsCount));
     }
 
     public void showPosts(){
