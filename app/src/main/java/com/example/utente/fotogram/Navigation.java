@@ -23,9 +23,6 @@ import com.example.utente.fotogram.com.example.utente.fragments.Nuovo_Post_Fragm
 import com.example.utente.fotogram.com.example.utente.fragments.ProfiloFragment;
 import com.example.utente.fotogram.com.example.utente.fragments.RicercaFragment;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Navigation extends AppCompatActivity {
 
     private BachecaFragment bacheca= new BachecaFragment();
@@ -124,7 +121,7 @@ public class Navigation extends AppCompatActivity {
         fManager.beginTransaction().add(R.id.main_container, nuovo_post, "3").hide(nuovo_post).commit();
         fManager.beginTransaction().add(R.id.main_container, profilo, "4").hide(profilo).commit();
 
-//        assegna ad ogni elemento del nav footer un click event
+//        assegna ad ogni elemento del nav bnv_items un click event
         BottomNavigationView footer= findViewById(R.id.footer);
         footer.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -136,7 +133,7 @@ public class Navigation extends AppCompatActivity {
 
                         getSupportActionBar().setTitle("Bacheca");
                         toolbar.getMenu().clear();
-                        toolbar.inflateMenu(R.menu.refresh_button_bacheca);
+                        toolbar.inflateMenu(R.menu.refresh_bacheca_button);
                         break;
                     case R.id.cerca:
                         fManager.beginTransaction().hide(active).show(cerca).commit();

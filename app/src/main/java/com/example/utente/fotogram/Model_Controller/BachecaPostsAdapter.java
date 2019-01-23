@@ -57,8 +57,6 @@ public class BachecaPostsAdapter extends ArrayAdapter {
         // roboto_light= Typeface.createFromAsset(context.getAssets(),  "fonts/roboto_light.ttf");
     }
 
-    // TODO: fare in modo di inflatare un file diverso se il dispositivo è un tablet
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v= convertView;

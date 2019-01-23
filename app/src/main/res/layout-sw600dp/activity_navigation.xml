@@ -43,6 +43,6 @@
         app:itemBackground="@color/white"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        app:menu="@menu/footer" />
+        app:menu="@menu/bnv_items" />
 
 </RelativeLayout>
