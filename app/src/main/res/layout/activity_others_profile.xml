@@ -51,14 +51,14 @@
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
-            android:id="@+id/label.seguaci"
+            android:id="@+id/label.posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="52dp"
             android:layout_marginBottom="48dp"
-            android:text="@string/seguaci"
+            android:text="@string/posts"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/txt.seguaci"
+            android:id="@+id/txt.posts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -91,15 +91,15 @@
             android:textColor="@color/black"
             android:textSize="24sp"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/label.seguaci"
-            app:layout_constraintStart_toStartOf="@+id/label.seguaci"
+            app:layout_constraintEnd_toEndOf="@+id/label.posts"
+            app:layout_constraintStart_toStartOf="@+id/label.posts"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txt.seguiti"
+            android:id="@+id/txt.friends"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="@id/txt.seguiti"
+            android:layout_alignParentTop="@id/txt.friends"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="16dp"
             android:text="18"

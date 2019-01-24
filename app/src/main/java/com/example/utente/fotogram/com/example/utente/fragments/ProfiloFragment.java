@@ -7,24 +7,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,18 +35,12 @@ import com.android.volley.toolbox.Volley;
 import com.example.utente.fotogram.Login;
 import com.example.utente.fotogram.Model_Controller.ImageHandler;
 import com.example.utente.fotogram.Model_Controller.Model;
-import com.example.utente.fotogram.Model_Controller.Post;
 import com.example.utente.fotogram.Model_Controller.ProfilePostsAdapter;
 import com.example.utente.fotogram.Model_Controller.User;
 import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.R;
 import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,13 +59,16 @@ public class ProfiloFragment extends Fragment {
     private static RequestQueue queue;
 
     private int friendsCount;
-    private TextView tv_friends;
     private TextView tv_username;
+    private TextView tv_friends;
+    private TextView tv_posts;
     private TextView tv_no_posts;
-    private ImageButton changeProPic;
+    private FloatingActionButton fab_changeProPic;
+    private Button changeProPic;
     private ListView postsListView;
 
     private int PROFILE_IMAGE_SIZE= 10;
+    private boolean IS_TABLET;
 
     public ProfiloFragment() {
         // Required empty public constructor
@@ -84,8 +77,26 @@ public class ProfiloFragment extends Fragment {
     @Override
     public void onResume() {
         if( m.getActiveUserFriends() != null) {
-            friendsCount = m.getActiveUserFriends().size() - 1;
-            tv_friends.setText(String.valueOf(friendsCount));
+            if (IS_TABLET) {
+                friendsCount = m.getActiveUserFriends().size() - 1; // -1 perchè include l'activeUser
+                int posts = user.getPosts().length;
+                String friends_and_posts = String.valueOf(friendsCount) + " seguiti - " + String.valueOf(posts) + " posts";
+
+                // posts and friends count
+                tv_friends.setText(friends_and_posts);
+            } else {
+                // seguiti/amici che si sta seguendo
+                friendsCount = m.getActiveUserFriends().size() - 1;
+                tv_friends.setText(String.valueOf(friendsCount));
+
+                // posts count
+                int posts = user.getPosts().length;
+                if (posts == 10) {
+                    tv_posts.setText("10+");
+                } else {
+                    tv_posts.setText(String.valueOf(posts));
+                }
+            }
         }
 
         super.onResume();
@@ -100,13 +111,20 @@ public class ProfiloFragment extends Fragment {
         context= getContext();
         m= Model.getInstance();
         queue= Volley.newRequestQueue(context);
+        IS_TABLET= context.getResources().getBoolean(R.bool.isTablet);
 
-        proPic= view.findViewById(R.id.img_profile_pic);
-        postsListView= view.findViewById(R.id.personal_posts);
-        tv_username= view.findViewById(R.id.txt_username);
-        tv_friends = view.findViewById(R.id.txt_seguiti);
-        tv_no_posts= view.findViewById(R.id.no_posts);
-        changeProPic = view.findViewById(R.id.btn_change_profile_pic);
+        proPic = view.findViewById(R.id.img_profile_pic);
+        postsListView = view.findViewById(R.id.personal_posts);
+        tv_username = view.findViewById(R.id.txt_username);
+        tv_no_posts = view.findViewById(R.id.no_posts);
+        tv_friends = view.findViewById(R.id.txt_friends);
+
+        if(IS_TABLET) {
+            fab_changeProPic = view.findViewById(R.id.btn_change_profile_pic);
+        }else{
+            changeProPic = view.findViewById(R.id.btn_change_profile_pic);
+            tv_posts = view.findViewById(R.id.txt_posts);
+        }
 
         getUserInfo();
 
@@ -165,23 +183,48 @@ public class ProfiloFragment extends Fragment {
 //        username
         tv_username.setText(user.getUsername());
 
-//        seguiti/amici che si sta seguendo
-        friendsCount= m.getActiveUserFriends().size()-1; // -1 perchè include l'activeUser
-        String frCnt= String.valueOf(friendsCount)+" seguiti";
-        tv_friends.setText(frCnt);
-
-//        bottone cambia immagine
-        changeProPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkStoragePermissions();
-            }
-        });
-
-//        se non hai postato nulla
+//        se non hai postato nulla, mostra una textview
         if(user.getPosts().length == 0) {
             tv_no_posts.setVisibility(View.VISIBLE);
             tv_no_posts.setText(R.string.you_have_no_posts);
+        }
+
+        if( IS_TABLET) {
+            friendsCount = m.getActiveUserFriends().size() - 1; // -1 perchè include l'activeUser
+            int posts = user.getPosts().length;
+            String friends_and_posts= String.valueOf(friendsCount)+" seguiti - "+String.valueOf(posts)+" posts";
+
+            // posts and friends count
+            tv_friends.setText(friends_and_posts);
+
+            // bottone cambia immagine
+            fab_changeProPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkStoragePermissions();
+                }
+            });
+        } else {
+            // seguiti/amici che si sta seguendo
+            friendsCount = m.getActiveUserFriends().size() - 1;
+            tv_friends.setText(String.valueOf(friendsCount));
+
+            // posts count
+            int posts = user.getPosts().length;
+            if (posts == 10) {
+                tv_posts.setText("10+");
+            } else {
+                tv_posts.setText(String.valueOf(posts));
+            }
+
+
+            // bottone cambia immagine
+            changeProPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkStoragePermissions();
+                }
+            });
         }
     }
 
@@ -197,6 +240,7 @@ public class ProfiloFragment extends Fragment {
 //        permission isn't granted: prompt the user
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            // poi va a onRequestPermissionsResult in Navigation
         }else if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 //            permissions were already granted, proceed normally
             changeProfilePic();
@@ -211,13 +255,13 @@ public class ProfiloFragment extends Fragment {
 
         Uri actualPictures= Uri.parse(picturePath);
         photoPickerIntent.setDataAndType(actualPictures,"image/*");
-        startActivityForResult(photoPickerIntent, 20);
+        startActivityForResult(photoPickerIntent, 22);
     }
 
     @Override
     // relativo al photoPickerIntent, serve per aggiunge l'immagine
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 20 & resultCode == Activity.RESULT_OK) {
+        if(requestCode == 22 & resultCode == Activity.RESULT_OK) {
             Uri imageURI = data.getData();
 
             if(imageURI != null){

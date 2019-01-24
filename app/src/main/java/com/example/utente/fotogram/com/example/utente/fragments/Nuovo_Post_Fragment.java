@@ -217,6 +217,7 @@ public class Nuovo_Post_Fragment extends Fragment {
 //        permissions haven't been granted
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            // poi va a onRequestPermissionsResult in Navigation
         }else if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 //        permissions have been previously granted, proceed
             addImageFromGallery();
