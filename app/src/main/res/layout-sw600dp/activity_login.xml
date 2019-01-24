@@ -73,11 +73,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pwd_container"
+            app:layout_constraintTop_toBottomOf="@+id/search_container"
             app:layout_constraintVertical_bias="0.0" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/nickname_container"
+            android:id="@+id/didascalia_container"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
             android:layout_width="460dp"
             android:layout_height="50dp"
@@ -96,7 +96,7 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/pwd_container"
+            android:id="@+id/search_container"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
             android:layout_width="460dp"
             android:layout_height="50dp"
@@ -105,7 +105,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nickname_container"
+            app:layout_constraintTop_toBottomOf="@+id/didascalia_container"
             app:layout_constraintVertical_bias="0.0">
 
             <android.support.design.widget.TextInputEditText

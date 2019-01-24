@@ -9,8 +9,8 @@
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
-        android:layout_width="330dp"
-        android:layout_height="50dp"
+        android:layout_width="530dp"
+        android:layout_height="60dp"
         android:layout_marginTop="8dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +28,7 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayout3"
-        android:layout_width="330dp"
+        android:layout_width="530dp"
         android:layout_height="453dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
