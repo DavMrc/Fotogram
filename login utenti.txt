@@ -1,0 +1,13 @@
+Era_test1
+Atena_test2
+Ercole_test3
+Zeus_test4
+
+pass: asd
+
+------
+Era - Era
+Ercole - Ercole
+Zeus - Zeus
+Atena - Atena
+Afrodite - Afrodite

@@ -39,7 +39,12 @@ public class Model {
     }
 
     public void setImage(String image){
-        this.friends.replace(username, image);
+        try{
+            this.friends.replace(username, image);
+        }catch (Exception e){
+            // friends non è ancora stato settato, readSharedPref tenta di fare un replace
+            // ma trova la hashmap nulla. procedi alla bacheca, che setterà la hashmap
+        }
     }
 
     public HashMap<String, String> getActiveUserFriends(){

@@ -1,0 +1,2 @@
+Files -> show internal storage -> move folder ->
+	Android SDK built for x86 -> Download.

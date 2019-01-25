@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OthersProfile extends AppCompatActivity {
+//    TODO: fare in modo di passare al Fragment profilo se si clicca su se stessi
 
     private User otherUser;
 

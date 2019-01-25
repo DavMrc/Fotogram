@@ -76,7 +76,7 @@ public class ProfiloFragment extends Fragment {
 
     @Override
     public void onResume() {
-        if( m.getActiveUserFriends() != null) {
+        try{
             if (IS_TABLET) {
                 friendsCount = m.getActiveUserFriends().size() - 1; // -1 perchè include l'activeUser
                 int posts = user.getPosts().length;
@@ -97,6 +97,8 @@ public class ProfiloFragment extends Fragment {
                     tv_posts.setText(String.valueOf(posts));
                 }
             }
+        }catch (Exception e){
+            // la lista di amici e/o i post non sono ancora stati settati
         }
 
         super.onResume();
@@ -248,7 +250,9 @@ public class ProfiloFragment extends Fragment {
     }
 
     public void changeProfilePic(){
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+//        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
 
         File pictureDirectory= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         String picturePath= pictureDirectory.getPath();
