@@ -6,105 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".com.example.utente.fragments.ProfiloFragment">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="210dp"
-        android:layout_height="152dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="315dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/stars_background"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/label.posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="48dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/posts"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/txt.posts"
-            app:layout_constraintStart_toStartOf="@+id/txt.posts"
-            app:layout_constraintTop_toBottomOf="@+id/txt.posts" />
-
-        <TextView
-            android:id="@+id/label.seguiti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="52dp"
-            android:layout_marginBottom="48dp"
-            android:fontFamily="@font/roboto_light"
-            android:text="@string/seguiti"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt.infos" />
-
-        <TextView
-            android:id="@+id/txt.posts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="24dp"
-            android:text="..."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.43"
-            app:layout_constraintStart_toEndOf="@+id/txt.infos"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txt.infos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="@id/txt.infos"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="24dp"
-            android:text="..."
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@+id/label.seguiti"
-            app:layout_constraintStart_toStartOf="@+id/label.seguiti"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn.segui"
-            android:layout_width="160dp"
-            android:layout_height="35dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/button_gray_outline"
-            android:fontFamily="sans-serif"
-            android:text="@string/cambia_propic"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/txt.infos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="@id/txt.infos"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/roboto_regular"
+        android:text="..."
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt.username"
+        app:layout_constraintVertical_bias="0.0" />
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/img.profile_pic"
-        android:layout_width="130dp"
-        android:layout_height="123dp"
+        android:layout_width="180dp"
+        android:layout_height="179dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/profile_pic_placeholder"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -114,30 +54,29 @@
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/nome_utente"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img.profile_pic"
         app:layout_constraintVertical_bias="0.002" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="180dp"
+        android:id="@+id/contenuti"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="@string/content"
         android:fontFamily="@font/roboto_light"
+        android:text="@string/content"
         android:textAlignment="center"
-        android:textSize="16sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/horizontal_divider2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -188,7 +127,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <ListView
-            android:id="@+id/personal_posts"
+            android:id="@+id/others_posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
@@ -199,4 +138,19 @@
             app:layout_constraintTop_toTopOf="parent" />
     </android.support.constraint.ConstraintLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn.segui"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/light_gray"
+        app:elevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img.profile_pic"
+        app:layout_constraintEnd_toEndOf="@+id/img.profile_pic"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/img.profile_pic"
+        app:layout_constraintTop_toTopOf="@+id/img.profile_pic"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/person_add" />
 </android.support.constraint.ConstraintLayout>

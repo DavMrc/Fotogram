@@ -1,8 +1,10 @@
 package com.example.utente.fotogram;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -35,22 +37,27 @@ public class OthersProfile extends AppCompatActivity {
     private static RequestQueue queue;
 
     private ImageButton followButton;
+    private FloatingActionButton fab_followButton;
     private ListView postListView;
 
     private boolean is_self_profile;
     private boolean following;
+    private boolean IS_TABLET;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_others_profile);
 
-        Intent intent= getIntent();
-
         m= Model.getInstance();
         queue= Volley.newRequestQueue(this);
 
+        IS_TABLET= getResources().getBoolean(R.bool.isTablet);
+
+        Intent intent= getIntent();
         String username= intent.getStringExtra("username");
+
+        postListView= findViewById(R.id.others_posts);
 
         getUserInfo(username);
 
@@ -107,85 +114,100 @@ public class OthersProfile extends AppCompatActivity {
         TextView tv_username= findViewById(R.id.txt_username);
         tv_username.setText(otherUser.getUsername());
 
-        // lista post
-        postListView= findViewById(R.id.others_posts);
+        if(IS_TABLET) {
+            // bottone segui
+            fab_followButton= findViewById(R.id.btn_segui);
 
-        // bottone segui
-        followButton= findViewById(R.id.btn_segui);
-
-//        if(is_self_profile){
-//            followButton.setText(R.string.follow_yourself);
-//        }else if( following ){
-//            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
-//            followButton.setTextColor(getResources().getColor(R.color.white));
-//            followButton.setText(R.string.following);
-//        }else{
-//            followButton.setBackgroundResource(R.drawable.button_gray_outline);
-//            followButton.setTextColor(getResources().getColor(R.color.black));
-//            followButton.setText(R.string.not_following);
-//        }
-        if(is_self_profile){
-            followButton.setVisibility(View.GONE);
-        }else if( following ){
-            followButton.setBackgroundResource(R.drawable.person_added);
-        }else{
-            followButton.setBackgroundResource(R.drawable.person_add);
-        }
-
-        followButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                followUnfollow();
+            if (is_self_profile) {
+                fab_followButton.setVisibility(View.GONE);
+            } else if (following) {
+                fab_followButton.setImageResource(R.drawable.person_added_white);
+                fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.main_light_blue)));
+            } else {
+                fab_followButton.setImageResource(R.drawable.person_add);
+                fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_gray)));
             }
-        });
+
+            fab_followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    followUnfollow();
+                }
+            });
+
+            // infos
+            TextView tv_infos= findViewById(R.id.txt_infos);
+            String infos= String.valueOf(otherUser.getPosts().length)+" posts";
+            tv_infos.setText(infos);
+        }
+        else{
+            // bottone segui
+            followButton = findViewById(R.id.btn_segui);
+            if (is_self_profile) {
+                followButton.setVisibility(View.GONE);
+            } else if (following) {
+                followButton.setBackgroundResource(R.drawable.person_added);
+            } else {
+                followButton.setBackgroundResource(R.drawable.person_add);
+            }
+
+            followButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    followUnfollow();
+                }
+            });
+        }
     }
 
     private void followUnfollow() {
-//        if( is_self_profile ){
-//            Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
-//        }else if(! following ) {
-//            followButton.setBackgroundResource(R.drawable.light_blue_8dp_radius_button);
-//            followButton.setTextColor(getResources().getColor(R.color.white));
-//            followButton.setText(R.string.following);
-//
-//            followServerCall();
-//            Toast.makeText(this,
-//                    "Hai iniziato a seguire " + otherUser.getUsername(),
-//                    Toast.LENGTH_SHORT).show();
-//
-//            following= ! following;
-//        }else{
-//            followButton.setBackgroundResource(R.drawable.button_gray_outline);
-//            followButton.setTextColor(getResources().getColor(R.color.black));
-//            followButton.setText(R.string.not_following);
-//
-//            unfollowServerCall();
-//            Toast.makeText(this,
-//                    "Non segui più "+ otherUser.getUsername(),
-//                    Toast.LENGTH_SHORT).show();
-//
-//            following= ! following;
-//        }
-        if( is_self_profile ){
-            Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
-        }else if(! following ) {
-            followButton.setBackgroundResource(R.drawable.person_added);
+        if(IS_TABLET) {
+            if (is_self_profile) {
+                Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
+            } else if (!following) {
+                fab_followButton.setImageResource(R.drawable.person_added_white);
+                fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.main_light_blue)));
 
-            followServerCall();
-            Toast.makeText(this,
-                    "Hai iniziato a seguire " + otherUser.getUsername(),
-                    Toast.LENGTH_SHORT).show();
+                followServerCall();
+                Toast.makeText(this,
+                        "Hai iniziato a seguire " + otherUser.getUsername(),
+                        Toast.LENGTH_SHORT).show();
 
-            following= ! following;
-        }else{
-            followButton.setBackgroundResource(R.drawable.person_add);
+                following = !following;
+            } else {
+                fab_followButton.setImageResource(R.drawable.person_add);
+                fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.light_gray)));
 
-            unfollowServerCall();
-            Toast.makeText(this,
-                    "Non segui più "+ otherUser.getUsername(),
-                    Toast.LENGTH_SHORT).show();
+                unfollowServerCall();
+                Toast.makeText(this,
+                        "Non segui più " + otherUser.getUsername(),
+                        Toast.LENGTH_SHORT).show();
 
-            following= ! following;
+                following = !following;
+            }
+        }
+        else {
+            if (is_self_profile) {
+                Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
+            } else if (!following) {
+                followButton.setBackgroundResource(R.drawable.person_added);
+
+                followServerCall();
+                Toast.makeText(this,
+                        "Hai iniziato a seguire " + otherUser.getUsername(),
+                        Toast.LENGTH_SHORT).show();
+
+                following = !following;
+            } else {
+                followButton.setBackgroundResource(R.drawable.person_add);
+
+                unfollowServerCall();
+                Toast.makeText(this,
+                        "Non segui più " + otherUser.getUsername(),
+                        Toast.LENGTH_SHORT).show();
+
+                following = !following;
+            }
         }
     }
 

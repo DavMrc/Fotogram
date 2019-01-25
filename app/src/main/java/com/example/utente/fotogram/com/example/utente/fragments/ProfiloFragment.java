@@ -60,7 +60,7 @@ public class ProfiloFragment extends Fragment {
 
     private int friendsCount;
     private TextView tv_username;
-    private TextView tv_friends;
+    private TextView tv_infos;
     private TextView tv_posts;
     private TextView tv_no_posts;
     private FloatingActionButton fab_changeProPic;
@@ -83,19 +83,14 @@ public class ProfiloFragment extends Fragment {
                 String friends_and_posts = String.valueOf(friendsCount) + " seguiti - " + String.valueOf(posts) + " posts";
 
                 // posts and friends count
-                tv_friends.setText(friends_and_posts);
+                tv_infos.setText(friends_and_posts);
             } else {
                 // seguiti/amici che si sta seguendo
                 friendsCount = m.getActiveUserFriends().size() - 1;
-                tv_friends.setText(String.valueOf(friendsCount));
+                tv_infos.setText(String.valueOf(friendsCount));
 
                 // posts count
-                int posts = user.getPosts().length;
-                if (posts == 10) {
-                    tv_posts.setText("10+");
-                } else {
-                    tv_posts.setText(String.valueOf(posts));
-                }
+                tv_posts.setText(String.valueOf(user.getPosts().length));
             }
         }catch (Exception e){
             // la lista di amici e/o i post non sono ancora stati settati
@@ -119,12 +114,12 @@ public class ProfiloFragment extends Fragment {
         postsListView = view.findViewById(R.id.personal_posts);
         tv_username = view.findViewById(R.id.txt_username);
         tv_no_posts = view.findViewById(R.id.no_posts);
-        tv_friends = view.findViewById(R.id.txt_friends);
+        tv_infos = view.findViewById(R.id.txt_infos);
 
         if(IS_TABLET) {
-            fab_changeProPic = view.findViewById(R.id.btn_change_profile_pic);
+            fab_changeProPic = view.findViewById(R.id.btn_segui);
         }else{
-            changeProPic = view.findViewById(R.id.btn_change_profile_pic);
+            changeProPic = view.findViewById(R.id.btn_segui);
             tv_posts = view.findViewById(R.id.txt_posts);
         }
 
@@ -197,7 +192,7 @@ public class ProfiloFragment extends Fragment {
             String friends_and_posts= String.valueOf(friendsCount)+" seguiti - "+String.valueOf(posts)+" posts";
 
             // posts and friends count
-            tv_friends.setText(friends_and_posts);
+            tv_infos.setText(friends_and_posts);
 
             // bottone cambia immagine
             fab_changeProPic.setOnClickListener(new View.OnClickListener() {
@@ -209,15 +204,10 @@ public class ProfiloFragment extends Fragment {
         } else {
             // seguiti/amici che si sta seguendo
             friendsCount = m.getActiveUserFriends().size() - 1;
-            tv_friends.setText(String.valueOf(friendsCount));
+            tv_infos.setText(String.valueOf(friendsCount));
 
             // posts count
-            int posts = user.getPosts().length;
-            if (posts == 10) {
-                tv_posts.setText("10+");
-            } else {
-                tv_posts.setText(String.valueOf(posts));
-            }
+            tv_posts.setText(String.valueOf(user.getPosts().length));
 
 
             // bottone cambia immagine

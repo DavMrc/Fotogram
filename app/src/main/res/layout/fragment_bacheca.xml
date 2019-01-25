@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".com.example.utente.fragments.BachecaFragment">
 
+    <!--TODO: dev'essere diverso per tablet (?)-->
+
     <TextView
         android:id="@+id/no_posts"
         android:layout_width="0dp"
