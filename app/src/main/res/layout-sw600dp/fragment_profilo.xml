@@ -183,5 +183,5 @@
         app:layout_constraintStart_toStartOf="@+id/img.profile_pic"
         app:layout_constraintTop_toTopOf="@+id/img.profile_pic"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/change_propic_24dp" />
+        app:srcCompat="@drawable/change_propic" />
 </android.support.constraint.ConstraintLayout>

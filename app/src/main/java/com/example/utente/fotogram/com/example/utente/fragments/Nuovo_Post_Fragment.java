@@ -62,7 +62,7 @@ public class Nuovo_Post_Fragment extends Fragment {
     private static RequestQueue queue;
 
     private TextView tv_didascalia;
-    private int POST_IMAGE_SIZE= 100;
+    private int POST_IMAGE_SIZE= 90;
 
     public Nuovo_Post_Fragment() {
         // Required empty public constructor
@@ -102,6 +102,7 @@ public class Nuovo_Post_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 chooseImage.setImageResource(R.drawable.add_image);
+                selectedImageUri= null;
 
                 // lo nasconde
                 cancelPost.setVisibility(View.GONE);
@@ -124,7 +125,11 @@ public class Nuovo_Post_Fragment extends Fragment {
         createPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                encodeFromUri(selectedImageUri);
+                try {
+                    encodeFromUri(selectedImageUri);
+                }catch (NullPointerException e){
+                    Toast.makeText(context, "Immagine non inserita", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

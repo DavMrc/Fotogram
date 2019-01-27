@@ -50,7 +50,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:visibility="gone"
-        android:background="@drawable/delete_red_cross"
+        android:background="@drawable/delete_post_red_cross"
         app:layout_constraintBottom_toTopOf="@+id/gallery_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.893"

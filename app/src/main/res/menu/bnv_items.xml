@@ -6,27 +6,27 @@
         android:id="@+id/bacheca"
         android:title="@string/bacheca"
         app:showAsAction="always"
-        android:icon="@drawable/bacheca_home"
+        android:icon="@drawable/bnv_bacheca"
     />
 
     <item
         android:id="@+id/cerca"
         android:title="@string/cerca"
         app:showAsAction="always"
-        android:icon="@drawable/search_black_24dp"
+        android:icon="@drawable/bnv_search"
         />
 
     <item
         android:id="@+id/nuovo"
         android:title="@string/nuovo"
-        android:icon="@drawable/new_post_outlined"
+        android:icon="@drawable/bnv_new_post"
         app:showAsAction="always"
     />
 
     <item
         android:id="@+id/profilo"
         android:title="@string/profilo"
-        android:icon="@drawable/account_circle_black_24dp"
+        android:icon="@drawable/bnv_profile"
         app:showAsAction="always"
     />
 

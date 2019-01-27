@@ -10,7 +10,7 @@
         android:id="@+id/search_container"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
         android:layout_width="530dp"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:layout_marginTop="16dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"

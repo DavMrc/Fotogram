@@ -117,6 +117,7 @@ public class RicercaFragment extends Fragment{
                     Map<String, String> params = new HashMap<>();
                     params.put("session_id", m.getSessionID());
                     params.put("usernamestart", query);
+                    params.put("limit", "10");
 
                     return params;
                 }

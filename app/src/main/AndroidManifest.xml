@@ -28,6 +28,7 @@
         <activity
             android:name=".Navigation"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/Theme.Design.Light.NoActionBar" />
         <!-- Others Profile -->
         <activity

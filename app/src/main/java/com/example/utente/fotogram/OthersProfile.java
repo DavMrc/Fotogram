@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,14 +29,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OthersProfile extends AppCompatActivity {
-//    TODO: fare in modo di passare al Fragment profilo se si clicca su se stessi
 
     private User otherUser;
 
     private Model m;
     private static RequestQueue queue;
 
-    private ImageButton followButton;
+    private Button followButton;
     private FloatingActionButton fab_followButton;
     private ListView postListView;
 
@@ -56,6 +55,7 @@ public class OthersProfile extends AppCompatActivity {
 
         Intent intent= getIntent();
         String username= intent.getStringExtra("username");
+        getSupportActionBar().setTitle(username);
 
         postListView= findViewById(R.id.others_posts);
 
@@ -101,7 +101,6 @@ public class OthersProfile extends AppCompatActivity {
     }
 
     private void updateUI(){
-        getSupportActionBar().setTitle(otherUser.getUsername());
 
         // img profilo
         ImageView profilePic= findViewById(R.id.img_profile_pic);
@@ -114,14 +113,14 @@ public class OthersProfile extends AppCompatActivity {
         TextView tv_username= findViewById(R.id.txt_username);
         tv_username.setText(otherUser.getUsername());
 
+        // bottone segui
         if(IS_TABLET) {
-            // bottone segui
             fab_followButton= findViewById(R.id.btn_segui);
 
             if (is_self_profile) {
                 fab_followButton.setVisibility(View.GONE);
             } else if (following) {
-                fab_followButton.setImageResource(R.drawable.person_added_white);
+                fab_followButton.setImageResource(R.drawable.person_added);
                 fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.main_light_blue)));
             } else {
                 fab_followButton.setImageResource(R.drawable.person_add);
@@ -144,11 +143,15 @@ public class OthersProfile extends AppCompatActivity {
             // bottone segui
             followButton = findViewById(R.id.btn_segui);
             if (is_self_profile) {
-                followButton.setVisibility(View.GONE);
+                followButton.setText(R.string.follow_yourself);
             } else if (following) {
-                followButton.setBackgroundResource(R.drawable.person_added);
+                followButton.setBackgroundResource(R.drawable.button_light_blue_8dp_radius);
+                followButton.setTextColor(getResources().getColor(R.color.white));
+                followButton.setText(R.string.following);
             } else {
-                followButton.setBackgroundResource(R.drawable.person_add);
+                followButton.setBackgroundResource(R.drawable.button_gray_outline);
+                followButton.setTextColor(getResources().getColor(R.color.black));
+                followButton.setText(R.string.not_following);
             }
 
             followButton.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +160,10 @@ public class OthersProfile extends AppCompatActivity {
                     followUnfollow();
                 }
             });
+
+            // numero post
+            TextView tv_posts= findViewById(R.id.txt_posts);
+            tv_posts.setText(String.valueOf(otherUser.getPosts().length));
         }
     }
 
@@ -165,7 +172,7 @@ public class OthersProfile extends AppCompatActivity {
             if (is_self_profile) {
                 Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
             } else if (!following) {
-                fab_followButton.setImageResource(R.drawable.person_added_white);
+                fab_followButton.setImageResource(R.drawable.person_added);
                 fab_followButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.main_light_blue)));
 
                 followServerCall();
@@ -189,8 +196,11 @@ public class OthersProfile extends AppCompatActivity {
         else {
             if (is_self_profile) {
                 Toast.makeText(this, R.string.follow_yourself, Toast.LENGTH_SHORT).show();
-            } else if (!following) {
-                followButton.setBackgroundResource(R.drawable.person_added);
+            } else if (! following) {
+                // inizia a seguire
+                followButton.setBackgroundResource(R.drawable.button_light_blue_8dp_radius);
+                followButton.setTextColor(getResources().getColor(R.color.white));
+                followButton.setText(R.string.following);
 
                 followServerCall();
                 Toast.makeText(this,
@@ -199,7 +209,10 @@ public class OthersProfile extends AppCompatActivity {
 
                 following = !following;
             } else {
-                followButton.setBackgroundResource(R.drawable.person_add);
+                // smetti di seguire
+                followButton.setBackgroundResource(R.drawable.button_gray_outline);
+                followButton.setTextColor(getResources().getColor(R.color.black));
+                followButton.setText(R.string.not_following);
 
                 unfollowServerCall();
                 Toast.makeText(this,

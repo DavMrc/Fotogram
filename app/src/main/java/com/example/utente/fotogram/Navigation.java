@@ -1,8 +1,6 @@
 package com.example.utente.fotogram;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -35,7 +33,7 @@ public class Navigation extends AppCompatActivity {
     private Fragment active= bacheca;
     private FragmentManager fManager= getSupportFragmentManager();
 
-    private Toolbar toolbar;
+    public Toolbar toolbar;
     private View refreshView;
 
     private Model m;
@@ -108,10 +106,10 @@ public class Navigation extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         );
 
+        // barra di sistema riapparsa, nasconderla
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-//                barra di sistema riapparsa, nasconderla
                 if((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0){
                     decorView.setSystemUiVisibility(
                             View.SYSTEM_UI_FLAG_IMMERSIVE

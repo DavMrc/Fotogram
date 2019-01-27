@@ -1,5 +1,6 @@
 package com.example.utente.fotogram.Model_Controller;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.utente.fotogram.Navigation;
 import com.example.utente.fotogram.OthersProfile;
 import com.example.utente.fotogram.R;
 
@@ -58,7 +60,7 @@ public class BachecaPostsAdapter extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, final View convertView, ViewGroup parent) {
         View v= convertView;
 
         if(v == null){
@@ -83,27 +85,16 @@ public class BachecaPostsAdapter extends ArrayAdapter {
             Bitmap profileImgBitmap;
             Bitmap postBitmap= ImageHandler.decodeString(p.getImg());
 
-            if(! img.equals("")) {
-                profileImgBitmap= ImageHandler.decodeString(img);
-                profileImg.setImageBitmap(profileImgBitmap);
-            }
+            try {
+                if (!img.equals("")) {
+                    profileImgBitmap = ImageHandler.decodeString(img);
+                    profileImg.setImageBitmap(profileImgBitmap);
+                }
+            }catch (Exception e){}
 
             tv_username.setText(username);
 
             post.setImageBitmap(postBitmap);
-            post.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent= new Intent(context, OthersProfile.class);
-                    intent.putExtra("username", p.getUsername());
-
-                    if(! isConnected()) {
-                        Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
-                    }else {
-                        context.startActivity(intent);
-                    }
-                }
-            });
 
             if(p.getMsg().equals("")) {
                 didascalia.setTypeface(roboto_light_italic);
@@ -132,6 +123,20 @@ public class BachecaPostsAdapter extends ArrayAdapter {
                                     "Non puoi smettere di seguire te stesso",
                                     Toast.LENGTH_SHORT).show();
                         }
+                    }
+                }
+            });
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent= new Intent(context, OthersProfile.class);
+                    intent.putExtra("username", p.getUsername());
+
+                    if(! isConnected()) {
+                        Toast.makeText(context, R.string.no_internet, Toast.LENGTH_SHORT).show();
+                    }else {
+                        context.startActivity(intent);
                     }
                 }
             });

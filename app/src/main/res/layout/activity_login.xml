@@ -62,7 +62,7 @@
             android:id="@+id/btn.accedi"
             android:layout_width="230dp"
             android:layout_height="50dp"
-            android:background="@drawable/light_blue_14dp_radius_button"
+            android:background="@drawable/button_light_blue_14dp_radius"
             android:fontFamily="@font/roboto_regular"
             android:text="Accedi"
             android:textAllCaps="false"
