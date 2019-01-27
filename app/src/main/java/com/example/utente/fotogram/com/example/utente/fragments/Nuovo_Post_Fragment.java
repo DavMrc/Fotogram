@@ -62,7 +62,7 @@ public class Nuovo_Post_Fragment extends Fragment {
     private static RequestQueue queue;
 
     private TextView tv_didascalia;
-    private int POST_IMAGE_SIZE= 90;
+    private int POST_IMAGE_SIZE= 100;
 
     public Nuovo_Post_Fragment() {
         // Required empty public constructor
@@ -101,7 +101,7 @@ public class Nuovo_Post_Fragment extends Fragment {
         cancelPost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage.setImageResource(R.drawable.ic_insert_photo_blue_grey_500_48dp);
+                chooseImage.setImageResource(R.drawable.add_image);
 
                 // lo nasconde
                 cancelPost.setVisibility(View.GONE);
@@ -185,6 +185,10 @@ public class Nuovo_Post_Fragment extends Fragment {
                         Toast.makeText(context, "Immagine inviata al server correttamente", Toast.LENGTH_LONG).show();
                         // risetta la didascalia a nulla dopo la creazione del post
                         tv_didascalia.setText("");
+                        // l'immagine ritorna al placeholder
+                        chooseImage.setImageResource(R.drawable.add_image);
+                        // nasconde il bottone per cancellare l'immagine selezionata
+                        cancelPost.setVisibility(View.GONE);
                     }
                 }, new Response.ErrorListener() {
                     // risposta ad un errore

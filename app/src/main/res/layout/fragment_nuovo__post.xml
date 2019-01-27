@@ -12,12 +12,13 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
         android:layout_width="313dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         app:errorEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.791">
+        app:layout_constraintTop_toBottomOf="@+id/gallery_image"
+        app:layout_constraintVertical_bias="0.0">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/txt.didascalia"
@@ -31,30 +32,25 @@
 
     <ImageView
         android:id="@+id/gallery_image"
-        android:layout_width="316dp"
-        android:layout_height="292dp"
-        android:layout_marginBottom="8dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
+        android:layout_width="336dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="64dp"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/didascalia_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.353"
-        app:layout_optimizationLevel="dimensions"
-        app:srcCompat="@drawable/ic_insert_photo_blue_grey_500_48dp" />
+        app:srcCompat="@drawable/add_image" />
 
     <ImageButton
         android:id="@+id/btn.cancel_post"
         android:layout_width="35dp"
         android:layout_height="35dp"
-        android:visibility="gone"
         android:background="@drawable/delete_red_cross"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/gallery_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.893"
+        app:layout_constraintHorizontal_bias="0.898"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -64,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="32dp"
         android:clickable="true"
         android:scaleType="fitCenter"
         android:src="@drawable/send_new_post_white"

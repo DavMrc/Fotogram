@@ -18,6 +18,9 @@ import me.shaohui.advancedluban.OnCompressListener;
 
 public abstract class ImageHandler {
 
+    private static int QUALITY= 90;
+    // non so perchè, ma 100 non funziona
+
     public static Bitmap decodeString(String encoded){
         if(encoded != null) {
             byte[] byteArr = Base64.decode(encoded, Base64.DEFAULT);
@@ -31,7 +34,7 @@ public abstract class ImageHandler {
     public static String fileToBase64(File file){
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, QUALITY, baos);
         byte[] byteArr = baos.toByteArray();
 
         return Base64.encodeToString(byteArr, Base64.DEFAULT);

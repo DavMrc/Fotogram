@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -45,7 +46,12 @@ public class Navigation extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
 
         m= Model.getInstance();
-        Login.activity.finish();
+        try {
+            Login.activity.finish();
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.d("NavigationActivity", "Login.activity.finish() wasn't called.");
+        }
 
         hideBottomNavBar();
         setupFooter();
